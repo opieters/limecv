@@ -71,6 +71,8 @@
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
+\NewDocumentCommand{\cvComma}{}{,}
+
 %--------------------------------------------------------------------
 %
 %   drawing
@@ -109,7 +111,6 @@
 %   %%%%%%%%%%%
 %
 % for now, only A4 paper is supported
-\RequirePackage[margin=1cm,noheadfoot,a4paper]{geometry}
 \pagenumbering{gobble}
 \RequirePackage{parskip}
 
@@ -328,7 +329,7 @@
 
 \NewDocumentCommand{\cvSkillTwo}{smmmm}{%
   \IfBooleanTF{#1}{% if starred version
-    \cvSkill{#2} & #3 & \cvSkill{#4} & #5 \\
+    \cvSkill{#2} & #3 & \cvSkill{#4} & #5 \\[1ex]
   }{% if normal version
     \cvSkill{#2} \pgfmatrixnextcell #3 \pgfmatrixnextcell \cvSkill{#4} \pgfmatrixnextcell #5 \\ 
   }%
