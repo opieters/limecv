@@ -15,7 +15,7 @@
 \usepackage{xparse}
 
 \lstset{%
-  basicstyle=\footnotesize\ttfamily, % font style and size
+  basicstyle=\ttfamily, % font style and size
   breakatwhitespace=false,
   breaklines=true,
   numbers=left,
@@ -63,6 +63,12 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
 \section{General Macros and Document Class Options}
 
 \section{Side Bar}
+
+  The side bar should contain personal information such as your name, job title (or industry or similar), contact information, small bio, interests and language skills. Special environments and commands have been defined for each of these sections and will be described below. 
+
+  Everything that should be inside the side bar should be placed in the \lstinline|cvSideBar| environment. This environment is placed on the left side of the page by default. If ir should be typeset on the right side, use the starred version (\lstinline|cvSideBar*|)
+
+  The following environments are available inside the side bar environment: \lstinline|cvProfile|, \lstinline|cvContact|, \lstinline|cvLanguages|, \lstinline|cvInterests| and \lstinline|cvProjects|.
 
 \section{Main Section}
 
