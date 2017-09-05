@@ -259,10 +259,10 @@
 }
 
 \newcommand{\cv@Title}[2]{%
-  \ifnodedefined{title \the\value{titlePrev}}{%
-    \node[below=0.6cm of item \the\value{itemPrev}.south west,sectionTitle] (title \the\value{titleNext}) {\cvSection{#1}};
+  \ifnodedefined{last item \the\value{lastItem}}{%
+    \node[below=0.6cm of last item \the\value{lastItem}.south west,sectionTitle] (title \the\value{titleNext}) {\cvSection{#1}};
     \node[left=\timedotsep of title \the\value{titleNext},headerIcon] {#2};
-    \node[below=0.6cm of item \the\value{itemPrev}.south west,sectionTitle] (title \the\value{titleNext} dummy) {\phantom{\cvSection{Education}}};
+    \node[below=0.6cm of last item \the\value{lastItem}.south west,sectionTitle] (title \the\value{titleNext} dummy) {\phantom{\cvSection{Education}}};
     \begin{scope}[on background layer]
       \draw[line width=2pt,cvGreen] 
         let \p1=(title \the\value{titleNext} dummy.south west), 
@@ -372,6 +372,9 @@
 \newcounter{itemNext}
 \setcounter{itemNext}{1}
 
+\newcounter{lastItem}
+\setcounter{lastItem}{1}
+
 %--------------------------------------------------------------------
 %
 %   CV environments
@@ -381,12 +384,20 @@
 \newenvironment{cvEducation}{%
   \cv@Title{Education}{\faGraduationCap}
   \setcounter{itemPrev}{0}
-  \setcounter{itemNext}{1}}{\cv@EndSectionDraw}
+  \setcounter{itemNext}{1}}{%
+  \cv@EndSectionDraw
+  \stepcounter{lastItem}
+  \draw (item \the\value{itemPrev}.south west) node (last item \the\value{lastItem}) {};
+  }
 
 \newenvironment{cvExperience}{%
   \cv@Title{Experience}{\faBriefcase}
   \setcounter{itemPrev}{0}
-  \setcounter{itemNext}{1}}{\cv@EndSectionDraw}
+  \setcounter{itemNext}{1}}{%
+  \cv@EndSectionDraw
+  \stepcounter{lastItem}
+  \draw (item \the\value{itemPrev}.south west) node (last item \the\value{lastItem}) {};
+  }
 
 \newenvironment{cvSkills}{%
   \cv@Title{Skills}{\faStar}
@@ -399,17 +410,21 @@
           column 1/.style={anchor=east,align=left,skillLevel},
           column 2/.style={anchor=west,skillText},
           column 3/.style={anchor=east,align=left},
-          column 4/.style={anchor=west,skillText}]\bgroup%
+          column 4/.style={anchor=west,skillText}] (skills) \bgroup%
 }{%
   \\\egroup;
+  \stepcounter{lastItem}
+  \draw (skills.south west) node (last item \the\value{lastItem}) {};
 }
 
 \newenvironment{cvSkills*}{%
   \cv@Title{Skills}{\faStar}
   \node[below=0.6cm of title \the\value{titlePrev}.south west,
-          anchor=north west]\bgroup\begin{tabular}{@{}llll@{}}%
+          anchor=north west] (skills) \bgroup\begin{tabular}{@{}llll@{}}%
 }{%
   \end{tabular}\egroup;
+  \stepcounter{lastItem}
+  \draw (skills.south west) node (last item \the\value{lastItem}) {};
 }
 
 \newenvironment{cvReferences}{%
@@ -420,6 +435,8 @@
     ] (cvReferences) \bgroup %
 }{%
   \egroup;
+  \stepcounter{lastItem}
+  \draw (cvReferences.south west) node (last item \the\value{lastItem}) {};
 }
 
 % first name, second name, picture, position
@@ -570,7 +587,6 @@
       \pgfkeys{/cv/references/value stored = false}%
     \else%
       \begin{tabular}{@{}L{0.5\mainwidth-0.5\timedotsep}@{}}%
-        If was false.\\
         #2 \\
         #3 \\
         #4 \\
