@@ -106,13 +106,16 @@
   \setmainfont[Numbers={Monospaced}]{Fira Sans}
   \setsansfont{Fira Sans}
   \setmonofont{Fira Mono}
-  \newfontfamily{\FA}{FontAwesome}
+  \newfontfamily{\cv@FA}{FontAwesome}
 
   % define some missing icons
-  \ProvideDocumentCommand{\faAddressCard}{}{{\FA\symbol{"F2B9}}}
-  \ProvideDocumentCommand{\faVcard}{}{{\FA\symbol{"F2BB}}}
-  \ProvideDocumentCommand{\faMicrochip}{}{{\FA\symbol{"F2DB}}}
+  \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA\symbol{"F2B9}}}
+  \ProvideDocumentCommand{\faVcard}{}{{\cv@FA\symbol{"F2BB}}}
+  \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA\symbol{"F2DB}}}
+  % future possibility: https://github.com/xdanaux/moderncv/blob/2033517d3f29f9c16af1b3421d52f281e94aa2a5/moderncviconsmarvosym.sty
+  \NewDocumentCommand{\cv@XeOnly}{m}{#1}
 \else
+  \NewDocumentCommand{\cv@XeOnly}{m}{}
 \fi
 
 %--------------------------------------------------------------------
@@ -546,6 +549,9 @@
     \fi
     \stepcounter{cvInterestCounter}
   }
+  % TODO: make this work!!
+  \NewDocumentCommand{\cvInterestsPersonal}{}{\faUser\ Personal}
+  \NewDocumentCommand{\cvInterestsProfessional}{}{\faWork\ Professional}
   \ruleline{Interests}%
   \vspace{4pt}
   \begin{tikzpicture}
