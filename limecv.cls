@@ -73,6 +73,16 @@
 
 \NewDocumentCommand{\cvComma}{}{,}
 
+% http://tex.stackexchange.com/questions/63223/xparse-empty-arguments
+\ExplSyntaxOn
+\DeclareExpandableDocumentCommand{\@IfNoValueOrEmptyTF}{mmm}{
+  \IfNoValueTF{#1}{#2}{
+%   Order: |{argument}{if empty}{if not empty}|
+    \tl_if_empty:nTF {#1} {#2} {#3}%
+   }
+}
+\ExplSyntaxOff
+
 %--------------------------------------------------------------------
 %
 %   drawing
@@ -343,21 +353,6 @@
   }%
 }
 
-\newcounter{cvInterestCounter}
-\setcounter{cvInterestCounter}{1}
-\NewDocumentCommand{\interest}{mm}{%
-  \ifnum\value{cvInterestCounter}>1 %
-    \node[interesticon] (icon) {#1};
-    \node[interesttext] (text) {#2};
-  \else
-    \node[] (icon) {#1};
-    \node[interesttext] (text) {#2};
-  \fi
-  \stepcounter{cvInterestCounter}
-}
-
-
-
 %--------------------------------------------------------------------
 %
 %   Counters
@@ -374,6 +369,12 @@
 
 \newcounter{lastItem}
 \setcounter{lastItem}{1}
+
+\newcounter{languages}
+\setcounter{languages}{1}
+
+\newcounter{cvInterestCounter}
+\setcounter{cvInterestCounter}{1}
 
 %--------------------------------------------------------------------
 %
@@ -454,6 +455,16 @@
   
   \global\cvcontactfirstfalse
 
+  \cv@ContactTemplate{\cvContactAddress}{\faMapMarker}
+  \cv@ContactTemplate{\cvContactPhone}{\faPhone}
+  
+  \cv@ContactTemplateLink{\cvContactEmail}{\faEnvelope}
+  \cv@ContactTemplateLink{\cvContactWebsite}{\faGlobe}
+  \cv@ContactTemplateLink{\cvContactGithub}{\faGithub}
+  \cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedinSquare}
+  \cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
+  \cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
+
   % flags source: https://commons.wikimedia.org/wiki/Category:SVG_sovereign_state_flags
 
 
@@ -525,6 +536,16 @@
 }
   
 \NewDocumentEnvironment{cvInterests}{}{%
+  \NewDocumentCommand{\cvInterest}{mm}{%
+    \ifnum\value{cvInterestCounter}>1 %
+      \node[interesticon] (icon) {##1};
+      \node[interesttext] (text) {##2};
+    \else
+      \node[] (icon) {##1};
+      \node[interesttext] (text) {##2};
+    \fi
+    \stepcounter{cvInterestCounter}
+  }
   \ruleline{Interests}%
   \vspace{4pt}
   \begin{tikzpicture}
@@ -613,19 +634,9 @@
 \NewDocumentCommand{\cv@ContactTemplateLink}{mm}{
   \NewDocumentCommand{#1}{mm}{
       \ifcvcontactfirst \\ \else\global\cvcontactfirsttrue \fi\node[contactIcon]{#2}; 
-        \pgfmatrixnextcell \node[contactText]{\href{##1}{##2}};
+        \pgfmatrixnextcell \node[contactText]{\@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
   }
 }
-
-\cv@ContactTemplate{\cvContactAddress}{\faMapMarker}
-\cv@ContactTemplate{\cvContactPhone}{\faPhone}
-
-\cv@ContactTemplateLink{\cvContactEmail}{\faEnvelope}
-\cv@ContactTemplateLink{\cvContactWebsite}{\faGlobe}
-\cv@ContactTemplateLink{\cvContactGithub}{\faGithub}
-\cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedinSquare}
-\cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
-\cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
 
 %--------------------------------------------------------------------
 %
@@ -636,18 +647,20 @@
 \setlength\cvPictureWidth{4cm}
 
 \NewDocumentCommand{\cvID}{mmmm}{
-  \begin{tikzpicture}
-    \node[
-      circle,
-      text=white,
-      minimum size=\cvPictureWidth,
-      path picture={
-        \node at (path picture bounding box.center){
-        \includegraphics[width=\cvPictureWidth]{#3}
-        };
-      }]
-      {};
-  \end{tikzpicture}
+  \@IfNoValueOrEmptyTF{#3}{}{
+    \begin{tikzpicture}
+      \node[
+        circle,
+        text=white,
+        minimum size=\cvPictureWidth,
+        path picture={
+          \node at (path picture bounding box.center){
+          \includegraphics[width=\cvPictureWidth]{#3}
+          };
+        }]
+        {};
+    \end{tikzpicture}
+  }
 
   {\LARGE
   #1
@@ -658,7 +671,7 @@
   
   \vspace{0.5cm}
   
-  {\color{cvAccent} #4}
+  \@IfNoValueOrEmptyTF{#4}{}{\color{cvAccent} #4}
   
   \vspace{0.5cm}
   {\globaldefs=1\relax\pgfkeys{/cv/info/first name = #1}}
@@ -677,6 +690,11 @@
 
 
 \newenvironment{cvLanguages}{%
+  \NewDocumentCommand{\cvLanguage}{mm}{%
+    {\globaldefs=1\relax\pgfkeys{/cv/languages/lang\the\value{languages} = ##2}}
+    \node[languageText]{##1}; \pgfmatrixnextcell \node[progressArea] (language \the\value{languages}) {}; \\
+    \stepcounter{languages}
+  }%
   \ruleline{Languages}%
   \vspace{4pt}
   \begin{tikzpicture}[every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
@@ -697,13 +715,6 @@
   \end{tikzpicture}
 }
 
-\newcounter{languages}
-\setcounter{languages}{1}
-\NewDocumentCommand{\cvLanguage}{mm}{%
-  {\globaldefs=1\relax\pgfkeys{/cv/languages/lang\the\value{languages} = #2}}
-  \node[languageText]{#1}; \pgfmatrixnextcell \node[progressArea] (language \the\value{languages}) {}; \\
-  \stepcounter{languages}
-}
 %--------------------------------------------------------------------
 %
 %   Global font colour
