@@ -127,16 +127,45 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
 \end{cvLanguages}  
   \end{lstlisting}
 
-  \DescribeMacro{cvInterests}
+  \DescribeMacro{cvInterests} Typeset interests (can be both professional and personal) using |cvInterests|. By default it just typesets a list of items in the long format (|long|). The short format can be activated by passing the |short| option to the environment. Inside this environment, three commands can be used: |\cvInterestsPersonal|, |\cvInterestsProfessional| and |\cvInterest|. \DescribeMacro{\cvInterestsPersonal} |\cvInterestsPersonal| and \DescribeMacro{\cvInterestsProfessional} |\cvInterestsProfessional| add optional sections inside this environment to differentiate between personal and professional interests respectively. Both macros have no options nor arguments. The \DescribeMacro{\cvInterest} |\cvInterest{|\meta{icon}|}{|\meta{interest}|}| command takes an icon and interest as arguments. Note that if \LaTeX\ is used, the icon argument will be ignored. In this case, there is also no difference between the |long| and |short| options of the |cvInterests| environment.
+  
+  Examples that illustrate the different options are depicted below:
 
   \begin{lstlisting}
 \begin{cvInterests}
+  \cvInterestsPersonal
   \cvInterest{\faTrain}{model trains}
-  \cvInterest{\faMicrochip}{electronics}
   \cvInterest{\faFlask}{(applied) sciences}
   \cvInterest{\faSuitcase}{travelling}
+  \cvInterestsProfessional
+  \cvInterest{\faGraduationCap}{machine learning}
+  \cvInterest{\faMicrochip}{electronics}
+  \cvInterest{\faCogs}{robotics}
 \end{cvInterests}
   \end{lstlisting}
+  
+  \begin{lstlisting}
+\begin{cvInterests}[short]
+  \cvInterestsPersonal
+  \cvInterest{\faTrain}{model trains}
+  \cvInterest{\faFlask}{(applied) sciences}
+  \cvInterest{\faSuitcase}{travelling}
+  \cvInterest{\faCamera}{photography}
+  \cvInterest{\faGamepad}{gaming}
+  \cvInterest{\faMusic}{music}
+\end{cvInterests}
+  \end{lstlisting}
+  
+  \DescribeMacro{cvProjects} If you have interesting (side) projects that are relevant for your CV, you can list them using the |cvProjects| environment. Inside this environment you can use the \DescribeMacro{\cvProject} |\cvProject[|\meta{options}|]{|\meta{name}|}{|\meta{description}|}| macro to list all your projects. The only options currently allowed in \meta{options} are to pass an image (using |image|) and a URL (using |link|). This image must be an external file and the user must handle its size through |width| or |height|. Example usage:
+  
+  \begin{lstlisting}
+\begin{cvProjects}
+  \cvProject[image=clock,width=1cm]{yanic}{An IoT nixie clock.}
+  \cvProject{\texttt{limecv}}{A \LaTeX\ document class for curriculum vit\ae.}
+\end{cvProjects}
+  \end{lstlisting}
+  
+  It is currently not possible to extend the side bar with additional environments. To add your own, look at the source code and create your own \LaTeX-style hack.  
 
 \section{Main Section}
 
