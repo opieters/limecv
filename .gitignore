@@ -3,3 +3,5 @@
 *.pdf
 *.fls
 *.fdb_latexmk
+*.toc
+*.synctex(busy)
