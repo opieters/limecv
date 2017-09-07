@@ -249,17 +249,51 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
   
   \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
 \begin{cvReferences}
-  \cvAddReference[%
+  \cvAddReference{%
     name=Jane Smith,
     company=Company ABC Co.\ Ltd.,
     job=Job title,
     address line 1=Street lane 2,
     address line 2=B-1150 Brussels,
-    mobile phone=+1 781 555 1212]% <<-- Important!!!
+    mobile phone=+1 781 555 1212}% <<-- Important!!!
 \end{cvReferences}
   \end{lstlisting}
 
 \section{Cover Letter}
+
+  A final (optional) part of a CV is the cover letter. This is a fairly simple part to create design wise, but probably the hardest to write in an actual CV. 
+
+  \DescribeMacro{cvCoverLetter}
+  The cover letter environment is |cvCoverLetter| and contains all the cover letter details. It will automatically add a header with your name and position based on the information filled in in |\cvID|. 
+  
+  \DescribeMacro{\cvBeneficiary}
+  The |\cvBeneficiary{|\meta{options}|}| macro offers a convenience wrapper to typeset the beneficiary. Possible options are |name|, |position|, |company|, |address line 1|, |address line 2| and |address line 3|. The remainder of the cover letter design is up to the user. An example design can be found in \cref{cvCoverLetter}.
+  
+  \DescribeMacro{\cvFullName}
+  |\cvFullName| typeset the authors name based on the data provided in |cvID|. 
+
+  \begin{lstlisting}[caption={\lstinline!cvCoverLetter! code example.},label=cvCoverLetter]
+\section{Cover Letter}
+
+\begin{cvCoverLetter}
+
+\cvBeneficiary{%
+  name=Jane Smith,
+  position=Position,
+  company=Company,
+  address line 1=Address line 1,
+  address line 2=Address line 2}
+
+Dear Miss.\ Smith
+
+\vspace{\baselineskip}
+\lipsum[1-3]
+\vspace{\margin}
+
+\cvFullName
+
+\end{cvCoverLetter}
+  \end{lstlisting}
 
 \section{Example}
 
