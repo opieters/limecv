@@ -582,46 +582,147 @@
 %
 
 %\pgfkeys{/cv/.is family}
-\newif\ifcvreferencestored
+\newif\ifcv@refStored
+\newif\ifcv@refName
+\newif\ifcv@refPosition
+\newif\ifcv@refCompany
+\newif\ifcv@refAddressLineA
+\newif\ifcv@refAddressLineB
+\newif\ifcv@refAddressLineC
+\newif\ifcv@refWorkPhone
+\newif\ifcv@refMobilePhone
 \pgfkeys{/cv/references/.is family,
          /cv/references/.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
-\pgfkeys{/cv/references/value stored/.is if=cvreferencestored}
+\pgfkeys{/cv/references/name/.is if=cv@refName}
+\pgfkeys{/cv/references/name=false}
+\pgfkeys{/cv/references/position/.is if=cv@refPosition}
+\pgfkeys{/cv/references/position=false}
+\pgfkeys{/cv/references/company/.is if=cv@refCompany}
+\pgfkeys{/cv/references/copmany=false}
+\pgfkeys{/cv/references/address line 1/.is if=cv@refAddressLineA}
+\pgfkeys{/cv/references/address line 1=false}
+\pgfkeys{/cv/references/address line 2/.is if=cv@refAddressLineB}
+\pgfkeys{/cv/references/address line 2=false}
+\pgfkeys{/cv/references/address line 3/.is if=cv@refAddressLineC}
+\pgfkeys{/cv/references/address line 3=false}
+\pgfkeys{/cv/references/work phone/.is if=cv@refWorkPhone}
+\pgfkeys{/cv/references/work phone=false}
+\pgfkeys{/cv/references/mobile phone/.is if=cv@refMobilePhone}
+\pgfkeys{/cv/references/mobile phone=false}
+\pgfkeys{/cv/references/value stored/.is if=cv@refStored}
 \pgfkeys{/cv/references/value stored=false}
 \pgfkeys{/cv/info/.is family,
          /cv/info/.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
 
-\NewDocumentCommand{\cvAddReference}{smmmmmmmm}{%
+% Note that the argument must be expandable,
+% or use xkvltxp package before \documentclass (see manual of xkeyval)
+\RequirePackage{xkeyval}
+
+% For simple key-value commands, keyval would suffie
+\define@key{myemph}{code}{%
+  \def\my@emphstyle{#1}}
+\define@key{myemph}{style}{%
+  \def\my@emphstyle{\csname my@style@#1\endcsname}}
+\newcommand\setemph[1]{%
+  \setkeys{myemph}{#1}}
+
+% default key values
+\def\cv@refAName{}
+\def\cv@refBName{}
+\def\cv@refACompany{}
+\def\cv@refBCompany{}
+\def\cv@refAPosition{}
+\def\cv@refBPosition{}
+\def\cv@refAAddressLineA{}
+\def\cv@refBAddressLineA{}
+\def\cv@refAAddressLineB{}
+\def\cv@refBAddressLineB{}
+\def\cv@refAAddressLineC{}
+\def\cv@refBAddressLineC{}
+\def\cv@refAPhoneWork{}
+\def\cv@refBPhoneWork{}
+\def\cv@refAMobilePhone{}
+\def\cv@refBMobilePhone{}
+
+% keys
+\define@key{cvAddReferenceA}{name}{%
+  \global\def\cv@refAName{#1}%
+  \pgfkeys{/cv/references/name = true}}
+\define@key{cvAddReferenceA}{company}{%
+  \global\def\cv@refACompany{#1}%
+  \pgfkeys{/cv/references/company = true}}
+\define@key{cvAddReferenceA}{position}{%
+  \global\def\cv@refAPosition{#1}%
+  \pgfkeys{/cv/references/position = true}}
+\define@key{cvAddReferenceA}{address line 1}{%
+  \global\def\cv@refAAddressLineA{#1}%
+  \pgfkeys{/cv/references/address line 1 = true}}
+\define@key{cvAddReferenceA}{address line 2}{%
+  \global\def\cv@refAAddressLineB{#1}%
+  \pgfkeys{/cv/references/address line 2 = true}}
+\define@key{cvAddReferenceA}{address line 3}{%
+  \global\def\cv@refAAddressLineC{#1}%
+  \pgfkeys{/cv/references/address line 3 = true}}
+\define@key{cvAddReferenceA}{phone work}{%
+  \global\def\cv@refAPhoneWork{#1}%
+  \pgfkeys{/cv/references/phone work = true}}
+\define@key{cvAddReferenceA}{mobile phone}{%
+  \global\def\cv@refAMobilePhone{#1}%
+  \pgfkeys{/cv/references/mobile phone = true}}
+
+\define@key{cvAddReferenceB}{name}{%
+  \global\def\cv@refBName{#1}%
+  \pgfkeys{/cv/references/name = true}}
+\define@key{cvAddReferenceB}{company}{%
+  \global\def\cv@refBCompany{#1}%
+  \pgfkeys{/cv/references/company = true}}
+\define@key{cvAddReferenceB}{position}{%
+  \global\def\cv@refBPosition{#1}%
+  \pgfkeys{/cv/references/position = true}}
+\define@key{cvAddReferenceB}{address line 1}{%
+  \global\def\cv@refBAddressLineA{#1}%
+  \pgfkeys{/cv/references/address line 1 = true}}
+\define@key{cvAddReferenceB}{address line 2}{%
+  \global\def\cv@refBAddressLineB{#1}%
+  \pgfkeys{/cv/references/address line 2 = true}}
+\define@key{cvAddReferenceB}{address line 3}{%
+  \global\def\cv@refBAddressLineC{#1}%
+  \pgfkeys{/cv/references/address line 3 = true}}
+\define@key{cvAddReferenceB}{phone work}{%
+  \global\def\cv@refBPhoneWork{#1}%
+  \pgfkeys{/cv/references/phone work = true}}
+\define@key{cvAddReferenceB}{mobile phone}{%
+  \global\def\cv@refBMobilePhone{#1}%
+  \pgfkeys{/cv/references/mobile phone = true}}
+
+\NewDocumentCommand{\cvAddReference}{sm}{%
   \IfBooleanTF{#1}{%
-    \pgfkeys{/cv/references/name = #2}%
-    \pgfkeys{/cv/references/company = #3}%
-    \pgfkeys{/cv/references/position = #4}%
-    \pgfkeys{/cv/references/address line 1 = #5}%
-    \pgfkeys{/cv/references/address line 2 = #6}%
-    \pgfkeys{/cv/references/phone work = #7}%
-    \pgfkeys{/cv/references/phone mobile = #8}%
-    \pgfkeys{/cv/references/value stored = true}%
+    \setkeys{cvAddReferenceA}{#2}
+    \pgfkeys{/cv/references/name = true}%
   }{%
-    \ifcvreferencestored%
+    \setkeys{cvAddReferenceB}{#2}
+    \ifcv@refStored%
       \begin{tabular}{@{}L{0.5\mainwidth-0.5\timedotsep-0.5\tablesepwidth}@{\hskip \tablesepwidth}L{0.5\mainwidth-0.5\timedotsep-0.5\tablesepwidth}@{}}%
-        \pgfkeysvalueof{/cv/references/name} &  #2 \\
-        \pgfkeysvalueof{/cv/references/company} & #3 \\
-        \pgfkeysvalueof{/cv/references/position} & #4 \\
-        \pgfkeysvalueof{/cv/references/address line 1} & #5 \\
-        \pgfkeysvalueof{/cv/references/address line 2} & #6 \\
-        \pgfkeysvalueof{/cv/references/address line 3} & #7 \\
-        \pgfkeysvalueof{/cv/references/phone work} & #8 \\
-        \pgfkeysvalueof{/cv/references/phone mobile} & #9
+        \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
       \end{tabular}%
       \pgfkeys{/cv/references/value stored = false}%
     \else%
       \begin{tabular}{@{}L{0.5\mainwidth-0.5\timedotsep}@{}}%
-        #2 \\
-        #3 \\
-        #4 \\
-        #5 \\
-        #6 \\
-        #7 \\
-        #8
+        \ifcv@refName            \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refBMobilePhone  \fi %
       \end{tabular}%
     \fi%
   }%
