@@ -164,6 +164,12 @@
 \newlength\tablesepwidth
 \setlength{\tablesepwidth}{0.3cm}
 
+\newlength\coverletterheight
+\setlength\coverletterheight{\sidewidth}
+
+\newlength\coverletterwidth
+\setlength\coverletterwidth{\mainwidth+3\margin}
+
 %--------------------------------------------------------------------
 %
 %   TikZ styling
@@ -575,6 +581,54 @@
 }
 \ExplSyntaxOff
 
+\newenvironment{cvCoverLetter}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[on background layer]
+    \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h5) {};
+    \draw (h5) ++(\paperwidth,-\coverletterheight) node (h6) {};
+    \draw[fill=cvGreenLight,cvGreenLight] (h5) rectangle (h6);
+      \end{scope}
+    \draw (current page.north east) ++(-0.5\paperwidth+0.5\coverletterwidth,-\coverletterheight/2) node (h7) {};
+    \matrix[anchor=east,row sep=10pt] at (h7) {%
+    \node (cv cover letter name){\fontsize{50}{60}\selectfont
+    \pgfkeysvalueof{/cv/info/first name}
+    \pgfkeysvalueof{/cv/info/last name}}; \\
+    \node[align=right,cvAccent]{\pgfkeysvalueof{/cv/info/position}}; \\
+  };
+    \begin{scope}[on background layer]
+      \draw[line width=3pt,cvGreen] 
+        (cv cover letter name.south west) to (cv cover letter name.south east);
+    \end{scope}
+  \end{tikzpicture}
+
+  \vspace{\dimexpr\coverletterheight\relax}
+  
+  \begin{center}
+    \begin{minipage}{\coverletterwidth}
+      \today
+      
+      \vspace{\baselineskip}
+
+      \NewDocumentCommand{\cvBeneficiary}{m}{%
+        \setkeys{cvCoverLetter}{##1}
+        \begin{tabular}{@{}l}
+          \@IfNoValueOrEmptyTF{\cv@coverletterName}{}{\MakeUppercase{\cv@coverletterName}} %
+          \@IfNoValueOrEmptyTF{\cv@coverletterCompany}{}{\\ \cv@coverletterCompany} %
+          \@IfNoValueOrEmptyTF{\cv@coverletterPosition}{}\\ {\cv@coverletterPosition} %
+          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineA}{}{\\ \cv@coverletterAddressLineA} %
+          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineB}{}{\\ \cv@coverletterAddressLineB} %
+          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineC}{}{\\ \cv@coverletterAddressLineC} %
+        \end{tabular}%
+        \vspace{\margin}
+      }
+      \NewDocumentCommand{\cvFullName}{}{%
+        \pgfkeysvalueof{/cv/info/first name} \pgfkeysvalueof{/cv/info/last name}
+      }
+}{%
+    \end{minipage}
+  \end{center}
+}
+
 %--------------------------------------------------------------------
 %
 %   Key-value parsing structure
@@ -644,6 +698,14 @@
 \def\cv@refAMobilePhone{}
 \def\cv@refBMobilePhone{}
 
+% cover letter keys
+\def\cv@coverletterName{}
+\def\cv@coverletterCompany{}
+\def\cv@coverletterPosition{}
+\def\cv@coverletterAddressLineA{}
+\def\cv@coverletterAddressLineB{}
+\def\cv@coverletterAddressLineC{}
+
 % keys
 \define@key{cvAddReferenceA}{name}{%
   \global\def\cv@refAName{#1}%
@@ -694,6 +756,20 @@
 \define@key{cvAddReferenceB}{mobile phone}{%
   \global\def\cv@refBMobilePhone{#1}%
   \pgfkeys{/cv/references/mobile phone = true}}
+
+% cover letter keys
+\define@key{cvCoverLetter}{name}{%
+  \global\def\cv@coverletterName{#1}}
+\define@key{cvCoverLetter}{company}{%
+  \global\def\cv@coverletterCompany{#1}}
+\define@key{cvCoverLetter}{position}{%
+  \global\def\cv@coverletterPosition{#1}}
+\define@key{cvCoverLetter}{address line 1}{%
+  \global\def\cv@coverletterAddressLineA{#1}}
+\define@key{cvCoverLetter}{address line 2}{%
+  \global\def\cv@coverletterAddressLineB{#1}}
+\define@key{cvCoverLetter}{address line 3}{%
+  \global\def\cv@coverletterAddressLineC{#1}}
 
 \NewDocumentCommand{\cvAddReference}{sm}{%
   \IfBooleanTF{#1}{%
