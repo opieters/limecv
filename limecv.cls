@@ -608,8 +608,9 @@
         \pgfkeysvalueof{/cv/references/position} & #4 \\
         \pgfkeysvalueof{/cv/references/address line 1} & #5 \\
         \pgfkeysvalueof{/cv/references/address line 2} & #6 \\
-        \pgfkeysvalueof{/cv/references/phone work} & #7 \\
-        \pgfkeysvalueof{/cv/references/phone mobile} & #8
+        \pgfkeysvalueof{/cv/references/address line 3} & #7 \\
+        \pgfkeysvalueof{/cv/references/phone work} & #8 \\
+        \pgfkeysvalueof{/cv/references/phone mobile} & #9
       \end{tabular}%
       \pgfkeys{/cv/references/value stored = false}%
     \else%
