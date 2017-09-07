@@ -32,6 +32,8 @@
 
 \maketitle
 
+\tableofcontents
+
 \section{Introduction}
 
 This document class is designed to facilitate easy development of curriculum vit\ae\ (CV) with this particular design. Special elements have been designed of particular sections to ease quick creation. This document class was co-designed with a business card, which can be found on GitHub: \url{https://github.com/opieters/business-card}.
@@ -167,7 +169,95 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
   
   It is currently not possible to extend the side bar with additional environments. To add your own, look at the source code and create your own \LaTeX-style hack.  
 
-\section{Main Section}
+\section{Main Content}
+
+  The main content section includes details on your education, experience, skills, references and more. Several environments have been designed to suit specific needs. These will be discussed next.
+  
+  \DescribeMacro{cvMainContent} 
+  Everything in the main content section should be encapsulated in the |cvMainContent| environment. This environment defines four new environments: |cvEducation|, |cvExperience|, |cvSkills| and |cvReferences|. These four environments are self explanatory in terms of function. Subsequently, we will detail each of these environments.
+  
+  Note that |cvMainContent| also has a starred variant (|cvMainContent*|). The function is similar to |cvSideBar*|, in the sense that it places everything to the left instead of the default right location.
+  
+  \DescribeMacro{cvEducation} 
+  The education environment creates a timeline styled list of your education. Individual education items should be listed by means of the |\cvItem{|\meta{details}|}| macro which is available within this environment. Instead of forcing a specific layout structure, it was preferred to leave the actual markup to the end user. \emph{All} information concerning a single education should be passed to this single argument. However, the user is always welcome to create his own styling macro that takes multiple arguments. This is illustrated by the examples below.
+  
+  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{without} special user markup command.}]
+\begin{cvEducation}
+  \cvItem{Evening class: Chinese\\
+  Some School, City. September 2015 -- June 2016\\
+  Achieved A2 language skill in Chinese (Mandarin).}
+  \cvItem{Bachelor of Science in Biochemistry and Biotechnology\\
+  University, City. September 2009 -- June 2012\\
+  General training in the basic sciences and the molecular life science.}
+  \cvItem{Master of Science in Biochemistry and Biotechnology\\
+  University, City. September 2012 -- June 2015\\
+  Acquisition of insight into and knowledge of possibilities for application in the area of biochemistry and biotechnology, specific with applications in biomedical application and due problem-solving reasoning skills.}
+\end{cvEducation}
+  \end{lstlisting}
+  
+  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user markup command.}]
+% in preamble:
+\newfontfamily\firaMedium{Fira Sans Medium}
+\NewDocumentCommand{\cvEducation}{mmm}{{\firaMedium #1}\\ #2\\ \emph{#3}}
+% in document:
+\begin{cvEducation}
+  \cvItem{\cvEducation{Evening class: Chinese}%
+            {Some School, City. September 2015 -- June 2016}%
+            {Achieved A2 language skill in Chinese (Mandarin).}}
+  \cvItem{\cvEducation{Bachelor of Science in Biochemistry and Biotechnology}%
+            {University, City. September 2009 -- June 2012}%
+            {General training in the basic sciences and the molecular life science.}}
+  \cvItem{\cvEducation{Master of Science in Biochemistry and Biotechnology}%
+            {University, City. September 2012 -- June 2015}%
+            {Acquisition of insight into and knowledge of possibilities for application in the area of biochemistry and biotechnology, specific with applications in biomedical application and due problem-solving reasoning skills.}}
+\end{cvEducation}
+  \end{lstlisting}
+  
+  \DescribeMacro{cvExperience} 
+  |cvExperience| works very similar to |cvEducation|. If follows the exact same structure and has the same design philosophy where you should use |\cvItem| inside this environment to typeset the individual items in a timeline style. \Cref{} illustrates this with an example.
+
+  \begin{lstlisting}[caption={\lstinline!cvExperience! code example.}]
+\begin{cvExperience}
+  \cvItem{Student Job\\
+    \textsc{\selectfont Company X}, Location X. Summer 2010\\
+    Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet ultricies ipsum ultrices ut.};
+  \cvItem{Internship\\
+    \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet et ex.};
+  \cvItem{Internship\\
+    \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae sodales felis elit in ipsum.};
+\end{cvExperience}
+  \end{lstlisting}
+  
+  \DescribeMacro{cvSkills} 
+  The skills section is contained within the |cvSkills| environment. This environment typesets your skills on a 5-level (discrete) scale (with the default |dot| option) or a 5-level continuous scale with the |bar| option. These are divided in two columns. To that end, two macros are available: |cvSkillOne| and |cvSkillTwo|. \DescribeMacro{cvSkillTwo} |cvSkillTwo{|\meta{skill level}|}{|\meta{skill}|}{|\meta{skill level}|}{|\meta{skill}|}| typesets a row of two skills. If you have an odd number of items, \DescribeMacro{cvSkillOne} |cvSkillOne| should be used. An example of a skill-list can be found in \cref{cvSkills}.
+  
+  \begin{lstlisting}[caption={Illustration of the \lstinline!cvSkills! environment.},label=cvSkills]
+\begin{cvSkills}
+  \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
+  \cvSkillTwo{4}{Python}{4}{VHDL}
+  \cvSkillTwo{4}{Microsoft Office}{4}{macOS}
+  \cvSkillOne{3}{C, C++}
+\end{cvSkills}
+  \end{lstlisting}
+  
+  \DescribeMacro{cvReferences}
+  The final section is intended to list all your references. These go inside the |cvReferences| environment. The enumeration of the different items should be done using the \DescribeMacro{\cvAddReference} |\cvAddReference{|\meta{information}|}| macro. The following keys are available: |name|, |company|, |job|, |address line 1|, |address line 2|, |address line 3|, |mobile phone|, |work phone| and |email|. These are all optional arguments and will be typeset consistently between the two references per row. If icons are undesirable, use the |noicon| option for the environment. \Cref{cvReferences} illustrates the usage of this environment.
+  
+  \emph{Important remark}: the comment after the usage of |\cvAddReference| is required! Otherwise, spacing will not be as designed.
+  
+  \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
+\begin{cvReferences}
+  \cvAddReference[%
+    name=Jane Smith,
+    company=Company ABC Co.\ Ltd.,
+    job=Job title,
+    address line 1=Street lane 2,
+    address line 2=B-1150 Brussels,
+    mobile phone=+1 781 555 1212]% <<-- Important!!!
+\end{cvReferences}
+  \end{lstlisting}
 
 \section{Cover Letter}
 
@@ -192,5 +282,7 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
 \section{Source Code}
 
 \lstinputlisting[language=tex]{limecv.cls}
+
+\PrintIndex
 
 \end{document}
