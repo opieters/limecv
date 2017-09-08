@@ -636,8 +636,29 @@
     \end{tikzpicture}%
 }
   
-\NewDocumentEnvironment{cvInterests}{}{%
+\newif\ifcv@interestLong
+\cv@interestLongtrue
+
+\RequirePackage{pdftexcmds}
+
+\NewDocumentEnvironment{cvInterests}{o}{%
+  % set defaults
+  \cv@interestLongtrue
+  % parse optional arguments
+  \@IfNoValueOrEmptyTF{#1}{}{%
+    \ifnum\pdf@strcmp{#1}{short}=\z@ %
+      \cv@interestLongfalse%
+    \else %
+      \ifnum\pdf@strcmp{#1}{juhu}=\z@ %
+      \cv@interestLongtrue%
+      \else %
+      % add \MessageBreak
+        \ClassError{limecv}{Unkown option `#1' for cvInterests environment.}{Only `long' and `short' are valid options for this environment.}%
+      \fi%
+    \fi%
+  }
   \NewDocumentCommand{\cvInterest}{mm}{%
+    % parse optinal argument if present
     \ifnum\value{cvInterestCounter}>1 %
       \node[interesticon] (icon) {##1};
       \node[interesttext] (text) {##2};
@@ -653,14 +674,38 @@
   \ruleline{Interests}%
   \vspace{4pt}
   \begin{tikzpicture}
+    %TODO: make long/short options do something differently!
 }{%
   \end{tikzpicture}
 }
 
+\newif\ifcv@projectImage
+\cv@projectImagefalse
+\newif\ifcv@projectLink
+\cv@projectLinkfalse
+
+\newcounter{cv@project}
+\setcounter{cv@project}{1}
+
+\define@key{cv@Project}{image}{%
+  \global\def\cv@projectImage{#1}%
+  \cv@projectImagetrue}
+\define@key{cv@Project}{link}{%
+  \global\def\cv@projectLink{#1}%
+  cv@projectLinktrue}
+
 \NewDocumentEnvironment{cvProjects}{}{%
   \ruleline{Projects}%
   \vspace{4pt}
-}{}
+
+  \NewDocumentCommand{\cvProject}{omm}{%
+    \setkeys{cv@Project}{##1}
+    \draw () node {};
+  }
+  \begin{tikzpicture}
+}{
+  \end{tikzpicture}
+}
 
 % https://tex.stackexchange.com/questions/274479
 % https://tex.stackexchange.com/questions/34563/precision-copyfitting-in-xcoffin
@@ -819,13 +864,7 @@
 % manual of xkeyval)
 \RequirePackage{xkeyval}
 
-% For simple key-value commands, keyval would suffie
-\define@key{myemph}{code}{%
-  \def\my@emphstyle{#1}}
-\define@key{myemph}{style}{%
-  \def\my@emphstyle{\csname my@style@#1\endcsname}}
-\newcommand\setemph[1]{%
-  \setkeys{myemph}{#1}}
+% For simple key-value commands, keyval would suffice
 
 % default key values
 \def\cv@refAName{}
