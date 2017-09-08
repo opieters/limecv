@@ -1,11 +1,12 @@
+%-------------------------------------------------------
 % limecv.cls
 %
 % A XeLaTeX document class
 %
 %
 % This file may be distributed and/or modified under the
-% conditions of the GPL-3.0 License, a version can be found
-% in the GitHub repository:
+% conditions of the GPL-3.0 License, a version can be 
+% found in the GitHub repository:
 %
 %    https://github.com/opieters/limecv
 %
@@ -22,8 +23,8 @@
 
 \NeedsTeXFormat{LaTeX2e}
 
-\ProvidesClass{limecv}[\filedate\space Version \fileversion\space%
-  by Olivier Pieters]
+\ProvidesClass{limecv}[\filedate\space Version%
+  \fileversion\space by Olivier Pieters]
 
 \RequirePackage{ifxetex}
 \RequirePackage{xparse}
@@ -33,19 +34,19 @@
 \RequirePackage{tabularx}
 
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 
 
-%--------------------------------------------------------------------
-% pass document options to article class, which forms base of this 
-% document class
+%-------------------------------------------------------
+% pass document options to article class, which forms 
+% base of this document class
 \DeclareOption*{%
   \PassOptionsToClass{\CurrentOption}{article}%
 }
 \ProcessOptions\relax
 \LoadClass{article}
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   define colours
 %   %%%%%%%%%%%%%%
@@ -58,7 +59,7 @@
 \definecolor{cvDark}{HTML}{2F3142}
 \definecolor{cvAccent}{HTML}{474A65}
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   misc
 %   %%%%
@@ -67,23 +68,26 @@
 \RequirePackage{hyperref}
 \RequirePackage{url}
 
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\%
+  \arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\%
+  \arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\%
+  \arraybackslash\hspace{0pt}}m{#1}}
 
 \NewDocumentCommand{\cvComma}{}{,}
 
-% http://tex.stackexchange.com/questions/63223/xparse-empty-arguments
+% http://tex.stackexchange.com/questions/63223
 \ExplSyntaxOn
-\DeclareExpandableDocumentCommand{\@IfNoValueOrEmptyTF}{mmm}{
-  \IfNoValueTF{#1}{#2}{
+\DeclareExpandableDocumentCommand{\@IfNoValueOrEmptyTF}%
+  {mmm}{\IfNoValueTF{#1}{#2}{
 %   Order: |{argument}{if empty}{if not empty}|
     \tl_if_empty:nTF {#1} {#2} {#3}%
    }
 }
 \ExplSyntaxOff
 
-% https://tex.stackexchange.com/questions/87638/logical-string-length#answer-87696
+% https://tex.stackexchange.com/questions/87638
 \def\getStringLength#1#2{%
   \begingroup\@tempcnta\z@
   \let\x\g@tStringLength
@@ -97,11 +101,12 @@
   \ifx\g@tStringLength#3%
     \edef#1{\endgroup\def\noexpand#1{\the\@tempcnta}}#1%
   \else
-    \expandafter\g@tStringLength\expandafter#1\expandafter#3%
+    \expandafter\g@tStringLength\expandafter#1%
+    \expandafter#3%
   \fi
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   drawing
 %   %%%%%%%
@@ -110,9 +115,16 @@
 \RequirePackage{tikz}
 \RequirePackage{graphicx}
 
-\usetikzlibrary{calc,positioning,fit,arrows.meta,backgrounds,matrix,node-families}
+\usetikzlibrary{%
+  calc,
+  positioning,
+  fit,
+  arrows.meta,
+  backgrounds,
+  matrix,
+  node-families}
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   XeLaTeX specific
 %   %%%%%%%%%%%%%%%%
@@ -127,16 +139,19 @@
   \newfontfamily{\cv@FA}{FontAwesome}
 
   % define some missing icons
-  \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA\symbol{"F2B9}}}
-  \ProvideDocumentCommand{\faVcard}{}{{\cv@FA\symbol{"F2BB}}}
-  \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA\symbol{"F2DB}}}
+  \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA%
+    \symbol{"F2B9}}}
+  \ProvideDocumentCommand{\faVcard}{}{{\cv@FA%
+    \symbol{"F2BB}}}
+  \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
+    \symbol{"F2DB}}}
   % future possibility: https://github.com/xdanaux/moderncv/blob/2033517d3f29f9c16af1b3421d52f281e94aa2a5/moderncviconsmarvosym.sty
   \NewDocumentCommand{\cv@XeOnly}{m}{#1}
 \else
   \NewDocumentCommand{\cv@XeOnly}{m}{}
 \fi
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   page layout
 %   %%%%%%%%%%%
@@ -155,10 +170,11 @@
 
 \newlength\headericonwidth
 \ifxetex
-\setlength{\headericonwidth}{%
-  \maxof{\widthof{\faBriefcase}}{\widthof{\faGraduationCap}}}
+  \setlength{\headericonwidth}{%
+    \maxof{\widthof{\faBriefcase}}{\widthof{%
+      \faGraduationCap}}}
 \else
-\setlength{\headericonwidth}{0pt}
+  \setlength{\headericonwidth}{0pt}
 \fi
 
 \newlength\margin
@@ -188,7 +204,7 @@
 \newlength\coverletterwidth
 \setlength\coverletterwidth{\mainwidth+3\margin}
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   TikZ styling
 %   %%%%%%%%%%%%
@@ -265,28 +281,36 @@
   },
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   New styling commands
 %   %%%%%%%%%%%%%%%%%%%%
 %
 
-% based on: https://tex.stackexchange.com/questions/65731
-% hrule alternatives: https://tex.stackexchange.com/questions/15119
-\NewDocumentCommand{\cvhrulefill}{}{{\color{cvGreen}\leavevmode\leaders\hrule height 1pt\hfill\kern\z@}}
+% based on: 
+%   https://tex.stackexchange.com/questions/65731
+% alternative: 
+%   https://tex.stackexchange.com/questions/15119
+\NewDocumentCommand{\cvhrulefill}{}{{\color{cvGreen}%
+  \leavevmode\leaders\hrule height 1pt\hfill\kern\z@}}
 
-\newcommand*\ruleline[1]{\par\noindent\raisebox{.6ex}{\makebox[\linewidth]{\cvhrulefill\hspace{1ex}\raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
+\newcommand*\ruleline[1]{\par\noindent\raisebox{.6ex}{%
+  \makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
+  \raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
 
 \usepackage{xstring}
-\NewDocumentCommand{\cvSection}{m}{\Large\textbf{\StrChar{#1}{1}\StrGobbleLeft{#1}{1}}}
+\NewDocumentCommand{\cvSection}{m}{\Large\textbf{%
+  \StrChar{#1}{1}\StrGobbleLeft{#1}{1}}}
 
 \newcount\my@repeat@count
 \newcommand{\cvSkill}[1]{%
   \begingroup
   \my@repeat@count=\z@
-  \@whilenum\my@repeat@count<#1\do{\faCircle\advance\my@repeat@count\@ne}%
+  \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
+    \my@repeat@count\@ne}%
   \my@repeat@count=\numexpr5-\z@\relax
-  \@whilenum\my@repeat@count>#1\do{\faCircleO\advance\my@repeat@count\m@ne}%
+  \@whilenum\my@repeat@count>#1\do{\faCircleO\advance%
+    \my@repeat@count\m@ne}%
   \endgroup
 }
 
@@ -298,29 +322,43 @@
 \newcommand{\cv@Title}[2]{%
   \ifnodedefined{last item \the\value{lastItem}}{%
     \node[%
-      below=0.6cm of last item \the\value{lastItem}.south west,
+      below=0.6cm of last item %
+        \the\value{lastItem}.south west,
       sectionTitle] 
       (title \the\value{titleNext}) 
       {\begingroup\edef\y{\endgroup%
-      \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
+      \cvSection\bgroup\noexpand\kleft{%
+        \extract{#1}{1}}}%
       \y\StrGobbleLeft{#1}{1}\egroup};
-    \node[left=\timedotsep of title \the\value{titleNext},headerIcon] {#2};
-    \node[below=0.6cm of last item \the\value{lastItem}.south west,sectionTitle] (title \the\value{titleNext} dummy) {\phantom{\cvSection{Education}}};
+    \node[left=\timedotsep of title %
+      \the\value{titleNext},headerIcon] {#2};
+    \node[
+      below=0.6cm of last item %
+        \the\value{lastItem}.south west,
+      sectionTitle] 
+      (title \the\value{titleNext} dummy) {%
+        \phantom{\cvSection{Education}}};
     \begin{scope}[on background layer]
       \draw[line width=2pt,cvGreen] 
-        let \p1=(title \the\value{titleNext} dummy.south west), 
+        let \p1=(title \the\value{titleNext} %
+                 dummy.south west), 
             \p2=(current page.east) in 
         (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
     \end{scope}
   }{%
-    \node[sectionTitle] at (0,0) (title \the\value{titleNext})
+    \node[sectionTitle] at (0,0) (title %
+      \the\value{titleNext})
     {\begingroup\edef\y{\endgroup%
     \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
     \y\StrGobbleLeft{#1}{1}\egroup};
-    \node[left=\timedotsep of title \the\value{titleNext},headerIcon] {#2};
+    \node[
+      left=\timedotsep of title \the\value{titleNext},
+      headerIcon] 
+      {#2};
     \begin{scope}[on background layer]
       \draw[line width=2pt,cvGreen] 
-        let \p1=(title \the\value{titleNext}.south west), 
+        let \p1=(title \the\value{titleNext}%
+                 .south west), 
             \p2=(current page.east) in 
         (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
     \end{scope}
@@ -329,43 +367,51 @@
   \stepcounter{titleNext}
 }
 
-\NewDocumentCommand{\cv@EndSectionDraw}{}{\draw (start) to (end.center);}
+\NewDocumentCommand{\cv@EndSectionDraw}{}{
+  \draw (start) to (end.center);}
 
 \NewDocumentCommand{\cvItem}{m}{%
   \ifnodedefined{item \the\value{itemPrev}}{%
     \node[%
-      below=\sectionsep of item \the\value{itemPrev}.south west,
+      below=\sectionsep of item %
+        \the\value{itemPrev}.south west,
       eventdottext] 
       (item \the\value{itemNext} header) 
       {\phantom{Evening}};
     \node[%
-      below=\sectionsep of item \the\value{itemPrev}.south west,
+      below=\sectionsep of item %
+        \the\value{itemPrev}.south west,
       sectionEduText] 
       (item \the\value{itemNext}) 
       {#1};
     \node[%
-      left=\timedotsep of item \the\value{itemNext} header,
+      left=\timedotsep of item %
+        \the\value{itemNext} header,
       timedot] 
       {};
   }{
     \node[%
-      below=\sectionsep of title \the\value{titlePrev}.south west,
+      below=\sectionsep of title %
+        \the\value{titlePrev}.south west,
       eventdottext] 
       (item \the\value{itemNext} header) 
       {\phantom{Evening}};
     \node[
-      below=\sectionsep of title \the\value{titlePrev}.south west,
+      below=\sectionsep of title %
+        \the\value{titlePrev}.south west,
       sectionEduText] 
       (item \the\value{itemNext}) 
       {#1};
     \node[
-      left=\timedotsep of item \the\value{itemNext} header,
+      left=\timedotsep of item %
+        \the\value{itemNext} header,
       timedot] 
       (start) 
       {};
   }
   \node[
-    left=\timedotsep of item \the\value{itemNext}.south west,
+    left=\timedotsep of item %
+      \the\value{itemNext}.south west,
     invisibletimedot] 
     (end) 
     {};
@@ -377,7 +423,10 @@
   \IfBooleanTF{#1}{% if starred version
     \cvSkill{#2} & #3 & \cvSkill{#4} & #5 \\[1ex]
   }{% if normal version
-    \cvSkill{#2} \pgfmatrixnextcell #3 \pgfmatrixnextcell \cvSkill{#4} \pgfmatrixnextcell #5 \\ 
+    \cvSkill{#2} \pgfmatrixnextcell 
+      #3 \pgfmatrixnextcell
+    \cvSkill{#4} \pgfmatrixnextcell 
+      #5 \\ 
   }%
 }
 
@@ -389,7 +438,7 @@
   }%
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   Counters
 %   %%%%%%%%
@@ -412,7 +461,7 @@
 \newcounter{cvInterestCounter}
 \setcounter{cvInterestCounter}{1}
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   CV environments
 %   %%%%%%%%%%%%%%%
@@ -424,7 +473,8 @@
   \setcounter{itemNext}{1}}{%
   \cv@EndSectionDraw
   \stepcounter{lastItem}
-  \draw (item \the\value{itemPrev}.south west) node (last item \the\value{lastItem}) {};
+  \draw (item \the\value{itemPrev}.south west) 
+    node (last item \the\value{lastItem}) {};
   }
 
 \newenvironment{cvExperience}{%
@@ -433,31 +483,46 @@
   \setcounter{itemNext}{1}}{%
   \cv@EndSectionDraw
   \stepcounter{lastItem}
-  \draw (item \the\value{itemPrev}.south west) node (last item \the\value{lastItem}) {};
+  \draw (item \the\value{itemPrev}.south west) 
+    node (last item \the\value{lastItem}) {};
   }
 
 \newenvironment{cvSkills}{%
   \cv@Title{Skills}{\faStar}
   \matrix[matrix of nodes,
-          below=0.6cm of title \the\value{titlePrev}.south west,
+          below=0.6cm of title %
+            \the\value{titlePrev}.south west,
           anchor=north west,
           column sep=6pt,
           row sep=6pt,
           every node/.style={Text Depth=tdSkills},
-          column 1/.style={anchor=east,align=left,skillLevel},
-          column 2/.style={anchor=west,skillText},
-          column 3/.style={anchor=east,align=left},
-          column 4/.style={anchor=west,skillText}] (skills) \bgroup%
+          column 1/.style={%
+            anchor=east,
+            align=left,
+            skillLevel},
+          column 2/.style={%
+            anchor=west,
+            skillText},
+          column 3/.style={%
+            anchor=east,
+            align=left},
+          column 4/.style={%
+            anchor=west,
+            skillText}] (skills) \bgroup%
 }{%
   \\\egroup;
   \stepcounter{lastItem}
-  \draw (skills.south west) node (last item \the\value{lastItem}) {};
+  \draw (skills.south west) %
+    node (last item \the\value{lastItem}) {};
 }
 
 \newenvironment{cvSkills*}{%
   \cv@Title{Skills}{\faStar}
-  \node[below=0.6cm of title \the\value{titlePrev}.south west,
-          anchor=north west] (skills) \bgroup\begin{tabular}{@{}llll@{}}%
+  \node[
+    below=0.6cm of title \the\value{titlePrev}%
+      .south west,
+    anchor=north west] (skills) %
+    \bgroup\begin{tabular}{@{}llll@{}}%
 }{%
   \end{tabular}\egroup;
   \stepcounter{lastItem}
@@ -642,14 +707,20 @@
         \noexpand\kright{\cv@LastNameLetter}}%
       \y
       };
-    \node[align=right,cvAccent,below=10pt of cv cover letter name.south east,anchor=north east]{\StrGobbleRight{\pgfkeysvalueof{/cv/info/position}}{1}
+    \node[%
+      align=right,
+      cvAccent,
+      below=10pt of cv cover letter name.south east,
+      anchor=north east]{%
+        \StrGobbleRight{\pgfkeysvalueof{/cv/info/position}}{1}
     \begingroup\edef\y{\endgroup%
       \noexpand\kright{\cv@PositionLetter}}%
     \y};
     
     \begin{scope}[on background layer]
       \draw[line width=3pt,cvGreen] 
-         (cv cover letter name.south west) to (cv cover letter name.south east);
+         (cv cover letter name.south west) to 
+         (cv cover letter name.south east);
     \end{scope}
   \end{tikzpicture}
 
@@ -664,24 +735,37 @@
       \NewDocumentCommand{\cvBeneficiary}{m}{%
         \setkeys{cvCoverLetter}{##1}
         \begin{tabular}{@{}l}
-          \@IfNoValueOrEmptyTF{\cv@coverletterName}{}{\MakeUppercase{\cv@coverletterName}} %
-          \@IfNoValueOrEmptyTF{\cv@coverletterCompany}{}{\\ \cv@coverletterCompany} %
-          \@IfNoValueOrEmptyTF{\cv@coverletterPosition}{}\\ {\cv@coverletterPosition} %
-          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineA}{}{\\ \cv@coverletterAddressLineA} %
-          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineB}{}{\\ \cv@coverletterAddressLineB} %
-          \@IfNoValueOrEmptyTF{\cv@coverletterAddressLineC}{}{\\ \cv@coverletterAddressLineC} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterName}{}{%
+            \MakeUppercase{\cv@coverletterName}} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterCompany}{}{\\ %
+            \cv@coverletterCompany} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterPosition}{}{\\ %
+            \cv@coverletterPosition} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterAddressLineA}{}{\\ %
+            \cv@coverletterAddressLineA} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterAddressLineB}{}{\\ %
+            \cv@coverletterAddressLineB} %
+          \@IfNoValueOrEmptyTF{%
+            \cv@coverletterAddressLineC}{}{\\ %
+            \cv@coverletterAddressLineC} %
         \end{tabular}%
         \vspace{\margin}
       }
       \NewDocumentCommand{\cvFullName}{}{%
-        \pgfkeysvalueof{/cv/info/first name} \pgfkeysvalueof{/cv/info/last name}
+        \pgfkeysvalueof{/cv/info/first name} %
+        \pgfkeysvalueof{/cv/info/last name}
       }
 }{%
     \end{minipage}
   \end{center}
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   Key-value parsing structure
 %   %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -698,30 +782,41 @@
 \newif\ifcv@refWorkPhone
 \newif\ifcv@refMobilePhone
 \pgfkeys{/cv/references/.is family,
-         /cv/references/.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
+         /cv/references/.unknown/.style = %
+         {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+         .initial = #1}}
 \pgfkeys{/cv/references/name/.is if=cv@refName}
 \pgfkeys{/cv/references/name=false}
 \pgfkeys{/cv/references/position/.is if=cv@refPosition}
 \pgfkeys{/cv/references/position=false}
 \pgfkeys{/cv/references/company/.is if=cv@refCompany}
 \pgfkeys{/cv/references/copmany=false}
-\pgfkeys{/cv/references/address line 1/.is if=cv@refAddressLineA}
+\pgfkeys{/cv/references/address line 1/.is if=%
+  cv@refAddressLineA}
 \pgfkeys{/cv/references/address line 1=false}
-\pgfkeys{/cv/references/address line 2/.is if=cv@refAddressLineB}
+\pgfkeys{/cv/references/address line 2/.is if=%
+  cv@refAddressLineB}
 \pgfkeys{/cv/references/address line 2=false}
-\pgfkeys{/cv/references/address line 3/.is if=cv@refAddressLineC}
+\pgfkeys{/cv/references/address line 3/.is if=%
+  cv@refAddressLineC}
 \pgfkeys{/cv/references/address line 3=false}
-\pgfkeys{/cv/references/work phone/.is if=cv@refWorkPhone}
+\pgfkeys{/cv/references/work phone/.is if=%
+  cv@refWorkPhone}
 \pgfkeys{/cv/references/work phone=false}
-\pgfkeys{/cv/references/mobile phone/.is if=cv@refMobilePhone}
+\pgfkeys{/cv/references/mobile phone/.is if=%
+  cv@refMobilePhone}
 \pgfkeys{/cv/references/mobile phone=false}
-\pgfkeys{/cv/references/value stored/.is if=cv@refStored}
+\pgfkeys{/cv/references/value stored/.is if=%
+  cv@refStored}
 \pgfkeys{/cv/references/value stored=false}
 \pgfkeys{/cv/info/.is family,
-         /cv/info/.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
+         /cv/info/.unknown/.style = %
+         {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+         .initial = #1}}
 
 % Note that the argument must be expandable,
-% or use xkvltxp package before \documentclass (see manual of xkeyval)
+% or use xkvltxp package before \documentclass (see 
+% manual of xkeyval)
 \RequirePackage{xkeyval}
 
 % For simple key-value commands, keyval would suffie
@@ -856,7 +951,7 @@
   }%
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   Contact info commands
 %   %%%%%%%%%%%%%%%%%%%%%
@@ -874,7 +969,7 @@
   }
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   ID commands
 %   %%%%%%%%%%%
@@ -910,12 +1005,15 @@
   \@IfNoValueOrEmptyTF{#4}{}{\color{cvAccent} #4}
   
   \vspace{0.5cm}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/first name = #1}\def\cv@FirstNameLetter{\extract{#1}{1}}}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/last name = #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/position = #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/first name = %
+    #1}\def\cv@FirstNameLetter{\extract{#1}{1}}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/last name = %
+    #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/position = %
+    #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   Language commands
 %   %%%%%%%%%%%%%%%%%
@@ -945,13 +1043,18 @@
   \newcounter{languagelevel}
   \setcounter{languagelevel}{1}
   \loop\ifnum\value{languagelevel}<\value{languages}
-    \draw (language \the\value{languagelevel}.west) node[progressBar,minimum width=\pgfkeysvalueof{/cv/languages/lang\the\value{languagelevel}}em] {};
+    \draw (language \the\value{languagelevel}.west) %
+      node[%
+        progressBar,
+        minimum width=\pgfkeysvalueof{%
+        /cv/languages/lang\the\value{languagelevel}}em]%
+        {};
     \stepcounter{languagelevel}
   \repeat
   \end{tikzpicture}
 }
 
-%--------------------------------------------------------------------
+%-------------------------------------------------------
 %
 %   Global font colour
 %   %%%%%%%%%%%%%%%%%%
