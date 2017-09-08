@@ -83,6 +83,24 @@
 }
 \ExplSyntaxOff
 
+% https://tex.stackexchange.com/questions/87638/logical-string-length#answer-87696
+\def\getStringLength#1#2{%
+  \begingroup\@tempcnta\z@
+  \let\x\g@tStringLength
+  \ifx\g@tStringLength#1\g@tStringLength
+    \def\x##1\g@tStringLength{\endgroup\def#2{0}}%
+  \fi
+  \x#2#1\g@tStringLength
+}
+\def\g@tStringLength#1#2#3{%
+  \advance\@tempcnta\@ne
+  \ifx\g@tStringLength#3%
+    \edef#1{\endgroup\def\noexpand#1{\the\@tempcnta}}#1%
+  \else
+    \expandafter\g@tStringLength\expandafter#1\expandafter#3%
+  \fi
+}
+
 %--------------------------------------------------------------------
 %
 %   drawing
@@ -279,7 +297,13 @@
 
 \newcommand{\cv@Title}[2]{%
   \ifnodedefined{last item \the\value{lastItem}}{%
-    \node[below=0.6cm of last item \the\value{lastItem}.south west,sectionTitle] (title \the\value{titleNext}) {\cvSection{#1}};
+    \node[%
+      below=0.6cm of last item \the\value{lastItem}.south west,
+      sectionTitle] 
+      (title \the\value{titleNext}) 
+      {\begingroup\edef\y{\endgroup%
+      \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
+      \y\StrGobbleLeft{#1}{1}\egroup};
     \node[left=\timedotsep of title \the\value{titleNext},headerIcon] {#2};
     \node[below=0.6cm of last item \the\value{lastItem}.south west,sectionTitle] (title \the\value{titleNext} dummy) {\phantom{\cvSection{Education}}};
     \begin{scope}[on background layer]
@@ -289,7 +313,10 @@
         (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
     \end{scope}
   }{%
-    \node[sectionTitle] at (0,0) (title \the\value{titleNext}) {\cvSection{#1}};
+    \node[sectionTitle] at (0,0) (title \the\value{titleNext})
+    {\begingroup\edef\y{\endgroup%
+    \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
+    \y\StrGobbleLeft{#1}{1}\egroup};
     \node[left=\timedotsep of title \the\value{titleNext},headerIcon] {#2};
     \begin{scope}[on background layer]
       \draw[line width=2pt,cvGreen] 
@@ -571,10 +598,17 @@
 }{}
 
 % https://tex.stackexchange.com/questions/274479
+% https://tex.stackexchange.com/questions/34563/precision-copyfitting-in-xcoffin
 \newcommand{\getLeftSideBearing}[1]{\the\XeTeXglyphbounds1\XeTeXglyphindex"#1" }
+\newcommand{\getRightSideBearing}[1]{\the\XeTeXglyphbounds3\XeTeXglyphindex"#1" }
+\def\kright#1{\leavevmode #1\kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
+\def\kleft#1{\leavevmode \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
 
-\newlength\bearingH
+% removes left bearing of nth character:
+\newlength\cv@bearingLeft
+\newlength\cv@bearingRight
 
+% string - nth char
 \ExplSyntaxOn
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
   \tl_item:nn { #1 } { #2 }%
@@ -582,22 +616,40 @@
 \ExplSyntaxOff
 
 \newenvironment{cvCoverLetter}{%
-  \begin{tikzpicture}[remember picture,overlay]
+  \begin{tikzpicture}[remember picture,overlay, every node/.style={inner sep=0cm,outer sep=0cm}]
+    % set lengths
+    \setlength{\cv@bearingLeft}{\getLeftSideBearing{\extract{\cv@FirstName}{0}}}
+    \setlength{\cv@bearingRight}{\getRightSideBearing{\extract{\pgfkeysvalueof{/cv/info/last name}}{-1}}}
+
+    % draw green background
     \begin{scope}[on background layer]
-    \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h5) {};
-    \draw (h5) ++(\paperwidth,-\coverletterheight) node (h6) {};
-    \draw[fill=cvGreenLight,cvGreenLight] (h5) rectangle (h6);
-      \end{scope}
+      \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h5) {};
+      \draw (h5) ++(\paperwidth,-\coverletterheight) node (h6) {};
+      \draw[fill=cvGreenLight,cvGreenLight] (h5) rectangle (h6);
+    \end{scope}
     \draw (current page.north east) ++(-0.5\paperwidth+0.5\coverletterwidth,-\coverletterheight/2) node (h7) {};
-    \matrix[anchor=east,row sep=10pt] at (h7) {%
-    \node (cv cover letter name){\fontsize{50}{60}\selectfont
-    \pgfkeysvalueof{/cv/info/first name}
-    \pgfkeysvalueof{/cv/info/last name}}; \\
-    \node[align=right,cvAccent]{\pgfkeysvalueof{/cv/info/position}}; \\
-  };
+    \node[anchor=east] at (h7) (cv cover letter name){%
+      \fontsize{50}{60}\selectfont
+      % trick to expand argument such that `kleft` sees an alphabetic constant (i.e. a single letter)
+      \begingroup\edef\y{\endgroup%
+        \noexpand\kleft{\cv@FirstNameLetter}}%
+      \y
+      \StrGobbleLeft{\pgfkeysvalueof{/cv/info/first name}}{1}\space
+      \StrGobbleRight{\pgfkeysvalueof{/cv/info/last name}}{1}
+      % same trick
+      % trick to expand argument such that `kleft` sees an alphabetic constant (i.e. a single letter)
+      \begingroup\edef\y{\endgroup%
+        \noexpand\kright{\cv@LastNameLetter}}%
+      \y
+      };
+    \node[align=right,cvAccent,below=10pt of cv cover letter name.south east,anchor=north east]{\StrGobbleRight{\pgfkeysvalueof{/cv/info/position}}{1}
+    \begingroup\edef\y{\endgroup%
+      \noexpand\kright{\cv@PositionLetter}}%
+    \y};
+    
     \begin{scope}[on background layer]
       \draw[line width=3pt,cvGreen] 
-        (cv cover letter name.south west) to (cv cover letter name.south east);
+         (cv cover letter name.south west) to (cv cover letter name.south east);
     \end{scope}
   \end{tikzpicture}
 
@@ -606,6 +658,8 @@
   \begin{center}
     \begin{minipage}{\coverletterwidth}
       \today
+
+      First letter: \cv@FirstNameLetter, \cv@LastNameLetter
       
       \vspace{\baselineskip}
 
@@ -858,9 +912,9 @@
   \@IfNoValueOrEmptyTF{#4}{}{\color{cvAccent} #4}
   
   \vspace{0.5cm}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/first name = #1}}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/last name = #2}}
-  {\globaldefs=1\relax\pgfkeys{/cv/info/position = #4}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/first name = #1}\def\cv@FirstNameLetter{\extract{#1}{1}}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/last name = #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
+  {\globaldefs=1\relax\pgfkeys{/cv/info/position = #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
 }
 
 %--------------------------------------------------------------------
