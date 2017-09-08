@@ -658,8 +658,6 @@
   \begin{center}
     \begin{minipage}{\coverletterwidth}
       \today
-
-      First letter: \cv@FirstNameLetter, \cv@LastNameLetter
       
       \vspace{\baselineskip}
 
