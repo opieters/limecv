@@ -683,24 +683,69 @@
 \cv@projectImagefalse
 \newif\ifcv@projectLink
 \cv@projectLinkfalse
+\newif\ifcv@projectWidth
+\cv@projectWidthfalse
+\newif\ifcv@projectHeight
+\cv@projectHeightfalse
 
-\newcounter{cv@project}
-\setcounter{cv@project}{1}
+\newcounter{cv@projectCurrent}
+\setcounter{cv@projectCurrent}{1}
+\newcounter{cv@projectPrevious}
+\setcounter{cv@projectPrevious}{0}
 
 \define@key{cv@Project}{image}{%
   \global\def\cv@projectImage{#1}%
   \cv@projectImagetrue}
 \define@key{cv@Project}{link}{%
   \global\def\cv@projectLink{#1}%
-  cv@projectLinktrue}
+  \cv@projectLinktrue}
+\define@key{cv@Project}{width}{%
+  \global\def\cv@projectWidth{#1}%
+  \cv@projectWidthtrue}
+\define@key{cv@Project}{height}{%
+  \global\def\cv@projectHeight{#1}%
+  \cv@projectHeighttrue}
 
 \NewDocumentEnvironment{cvProjects}{}{%
   \ruleline{Projects}%
   \vspace{4pt}
 
   \NewDocumentCommand{\cvProject}{omm}{%
-    \setkeys{cv@Project}{##1}
-    \draw () node {};
+    % default settings
+    \cv@projectImagefalse
+    \cv@projectLinkfalse
+    \cv@projectWidthfalse
+    \cv@projectHeightfalse
+    % parse optional arguments
+    \@IfNoValueOrEmptyTF{##1}{}{\setkeys{cv@Project}{##1}}
+    \ifnodedefined{project \the\value{cv@projectPrevious} description}{}{%
+      \draw (0,0) node (project \the\value{cv@projectPrevious} description) {};
+      % increase step counter to avoid duplicate labels
+    }
+    % draw image
+    \ifcv@projectImage 
+      \ifcv@projectWidth
+        \node[below=1cm of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
+      \else
+        \ifcv@projectHeight
+          \node[below=1cm of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
+        \else
+          \ClassError{limecv}{TODO}{TODO}
+        \fi
+      \fi
+      % draw title (and add href if specified)
+      \node[text width=\sidewidth,align=center,below=0.2cm of project \the\value{cv@projectCurrent} image] (project \the\value{cv@projectCurrent} title) {%
+      \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
+    \else
+      % draw title (and add href if specified)
+      \node[text width=\sidewidth,align=center] (project \the\value{cv@projectCurrent} title) {%
+      \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
+    \fi
+    \node[below=0.2cm of project \the\value{cv@projectCurrent} title,text width=\sidewidth,align=center] (project \the\value{cv@projectCurrent} description) {##3};
+    
+    % increase counter value
+    \stepcounter{cv@projectCurrent}
+    \stepcounter{cv@projectPrevious}
   }
   \begin{tikzpicture}
 }{
