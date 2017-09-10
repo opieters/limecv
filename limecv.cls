@@ -32,6 +32,7 @@
 \RequirePackage{calc}
 \RequirePackage{xcolor}
 \RequirePackage{tabularx}
+\RequirePackage{easytable}
 
 
 %-------------------------------------------------------
@@ -641,6 +642,18 @@
 
 \RequirePackage{pdftexcmds}
 
+\NewDocumentCommand{\cv@TypesetTableRows}{}{}
+
+% https://tex.stackexchange.com/questions/341916
+\NewDocumentCommand{\cv@addToTable}{m}{%
+\g@addto@macro\cv@TypesetTableRows{\@gobble}%
+\@for\tmp:=#1\do{%
+\expandafter\g@addto@macro\expandafter\cv@TypesetTableRows
+            \expandafter{\expandafter&\tmp}%
+}%
+
+}
+
 \NewDocumentEnvironment{cvInterests}{o}{%
   % set defaults
   \cv@interestLongtrue
@@ -657,26 +670,48 @@
       \fi%
     \fi%
   }
-  \NewDocumentCommand{\cvInterest}{mm}{%
-    % parse optinal argument if present
-    \ifnum\value{cvInterestCounter}>1 %
-      \node[interesticon] (icon) {##1};
-      \node[interesttext] (text) {##2};
-    \else
-      \node[] (icon) {##1};
-      \node[interesttext] (text) {##2};
-    \fi
-    \stepcounter{cvInterestCounter}
-  }
   % TODO: make this work!!
   \NewDocumentCommand{\cvInterestsPersonal}{}{\faUser\ Personal}
   \NewDocumentCommand{\cvInterestsProfessional}{}{\faWork\ Professional}
   \ruleline{Interests}%
   \vspace{4pt}
-  \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
+  \ifcv@interestLong
+    \NewDocumentCommand{\cvInterest}{mm}{%
+      % parse optinal argument if present
+      \ifnum\value{cvInterestCounter}>1 %
+        \node[interesticon] (icon) {##1};
+        \node[interesttext] (text) {##2};
+      \else
+        \node[] (icon) {##1};
+        \node[interesttext] (text) {##2};
+      \fi
+      \stepcounter{cvInterestCounter}
+    }
+    \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
     %TODO: make long/short options do something differently!
+  \else
+    % https://tex.stackexchange.com/questions/12761
+    %\def\Z{\vphantom{\parbox[c]{1cm}{\Huge Something Long}}}
+    \NewDocumentCommand{\cvInterest}{mm}{%
+      % parse optinal argument if present
+      \g@addto@macro\cv@TypesetTableRows{##1}%
+      \g@addto@macro\cv@TypesetTableRows{&}%
+      \g@addto@macro\cv@TypesetTableRows{##2}%
+      \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
+      \stepcounter{cvInterestCounter}
+    }
+    
+  \fi
 }{%
-  \end{tikzpicture}
+  \ifcv@interestLong
+    \end{tikzpicture}
+  \else
+
+    \begin{tabular}{cc}
+      \cv@TypesetTableRows
+    \end{tabular}
+
+  \fi
 }
 
 \newif\ifcv@projectImage
