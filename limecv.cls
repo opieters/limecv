@@ -700,17 +700,14 @@
       \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
       \stepcounter{cvInterestCounter}
     }
-    
   \fi
 }{%
   \ifcv@interestLong
     \end{tikzpicture}
   \else
-
-    \begin{tabular}{cc}
+    \begin{tabular}{@{}cc@{}}
       \cv@TypesetTableRows
     \end{tabular}
-
   \fi
 }
 
