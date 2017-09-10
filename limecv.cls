@@ -614,9 +614,39 @@
 \newif\ifcv@interestLong
 \cv@interestLongtrue
 
+\newif\ifcv@interestShortContent
+\cv@interestShortContentfalse
+
 \RequirePackage{pdftexcmds}
 
 \NewDocumentCommand{\cv@TypesetTableRows}{}{}
+
+\newif\ifcv@interesttikzopen
+\cv@interesttikzopenfalse
+
+\NewDocumentCommand{\cv@interestClose}{}{
+  \ifcv@interestLong
+    \ifcv@interesttikzopen
+      \end{tikzpicture}
+    \fi
+  \else
+    \ifcv@interestShortContent
+      \begin{tabular}{@{}cl@{}}
+        \cv@TypesetTableRows
+      \end{tabular}
+    \fi
+  \fi
+}
+
+\NewDocumentCommand{\cv@interestOpen}{}{
+  \ifcv@interestLong
+    \cv@interesttikzopentrue
+    \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
+  \else
+    \global\def\cv@TypesetTableRows{}
+    \cv@interestShortContentfalse
+  \fi
+}
 
 \NewDocumentEnvironment{cvInterests}{o}{%
   % set defaults
@@ -635,12 +665,26 @@
     \fi%
   }
   % TODO: make this work!!
-  \NewDocumentCommand{\cvInterestsPersonal}{}{\faUser\ Personal}
-  \NewDocumentCommand{\cvInterestsProfessional}{}{\faWork\ Professional}
-  \ruleline{Interests}%
-  \vspace{4pt}
+  \NewDocumentCommand{\cv@interestSection}{m}{%
+    \cv@interestClose
+    \ifcv@interestShortContent
+
+      \vspace*{8pt}
+    \fi
+    {\color{cvGreen}---} ##1 {\color{cvGreen}---}
+
+    \vspace*{4pt}
+    
+    \cv@interestOpen
+  }
+  % define new commands
+  \NewDocumentCommand{\cvInterestsPersonal}{}{\cv@interestSection{\faUser\ \emph{Personal}}}
+  %
+  \NewDocumentCommand{\cvInterestsProfessional}{}{\cv@interestSection{\faBriefcase\ \emph{Professional}}}
+  %
   \ifcv@interestLong
     \NewDocumentCommand{\cvInterest}{mm}{%
+      \cv@interestOpen
       % parse optinal argument if present
       \ifnum\value{cvInterestCounter}>1 %
         \node[interesticon] (icon) {##1};
@@ -651,8 +695,6 @@
       \fi
       \stepcounter{cvInterestCounter}
     }
-    \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
-    %TODO: make long/short options do something differently!
   \else
     % https://tex.stackexchange.com/questions/12761
     %\def\Z{\vphantom{\parbox[c]{1cm}{\Huge Something Long}}}
@@ -663,16 +705,14 @@
       \g@addto@macro\cv@TypesetTableRows{##2}%
       \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
       \stepcounter{cvInterestCounter}
+      \cv@interestShortContenttrue
     }
   \fi
+  %%%%%%
+  \ruleline{Interests}%
+  \vspace{4pt}
 }{%
-  \ifcv@interestLong
-    \end{tikzpicture}
-  \else
-    \begin{tabular}{@{}cc@{}}
-      \cv@TypesetTableRows
-    \end{tabular}
-  \fi
+  \cv@interestClose
 }
 
 \newif\ifcv@projectImage
