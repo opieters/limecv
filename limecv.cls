@@ -52,10 +52,10 @@
 %-------------------------------------------------------
 % pass document options to article class, which forms 
 % base of this document class
-%\DeclareOption*{%
-%  \PassOptionsToClass{\CurrentOption}{article}%
-%}
-%\ProcessOptions\relax
+\DeclareOption*{%
+  \PassOptionsToClass{\CurrentOption}{article}%
+}
+\ProcessOptions\relax
 \LoadClass{article}
 
 %-------------------------------------------------------
