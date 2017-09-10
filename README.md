@@ -18,6 +18,6 @@ Below is a list of upcoming features and important todo's. After these have been
 
 ## Licence
 
-GNU GPLv3. See LICENSE file.
+LPPL v1.3c See LICENSE file.
 
 © 2017 Olivier Pieters
