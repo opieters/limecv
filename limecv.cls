@@ -1,4 +1,3 @@
-%-------------------------------------------------------
 % limecv.cls
 %
 % A XeLaTeX document class
@@ -27,24 +26,30 @@
   \fileversion\space by Olivier Pieters]
 
 \RequirePackage{ifxetex}
+\RequirePackage{ifluatex}
 \RequirePackage{xparse}
 % complex length calculations
 \RequirePackage{calc}
 \RequirePackage{xcolor}
 \RequirePackage{tabularx}
-\RequirePackage{easytable}
+\RequirePackage{kvoptions} % process class options
 
 
 %-------------------------------------------------------
-
+\DeclareBoolOption[false]{print}
+\newif\ifcv@fontPath
+\cv@fontPathfalse
+\DeclareStringOption{path}
+\AddToKeyvalOption*{path}{\cv@fontPathtrue}
+\ProcessKeyvalOptions*
 
 %-------------------------------------------------------
 % pass document options to article class, which forms 
 % base of this document class
-\DeclareOption*{%
-  \PassOptionsToClass{\CurrentOption}{article}%
-}
-\ProcessOptions\relax
+%\DeclareOption*{%
+%  \PassOptionsToClass{\CurrentOption}{article}%
+%}
+%\ProcessOptions\relax
 \LoadClass{article}
 
 %-------------------------------------------------------
@@ -122,14 +127,13 @@
   fit,
   arrows.meta,
   backgrounds,
-  matrix,
-  node-families}
+  matrix}
 
 %-------------------------------------------------------
 %
-%   XeLaTeX specific
+%   XeLaTeX/LuaLaTeX specific
 %   %%%%%%%%%%%%%%%%
-\ifxetex
+\NewDocumentCommand{\cv@loadFonts}{}{
   \RequirePackage{fontspec}  
   \RequirePackage{fontawesome}
 
@@ -137,7 +141,11 @@
   \setmainfont[Numbers={Monospaced}]{Fira Sans}
   \setsansfont{Fira Sans}
   \setmonofont{Fira Mono}
-  \newfontfamily{\cv@FA}{FontAwesome}
+  \ifcv@fontPath
+    \newfontfamily{\cv@FA}[Path=\limecv@path]{FontAwesome}
+  \else
+    \newfontfamily{\cv@FA}{FontAwesome}
+  \fi
 
   % define some missing icons
   \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA%
@@ -147,9 +155,13 @@
   \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
     \symbol{"F2DB}}}
   % future possibility: https://github.com/xdanaux/moderncv/blob/2033517d3f29f9c16af1b3421d52f281e94aa2a5/moderncviconsmarvosym.sty
-  \NewDocumentCommand{\cv@XeOnly}{m}{#1}
+}
+\ifxetex
+  \cv@loadFonts
 \else
-  \NewDocumentCommand{\cv@XeOnly}{m}{}
+  \ifluatex
+    \cv@loadFonts
+  \fi
 \fi
 
 %-------------------------------------------------------
@@ -793,14 +805,13 @@
 
 % https://tex.stackexchange.com/questions/274479
 % https://tex.stackexchange.com/questions/34563/precision-copyfitting-in-xcoffin
-\newcommand{\getLeftSideBearing}[1]{\the\XeTeXglyphbounds1\XeTeXglyphindex"#1" }
-\newcommand{\getRightSideBearing}[1]{\the\XeTeXglyphbounds3\XeTeXglyphindex"#1" }
-\def\kright#1{\leavevmode #1\kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
-\def\kleft#1{\leavevmode \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
-
-% removes left bearing of nth character:
-\newlength\cv@bearingLeft
-\newlength\cv@bearingRight
+\ifxetex
+  \NewDocumentCommand{\kright}{m}{\leavevmode #1\kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
+  \NewDocumentCommand{\kleft}{m}{\leavevmode \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
+\else
+  \NewDocumentCommand{\kright}{m}{#1}
+  \NewDocumentCommand{\kleft}{m}{#1}
+\fi
 
 % string - nth char
 \ExplSyntaxOn
@@ -811,10 +822,6 @@
 
 \newenvironment{cvCoverLetter}{%
   \begin{tikzpicture}[remember picture,overlay, every node/.style={inner sep=0cm,outer sep=0cm}]
-    % set lengths
-    \setlength{\cv@bearingLeft}{\getLeftSideBearing{\extract{\cv@FirstName}{0}}}
-    \setlength{\cv@bearingRight}{\getRightSideBearing{\extract{\pgfkeysvalueof{/cv/info/last name}}{-1}}}
-
     % draw green background
     \begin{scope}[on background layer]
       \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h5) {};
