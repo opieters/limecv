@@ -585,17 +585,17 @@
 }
 
 \newenvironment{cvSideBar}{%
+  \vspace*{\fill}
+  \vspace*{-0.5\margin}
   \begin{tikzpicture}[remember picture,overlay]
-    \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h1) {};
-    \draw (h1) ++(\sidewidth+2\margin,-\paperheight) node (h2) {};
-    \draw[fill=cvGreenLight,cvGreenLight] (h1) rectangle (h2);
-  \end{tikzpicture}
+    \fill[cvGreenLight] (current page.north west) rectangle ++(\sidewidth+2\margin,-\paperheight);
+  \end{tikzpicture}%
   \begin{minipage}{\sidewidth}
-    \vspace*{2cm}
     \begin{center}
 }{%
     \end{center}
-  \end{minipage}%
+  \end{minipage}
+  \vspace*{\fill}
 }
 
 \newenvironment{cvSideBar*}{%
