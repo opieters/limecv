@@ -673,7 +673,7 @@
   \NewDocumentCommand{\cvInterestsProfessional}{}{\faWork\ Professional}
   \ruleline{Interests}%
   \vspace{4pt}
-  \begin{tikzpicture}
+  \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
     %TODO: make long/short options do something differently!
 }{%
   \end{tikzpicture}
@@ -706,6 +706,9 @@
   \global\def\cv@projectHeight{#1}%
   \cv@projectHeighttrue}
 
+\newlength\cv@projectSep
+\setlength\cv@projectSep{0cm}
+
 \NewDocumentEnvironment{cvProjects}{}{%
   \ruleline{Projects}%
   \vspace{4pt}
@@ -719,16 +722,15 @@
     % parse optional arguments
     \@IfNoValueOrEmptyTF{##1}{}{\setkeys{cv@Project}{##1}}
     \ifnodedefined{project \the\value{cv@projectPrevious} description}{}{%
-      \draw (0,0) node (project \the\value{cv@projectPrevious} description) {};
-      % increase step counter to avoid duplicate labels
+      \node (project \the\value{cv@projectPrevious} description) {};
     }
     % draw image
     \ifcv@projectImage 
       \ifcv@projectWidth
-        \node[below=1cm of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
+        \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
       \else
         \ifcv@projectHeight
-          \node[below=1cm of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
+          \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
         \else
           \ClassError{limecv}{TODO}{TODO}
         \fi
@@ -738,16 +740,17 @@
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \else
       % draw title (and add href if specified)
-      \node[text width=\sidewidth,align=center] (project \the\value{cv@projectCurrent} title) {%
+      \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description,text width=\sidewidth,align=center] (project \the\value{cv@projectCurrent} title) {%
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \fi
     \node[below=0.2cm of project \the\value{cv@projectCurrent} title,text width=\sidewidth,align=center] (project \the\value{cv@projectCurrent} description) {##3};
     
+    \setlength\cv@projectSep\sectionsep
     % increase counter value
     \stepcounter{cv@projectCurrent}
     \stepcounter{cv@projectPrevious}
   }
-  \begin{tikzpicture}
+  \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
 }{
   \end{tikzpicture}
 }
