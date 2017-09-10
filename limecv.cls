@@ -299,7 +299,7 @@
   \makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
   \raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
 
-\usepackage{xstring}
+\RequirePackage{xstring}
 \NewDocumentCommand{\cvSection}{m}{\Large\textbf{%
   \StrChar{#1}{1}\StrGobbleLeft{#1}{1}}}
 
@@ -420,23 +420,24 @@
   \stepcounter{itemNext}
 }
 
-\NewDocumentCommand{\cvSkillTwo}{smmmm}{%
-  \IfBooleanTF{#1}{% if starred version
-    \cvSkill{#2} & #3 & \cvSkill{#4} & #5 \\[1ex]
-  }{% if normal version
-    \cvSkill{#2} \pgfmatrixnextcell 
-      #3 \pgfmatrixnextcell
-    \cvSkill{#4} \pgfmatrixnextcell 
-      #5 \\ 
-  }%
+\newif\ifcvfirstskill
+\NewDocumentCommand{\cv@skillsTable}{}{}
+\NewDocumentCommand{\cvSkillTwo}{mmmm}{%
+  \ifcvfirstskill
+    \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2 & \cvSkill{#3} & #4}
+    \cvfirstskillfalse
+  \else
+    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2 & \cvSkill{#3} & #4}
+  \fi
 }
 
-\NewDocumentCommand{\cvSkillOne}{smm}{%
-  \IfBooleanTF{#1}{% if starred version
-    \cvSkill{#2} & #3 \\
-  }{% if normal version
-    \cvSkill{#2} \pgfmatrixnextcell #3 \\ 
-  }%
+\NewDocumentCommand{\cvSkillOne}{mm}{%
+  \ifcvfirstskill
+    \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2}
+    \cvfirstskillfalse
+  \else
+    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2}
+  \fi
 }
 
 %-------------------------------------------------------
@@ -490,42 +491,15 @@
 
 \newenvironment{cvSkills}{%
   \cv@Title{Skills}{\faStar}
-  \matrix[matrix of nodes,
-          below=0.6cm of title %
-            \the\value{titlePrev}.south west,
-          anchor=north west,
-          column sep=6pt,
-          row sep=6pt,
-          every node/.style={Text Depth=tdSkills},
-          column 1/.style={%
-            anchor=east,
-            align=left,
-            skillLevel},
-          column 2/.style={%
-            anchor=west,
-            skillText},
-          column 3/.style={%
-            anchor=east,
-            align=left},
-          column 4/.style={%
-            anchor=west,
-            skillText}] (skills) \bgroup%
+  \global\cvfirstskilltrue
 }{%
-  \\\egroup;
-  \stepcounter{lastItem}
-  \draw (skills.south west) %
-    node (last item \the\value{lastItem}) {};
-}
-
-\newenvironment{cvSkills*}{%
-  \cv@Title{Skills}{\faStar}
   \node[
     below=0.6cm of title \the\value{titlePrev}%
       .south west,
     anchor=north west] (skills) %
-    \bgroup\begin{tabular}{@{}llll@{}}%
-}{%
-  \end{tabular}\egroup;
+    {\begin{tabular}{@{}llll@{}}%
+    \cv@skillsTable
+    \end{tabular}};
   \stepcounter{lastItem}
   \draw (skills.south west) node (last item \the\value{lastItem}) {};
 }
@@ -643,16 +617,6 @@
 \RequirePackage{pdftexcmds}
 
 \NewDocumentCommand{\cv@TypesetTableRows}{}{}
-
-% https://tex.stackexchange.com/questions/341916
-\NewDocumentCommand{\cv@addToTable}{m}{%
-\g@addto@macro\cv@TypesetTableRows{\@gobble}%
-\@for\tmp:=#1\do{%
-\expandafter\g@addto@macro\expandafter\cv@TypesetTableRows
-            \expandafter{\expandafter&\tmp}%
-}%
-
-}
 
 \NewDocumentEnvironment{cvInterests}{o}{%
   % set defaults
