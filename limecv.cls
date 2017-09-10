@@ -1,16 +1,22 @@
 % limecv.cls
+% 
+% Copyright 2017 Olivier Pieters
 %
 % A XeLaTeX document class
 %
 %
-% This file may be distributed and/or modified under the
-% conditions of the GPL-3.0 License, a version can be 
-% found in the GitHub repository:
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
 %
-%    https://github.com/opieters/limecv
-%
-% Maintainer: Olivier Pieters
-% me (at) olivierpieters (dot) be
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Olivier Pieters.
+% Contact the maintainer at: me (at) olivierpieters (dot) be.
 
 \def\fileversion{0.1}
 \def\filedate{2017/09/03}
@@ -142,7 +148,8 @@
   \setsansfont{Fira Sans}
   \setmonofont{Fira Mono}
   \ifcv@fontPath
-    \newfontfamily{\cv@FA}[Path=\limecv@path]{FontAwesome}
+    \newfontfamily{\cv@FA}[Path=\limecv@path]%
+      {FontAwesome}
   \else
     \newfontfamily{\cv@FA}{FontAwesome}
   \fi
@@ -154,7 +161,9 @@
     \symbol{"F2BB}}}
   \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
     \symbol{"F2DB}}}
-  % future possibility: https://github.com/xdanaux/moderncv/blob/2033517d3f29f9c16af1b3421d52f281e94aa2a5/moderncviconsmarvosym.sty
+  % future possibility: 
+  % https://raw.githubusercontent.com/xdanaux/moderncv/
+  % master/moderncviconsmarvosym.sty
 }
 \ifxetex
   \cv@loadFonts
