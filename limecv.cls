@@ -470,53 +470,55 @@
 \setcounter{cv@lastItem}{1}
 
 % List a timeline entry
-\NewDocumentCommand{\cvItem}{m}{%
-  \ifnodedefined{item \the\value{cv@itemPrev}}{%
-    \node[%
-      below=\cvSectionSep of item %
-        \the\value{cv@itemPrev}.south west,
-      eventdottext] 
-      (item \the\value{cv@itemNext} header) 
-      {\phantom{Evening}};
-    \node[%
-      below=\cvSectionSep of item %
-        \the\value{cv@itemPrev}.south west,
-      sectionEduText] 
-      (item \the\value{cv@itemNext}) 
-      {#1};
-    \node[%
-      left=\cvTimeDotSep of item %
-        \the\value{cv@itemNext} header,
-      timedot] 
-      {};
-  }{
-    \node[%
-      below=\cvSectionSep of cv@title %
-        \the\value{cv@titlePrev}.south west,
-      eventdottext] 
-      (item \the\value{cv@itemNext} header) 
-      {\phantom{Evening}};
+\NewDocumentCommand{\cv@definecvItem}{}{
+  \NewDocumentCommand{\cvItem}{m}{%
+    \ifnodedefined{item \the\value{cv@itemPrev}}{%
+      \node[%
+        below=\cvSectionSep of item %
+          \the\value{cv@itemPrev}.south west,
+        eventdottext] 
+        (item \the\value{cv@itemNext} header) 
+        {\phantom{Evening}};
+      \node[%
+        below=\cvSectionSep of item %
+          \the\value{cv@itemPrev}.south west,
+        sectionEduText] 
+        (item \the\value{cv@itemNext}) 
+        {##1};
+      \node[%
+        left=\cvTimeDotSep of item %
+          \the\value{cv@itemNext} header,
+        timedot] 
+        {};
+    }{
+      \node[%
+        below=\cvSectionSep of cv@title %
+          \the\value{cv@titlePrev}.south west,
+        eventdottext] 
+        (item \the\value{cv@itemNext} header) 
+        {\phantom{Evening}};
+      \node[
+        below=\cvSectionSep of cv@title %
+          \the\value{cv@titlePrev}.south west,
+        sectionEduText] 
+        (item \the\value{cv@itemNext}) 
+        {##1};
+      \node[
+        left=\cvTimeDotSep of item %
+          \the\value{cv@itemNext} header,
+        timedot] 
+        (start) 
+        {};
+    }
     \node[
-      below=\cvSectionSep of cv@title %
-        \the\value{cv@titlePrev}.south west,
-      sectionEduText] 
-      (item \the\value{cv@itemNext}) 
-      {#1};
-    \node[
       left=\cvTimeDotSep of item %
-        \the\value{cv@itemNext} header,
-      timedot] 
-      (start) 
+        \the\value{cv@itemNext}.south west,
+      invisibletimedot] 
+      (end) 
       {};
+    \stepcounter{cv@itemPrev}
+    \stepcounter{cv@itemNext}
   }
-  \node[
-    left=\cvTimeDotSep of item %
-      \the\value{cv@itemNext}.south west,
-    invisibletimedot] 
-    (end) 
-    {};
-  \stepcounter{cv@itemPrev}
-  \stepcounter{cv@itemNext}
 }
 
 %-------------------------------------------------------
@@ -525,16 +527,16 @@
 %
 
 % information in temporary command yes/no
-\newif\ifcvfirstskill
+\newif\ifcv@firstskill
 
 % temporary command that stores skill information
 \NewDocumentCommand{\cv@skillsTable}{}{}
 
 % typeset two skills
 \NewDocumentCommand{\cvSkillTwo}{mmmm}{%
-  \ifcvfirstskill
+  \ifcv@firstskill
     \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2 & \cvSkill{#3} & #4}
-    \cvfirstskillfalse
+    \cv@firstskillfalse
   \else
     \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2 & \cvSkill{#3} & #4}
   \fi
@@ -542,9 +544,9 @@
 
 % typeset one skill
 \NewDocumentCommand{\cvSkillOne}{mm}{%
-  \ifcvfirstskill
+  \ifcv@firstskill
     \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2}
-    \cvfirstskillfalse
+    \cv@firstskillfalse
   \else
     \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2}
   \fi
@@ -583,9 +585,29 @@
 %   cvEductation environment
 %
 \newenvironment{cvEducation}{%
-  \cv@Title{Education}{\faGraduationCap}
-  \setcounter{cv@itemPrev}{0}
-  \setcounter{cv@itemNext}{1}}{%
+    \cv@Title{Education}{\faGraduationCap}
+    % insures uniqueness
+    \stepcounter{cv@itemPrev}
+    \stepcounter{cv@itemNext}
+    \cv@definecvItem
+  }{%
+    \cv@EndSectionDraw
+    \stepcounter{cv@lastItem}
+    \draw (item \the\value{cv@itemPrev}.south west) 
+      node (cv@last item \the\value{cv@lastItem}) {};
+}
+
+%-------------------------------------------------------
+%
+%   cvExperience environment
+%
+\newenvironment{cvExperience}{%
+  \cv@Title{Experience}{\faBriefcase}
+  % insures uniqueness
+  \stepcounter{cv@itemPrev}
+  \stepcounter{cv@itemNext}
+  \cv@definecvItem
+}{%
   \cv@EndSectionDraw
   \stepcounter{cv@lastItem}
   \draw (item \the\value{cv@itemPrev}.south west) 
@@ -594,25 +616,11 @@
 
 %-------------------------------------------------------
 %
-%   cvExperience environment
-%
-\newenvironment{cvExperience}{%
-\cv@Title{Experience}{\faBriefcase}
-\setcounter{cv@itemPrev}{0}
-\setcounter{cv@itemNext}{1}}{%
-\cv@EndSectionDraw
-\stepcounter{cv@lastItem}
-\draw (item \the\value{cv@itemPrev}.south west) 
-  node (cv@last item \the\value{cv@lastItem}) {};
-}
-
-%-------------------------------------------------------
-%
 %   cvSkills environment
 %
 \newenvironment{cvSkills}{%
   \cv@Title{Skills}{\faStar}
-  \global\cvfirstskilltrue
+  \global\cv@firstskilltrue
 }{%
   \node[
     below=0.6cm of cv@title \the\value{cv@titlePrev}%
@@ -696,32 +704,6 @@
   cv@refStored}
 \pgfkeys{/@cv/references/value stored=false}
 
-% default key values
-\def\cv@refAName{}
-\def\cv@refBName{}
-\def\cv@refACompany{}
-\def\cv@refBCompany{}
-\def\cv@refAPosition{}
-\def\cv@refBPosition{}
-\def\cv@refAAddressLineA{}
-\def\cv@refBAddressLineA{}
-\def\cv@refAAddressLineB{}
-\def\cv@refBAddressLineB{}
-\def\cv@refAAddressLineC{}
-\def\cv@refBAddressLineC{}
-\def\cv@refAPhoneWork{}
-\def\cv@refBPhoneWork{}
-\def\cv@refAMobilePhone{}
-\def\cv@refBMobilePhone{}
-
-% cover letter keys
-\def\cv@coverletterName{}
-\def\cv@coverletterCompany{}
-\def\cv@coverletterPosition{}
-\def\cv@coverletterAddressLineA{}
-\def\cv@coverletterAddressLineB{}
-\def\cv@coverletterAddressLineC{}
-
 % keys
 \define@key{cvAddReferenceA}{name}{%
   \global\def\cv@refAName{#1}%
@@ -777,10 +759,14 @@
 
 \NewDocumentCommand{\cvAddReference}{sm}{%
   \IfBooleanTF{#1}{%
-    \setkeys{cvAddReferenceA}{#2}
+    \setkeys{cvAddReferenceA}{name={},company={},
+      position={},address line 1={},address line 2={},
+      address line 3={},phone work={},mobile phone={},#2}
     \pgfkeys{/@cv/references/name = true}%
   }{%
-    \setkeys{cvAddReferenceB}{#2}
+    \setkeys{cvAddReferenceB}{name={},company={},
+    position={},address line 1={},address line 2={},
+    address line 3={},phone work={},mobile phone={},#2}
     \ifcv@refStored%
       \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep-0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}L{0.5\cvMainWidth-0.5\cvTimeDotSep-0.5\cvTableSepWidth}@{}}%
         \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
@@ -858,23 +844,23 @@
 
 \NewDocumentCommand{\cv@ContactTemplate}{mm}{
   \NewDocumentCommand{#1}{m}{
-      \ifcvcontactfirst \\ \else \global\cvcontactfirsttrue \fi\node[contactIcon]{#2}; 
+      \ifcv@contactfirst \\ \else \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
         \pgfmatrixnextcell \node[contactText]{##1};
   }
 }
 \NewDocumentCommand{\cv@ContactTemplateLink}{mm}{
   \NewDocumentCommand{#1}{mm}{
-      \ifcvcontactfirst \\ \else\global\cvcontactfirsttrue \fi\node[contactIcon]{#2}; 
+      \ifcv@contactfirst \\ \else\global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
         \pgfmatrixnextcell \node[contactText]{\@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
   }
 }
 
-\newif\ifcvcontactfirst
+\newif\ifcv@contactfirst
 \newenvironment{cvContact}{%
   \ruleline{Contact}%
   \vspace{4pt}
   
-  \global\cvcontactfirstfalse
+  \global\cv@contactfirstfalse
 
   \cv@ContactTemplate{\cvContactAddress}{\faMapMarker}
   \cv@ContactTemplate{\cvContactPhone}{\faPhone}
@@ -945,6 +931,50 @@
   \fi
 }
 
+\NewDocumentCommand{\cv@definecv@interestSection}{}{
+  \NewDocumentCommand{\cv@interestSection}{m}{%
+    \cv@interestClose
+    \ifcv@interestShortContent
+
+      \vspace*{8pt}
+    \fi
+    {\color{cvGreen}---} ##1 {\color{cvGreen}---}
+
+    \vspace*{4pt}
+    
+    \cv@interestOpen
+  }
+}
+\NewDocumentCommand{\cv@definecvInterestLong}{}{
+  \NewDocumentCommand{\cvInterest}{mm}{%
+    \cv@interestOpen
+    % parse optinal argument if present
+    % TODO: replace this with a simple if!
+    \ifnum\value{cv@cvInterestCounter}>1 %
+      \node[interesticon] (icon) {##1};
+      \node[interesttext] (text) {##2};
+    \else
+      \node[] (icon) {##1};
+      \node[interesttext] (text) {##2};
+    \fi
+    \stepcounter{cv@cvInterestCounter}
+  }
+}
+
+\NewDocumentCommand{\cv@definecvInterestShort}{}{
+  % https://tex.stackexchange.com/questions/12761
+  %\def\Z{\vphantom{\parbox[c]{1cm}{\Huge Something Long}}}
+  \NewDocumentCommand{\cvInterest}{mm}{%
+    % parse optinal argument if present
+    \g@addto@macro\cv@TypesetTableRows{##1}%
+    \g@addto@macro\cv@TypesetTableRows{&}%
+    \g@addto@macro\cv@TypesetTableRows{##2}%
+    \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
+    \stepcounter{cv@cvInterestCounter}
+    \cv@interestShortContenttrue
+  }
+}
+
 %TODO: switch case here!!
 \NewDocumentEnvironment{cvInterests}{o}{%
   % set defaults
@@ -963,49 +993,16 @@
     \fi%
   }
   
-  \NewDocumentCommand{\cv@interestSection}{m}{%
-    \cv@interestClose
-    \ifcv@interestShortContent
-
-      \vspace*{8pt}
-    \fi
-    {\color{cvGreen}---} ##1 {\color{cvGreen}---}
-
-    \vspace*{4pt}
-    
-    \cv@interestOpen
-  }
+  \cv@definecv@interestSection
   % define new commands
   \NewDocumentCommand{\cvInterestsPersonal}{}{\cv@interestSection{\faUser\ \emph{Personal}}}
   %
   \NewDocumentCommand{\cvInterestsProfessional}{}{\cv@interestSection{\faBriefcase\ \emph{Professional}}}
   %
   \ifcv@interestLong
-    \NewDocumentCommand{\cvInterest}{mm}{%
-      \cv@interestOpen
-      % parse optinal argument if present
-      % TODO: replace this with a simple if!
-      \ifnum\value{cv@cvInterestCounter}>1 %
-        \node[interesticon] (icon) {##1};
-        \node[interesttext] (text) {##2};
-      \else
-        \node[] (icon) {##1};
-        \node[interesttext] (text) {##2};
-      \fi
-      \stepcounter{cv@cvInterestCounter}
-    }
+    \cv@definecvInterestLong
   \else
-    % https://tex.stackexchange.com/questions/12761
-    %\def\Z{\vphantom{\parbox[c]{1cm}{\Huge Something Long}}}
-    \NewDocumentCommand{\cvInterest}{mm}{%
-      % parse optinal argument if present
-      \g@addto@macro\cv@TypesetTableRows{##1}%
-      \g@addto@macro\cv@TypesetTableRows{&}%
-      \g@addto@macro\cv@TypesetTableRows{##2}%
-      \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
-      \stepcounter{cv@cvInterestCounter}
-      \cv@interestShortContenttrue
-    }
+    \cv@definecvInterestShort
   \fi
   %%%%%%
   \ruleline{Interests}%
@@ -1049,10 +1046,7 @@
 \newlength\cv@projectSep
 \setlength\cv@projectSep{0cm}
 
-\NewDocumentEnvironment{cvProjects}{}{%
-  \ruleline{Projects}%
-  \vspace{4pt}
-
+\NewDocumentCommand{\cv@definecvProject}{}{
   \NewDocumentCommand{\cvProject}{omm}{%
     % default settings
     \cv@projectImagefalse
@@ -1090,6 +1084,13 @@
     \stepcounter{cv@projectCurrent}
     \stepcounter{cv@projectPrevious}
   }
+}
+
+\NewDocumentEnvironment{cvProjects}{}{%
+  \ruleline{Projects}%
+  \vspace{4pt}
+
+  \cv@definecvProject
   \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
 }{
   \end{tikzpicture}
@@ -1156,6 +1157,42 @@
 \define@key{cvCoverLetter}{address line 3}{%
 \global\def\cv@coverletterAddressLineC{#1}}
 
+\NewDocumentCommand{\cv@definecvBeneficiary}{}{
+  \NewDocumentCommand{\cvBeneficiary}{m}{%
+    \setkeys{cvCoverLetter}{name={},company={},
+      position={},address line 1={},address line 2={},
+      address line 3={},##1}
+    \begin{tabular}{@{}l}
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterName}{}{%
+        \MakeUppercase{\cv@coverletterName}} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterCompany}{}{\\ %
+        \cv@coverletterCompany} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterPosition}{}{\\ %
+        \cv@coverletterPosition} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineA}{}{\\ %
+        \cv@coverletterAddressLineA} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineB}{}{\\ %
+        \cv@coverletterAddressLineB} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineC}{}{\\ %
+        \cv@coverletterAddressLineC} %
+    \end{tabular}%
+    \vspace{\cvMargin}
+  }
+}
+
+\NewDocumentCommand{\cv@definecvFullName}{}{
+  \NewDocumentCommand{\cvFullName}{}{%
+    \pgfkeysvalueof{/@cv/info/first name} %
+    \pgfkeysvalueof{/@cv/info/last name}
+  }
+}
+
 \newenvironment{cvCoverLetter}{%
   \begin{tikzpicture}[remember picture,overlay, every node/.style={inner sep=0cm,outer sep=0cm}]
     % draw green background
@@ -1204,34 +1241,8 @@
       
       \vspace{\baselineskip}
 
-      \NewDocumentCommand{\cvBeneficiary}{m}{%
-        \setkeys{cvCoverLetter}{##1}
-        \begin{tabular}{@{}l}
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterName}{}{%
-            \MakeUppercase{\cv@coverletterName}} %
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterCompany}{}{\\ %
-            \cv@coverletterCompany} %
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterPosition}{}{\\ %
-            \cv@coverletterPosition} %
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterAddressLineA}{}{\\ %
-            \cv@coverletterAddressLineA} %
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterAddressLineB}{}{\\ %
-            \cv@coverletterAddressLineB} %
-          \@IfNoValueOrEmptyTF{%
-            \cv@coverletterAddressLineC}{}{\\ %
-            \cv@coverletterAddressLineC} %
-        \end{tabular}%
-        \vspace{\cvMargin}
-      }
-      \NewDocumentCommand{\cvFullName}{}{%
-        \pgfkeysvalueof{/@cv/info/first name} %
-        \pgfkeysvalueof{/@cv/info/last name}
-      }
+      \cv@definecvBeneficiary
+      \cv@definecvFullName
 }{%
     \end{minipage}
   \end{center}
