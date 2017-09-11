@@ -28,6 +28,12 @@
 
 \NewDocumentCommand{\cvRequirement}{m}{\textbf{#1}}
 
+\definecolor{cvGreen}{HTML}{357F2D}
+\definecolor{cvGreenLight}{HTML}{b8e4b3}
+\definecolor{cvRed}{HTML}{7f2d35}
+\definecolor{cvDark}{HTML}{2F3142}
+\definecolor{cvAccent}{HTML}{474A65}
+
 \begin{document}
 
 \maketitle
@@ -295,23 +301,71 @@ Dear Miss.\ Smith
 \end{cvCoverLetter}
   \end{lstlisting}
 
+\section{Change Style and Layout}
+
+  To change the style, one can redefine the colours, lengths and TikZ styles used throughout the document class.
+
+  By default the following colours are defined:
+  \begin{itemize}
+    \item |cvGreen| default dark green colour (hex value: {\color{cvGreen} |357F2D|})
+    \item |cvGreenLight| light green colour, for larger shapes and backgrounds (hex value: {\color{cvGreenLight} |B8E4B3|})
+    \item |cvDark| default text colour (hex value: {\color{cvDark} |2F3142|})
+    \item |cvRed| currently not used (hex value: {\color{cvRed} |7F2D35|})
+    \item |cvAccent| lighter grey shade for accented text (hex value: {\color{cvAccent} |474A65|})
+  \end{itemize}
+  
+  To change these, use the code from \cref{cvColour} in the preamble:
+  
+  \begin{lstlisting}[caption={Colour editing.},label=cvColour]
+\definecolor{cvDark}{HTML}{000000}
+  \end{lstlisting}
+  
+  By overwriting the following styles, one can change the appearance of multiple TikZ nodes. The following styles are available:
+  \begin{itemize}
+    \item |interesticon|
+    \item |interesttext|
+    \item |timedottext|
+    \item |eventdottext|
+    \item |invisibletimedot|
+    \item |timedot|
+    \item |eventdot|
+    \item |contactIcon|
+    \item |contactText|
+    \item |headerIcon|
+    \item |skillLevel|
+    \item |languageText|
+    \item |skillText|
+    \item |progressArea|
+    \item |progressBar|
+    \item |sectionTitle|
+  \end{itemize}
+  
+  Adding your own styles is easy with the code from \cref{cvTikZStyle}.
+  
+  \begin{lstlisting}[caption={Change TikZ style.},label=cvTikZStyle]
+\tikzset{
+  interesticon/.style = {},
+}
+  \end{lstlisting}
+  
+  
 \section{Example}
 
   The source code of a typical CV document can be found below. \Cref{example-cv,example-cover-letter} depict the resulting PDF documents.
 
   \begin{figure}[!ht]
-    \includegraphics[width=\textwidth,page=1]{mwe.pdf}
+    \includegraphics[width=\textwidth,page=1]{mwe-xelatex.pdf}
     \caption{Example CV (scaled).}
     \label{example-cv}
   \end{figure}
 
   \begin{figure}[!ht]
-    \includegraphics[width=\textwidth,page=2]{mwe.pdf}
+    \includegraphics[width=\textwidth,page=2]{mwe-xelatex.pdf}
     \caption{Example cover letter (scaled).}
     \label{example-cover-letter}
   \end{figure}
 
-  \lstinputlisting[language=tex]{mwe.tex}
+  \lstinputlisting[language=tex]{mwe-xelatex.tex}
 
 \section{Source Code}
 
