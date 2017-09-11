@@ -165,71 +165,106 @@
 
 % TODO: check relevance!
 \tikzset{
-  interesticon/.style = {%
-    minimum width=3em
+  interesticon/.style = {},
+  interesttext/.style = {},
+  timedottext/.style = {},
+  eventdottext/.style = {},
+  invisibletimedot/.style = {},
+  timedot/.style = {},
+  eventdot/.style = {},
+  contactIcon/.style={},
+  contactText/.style={},
+  headerIcon/.style={},
+  skillLevel/.style={},
+  languageText/.style={},
+  skillText/.style={},
+  progressArea/.style={},
+  progressBar/.style={},
+  sectionTitle/.style={},
+  sectionEduText/.style={%
+  eventdottext,
+  anchor=north west
   },
-  interesttext/.style = {%
+  cv@interesticon/.style = {%
+    minimum width=3em,
+    interesticon
   },
-  timedottext/.style = {%
+  cv@interesttext/.style = {%
+    interesttext,
+  },
+  cv@timedottext/.style = {%
     black,
+    timedottext,
   },
-  eventdottext/.style = {%
+  cv@eventdottext/.style = {%
     text width=\cvMainWidth-\cvTimeDotSep,
     black,
-    %text depth=0pt,
     anchor=north west,
+    eventdottext,
   },
-  invisibletimedot/.style = {%
+  cv@invisibletimedot/.style = {%
     circle,
     minimum width=3pt,
-    anchor=center
-  },
-  timedot/.style = {%
+    anchor=center,
     invisibletimedot,
+  },
+  cv@timedot/.style = {%
+    cv@invisibletimedot,
     draw,
     minimum width=3pt,
     fill,
     black,
+    timedot,
   },
-  eventdot/.style = {%
+  cv@eventdot/.style = {%
     fill=black,
     circle,
-    minimum width=2\cvNodeDiameter
+    minimum width=2\cvNodeDiameter,
+    eventdot
   },
-  contactIcon/.style={%
+  cv@contactIcon/.style={%
     minimum height=\baselineskip,
+    contactIcon,
   },
-  contactText/.style={%
+  cv@contactText/.style={%
     minimum height=\baselineskip,
     text depth=0pt,
+    contactText,
   },
-  headerIcon/.style={%
+  cv@headerIcon/.style={%
     minimum width=\cvHeaderIconWidth,
     anchor=center,
+    headerIcon,
   },
-  skillLevel/.style={},
-  languageText/.style={},
-  skillText/.style={},
-  progressArea/.style={%
+  cv@skillLevel/.style={skillLevel,},
+  cv@languageText/.style={languageText,},
+  cv@skillText/.style={skillText,},
+  cv@progressArea/.style={%
     minimum width=5em,
     minimum height=0.75em,
     rectangle,
     draw,
-    cvGreen},
-  progressBar/.style={%
+    cvGreen,
+    progressArea
+  },
+  cv@progressBar/.style={%
     minimum height=0.75em,
     rectangle,
     draw,
     fill,
     cvGreen,
-    anchor=west},
-  sectionTitle/.style={%
+    anchor=west,
+    progressBar
+  },
+  cv@sectionTitle/.style={%
     anchor=north west,
     align=left,
+    sectionTitle,
   },
-  sectionEduText/.style={%
-    eventdottext,
-    anchor=north west
+  cv@sectionEduText/.style={%
+    cv@eventdottext,
+    anchor=north west,
+    sectionEduText,
   },
 }
 
@@ -404,18 +439,18 @@
   \node[%
     below=0.6cm of cv@last item %
       \the\value{cv@lastItem}.south west,
-    sectionTitle] 
+    cv@sectionTitle] 
     (cv@title \the\value{cv@titleNext}) 
     {\begingroup\edef\y{\endgroup%
     \cvSection\bgroup\noexpand\kleft{%
       \extract{#1}{1}}}%
     \y\StrGobbleLeft{#1}{1}\egroup};
   \node[left=\cvTimeDotSep of cv@title %
-    \the\value{cv@titleNext},headerIcon] {#2};
+    \the\value{cv@titleNext},cv@headerIcon] {#2};
   \node[
     below=0.6cm of cv@last item %
       \the\value{cv@lastItem}.south west,
-    sectionTitle] 
+    cv@sectionTitle] 
     (cv@title \the\value{cv@titleNext} dummy) {%
       \phantom{\cvSection{Education}}};
   \begin{scope}[on background layer]
@@ -426,14 +461,14 @@
       (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
   \end{scope}
 }{%
-  \node[sectionTitle] at (0,0) (cv@title %
+  \node[cv@sectionTitle] at (0,0) (cv@title %
     \the\value{cv@titleNext})
   {\begingroup\edef\y{\endgroup%
   \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
   \y\StrGobbleLeft{#1}{1}\egroup};
   \node[
     left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
-    headerIcon] 
+    cv@headerIcon] 
     {#2};
   \begin{scope}[on background layer]
     \draw[line width=2pt,cvGreen] 
@@ -467,44 +502,44 @@
       \node[%
         below=\cvSectionSep of item %
           \the\value{cv@itemPrev}.south west,
-        eventdottext] 
+        cv@eventdottext] 
         (item \the\value{cv@itemNext} header) 
         {\phantom{Evening}};
       \node[%
         below=\cvSectionSep of item %
           \the\value{cv@itemPrev}.south west,
-        sectionEduText] 
+        cv@sectionEduText] 
         (item \the\value{cv@itemNext}) 
         {##1};
       \node[%
         left=\cvTimeDotSep of item %
           \the\value{cv@itemNext} header,
-        timedot] 
+        cv@timedot] 
         {};
     }{
       \node[%
         below=\cvSectionSep of cv@title %
           \the\value{cv@titlePrev}.south west,
-        eventdottext] 
+        cv@eventdottext] 
         (item \the\value{cv@itemNext} header) 
         {\phantom{Evening}};
       \node[
         below=\cvSectionSep of cv@title %
           \the\value{cv@titlePrev}.south west,
-        sectionEduText] 
+        cv@sectionEduText] 
         (item \the\value{cv@itemNext}) 
         {##1};
       \node[
         left=\cvTimeDotSep of item %
           \the\value{cv@itemNext} header,
-        timedot] 
+        cv@timedot] 
         (start) 
         {};
     }
     \node[
       left=\cvTimeDotSep of item %
         \the\value{cv@itemNext}.south west,
-      invisibletimedot] 
+      cv@invisibletimedot] 
       (end) 
       {};
     \stepcounter{cv@itemPrev}
@@ -856,15 +891,15 @@
 \NewDocumentCommand{\cv@ContactTemplate}{mm}{
   \NewDocumentCommand{#1}{m}{
       \ifcv@contactfirst \\ \else %
-        \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
-        \pgfmatrixnextcell \node[contactText]{##1};
+        \global\cv@contactfirsttrue \fi\node[cv@contactIcon]{#2}; 
+        \pgfmatrixnextcell \node[cv@contactText]{##1};
   }
 }
 \NewDocumentCommand{\cv@ContactTemplateLink}{mm}{
   \NewDocumentCommand{#1}{mm}{
       \ifcv@contactfirst \\ \else %
-        \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
-        \pgfmatrixnextcell \node[contactText]{%
+        \global\cv@contactfirsttrue \fi\node[cv@contactIcon]{#2}; 
+        \pgfmatrixnextcell \node[cv@contactText]{%
           \@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
   }
 }
@@ -968,16 +1003,16 @@
     % TODO: replace this with a simple if!
     \ifcv@interestContent %
       \node[below=0.4cm of cv@interest text %
-        \the\value{cv@cvInterestCounterPrev},interesticon] 
+        \the\value{cv@cvInterestCounterPrev},cv@interesticon] 
         (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
       \node[below=0cm of cv@interest icon %
-        \the\value{cv@cvInterestCounter},interesttext] 
+        \the\value{cv@cvInterestCounter},cv@interesttext] 
       (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \else
-      \node[interesticon] (cv@interest icon %
+      \node[cv@interesticon] (cv@interest icon %
         \the\value{cv@cvInterestCounter}) {##1};
       \node[below=0cm of cv@interest icon %
-        \the\value{cv@cvInterestCounter},interesttext] 
+        \the\value{cv@cvInterestCounter},cv@interesttext] 
         (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \fi
     \stepcounter{cv@cvInterestCounter}
@@ -1158,8 +1193,8 @@
   \NewDocumentCommand{\cvLanguage}{mm}{%
     {\globaldefs=1\relax\pgfkeys{%
       /@cv/languages/lang\the\value{cv@languages} = ##2}}
-    \node[languageText]{##1}; \pgfmatrixnextcell %
-      \node[progressArea] (cv@language \the\value{cv@languages}) {}; \\
+    \node[cv@languageText]{##1}; \pgfmatrixnextcell %
+      \node[cv@progressArea] (cv@language \the\value{cv@languages}) {}; \\
     \stepcounter{cv@languages}
   }%
   \ruleline{Languages}%
@@ -1179,7 +1214,7 @@
   \loop\ifnum\value{cv@languagelevel}<\value{cv@languages}
     \draw (cv@language \the\value{cv@languagelevel}.west) %
       node[%
-        progressBar,
+        cv@progressBar,
         minimum width=\pgfkeysvalueof{%
         /@cv/languages/lang\the\value{cv@languagelevel}}em]%
         {};
