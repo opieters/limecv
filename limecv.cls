@@ -26,7 +26,6 @@
 %
 % v0.1: initial release
 %
-
 \NeedsTeXFormat{LaTeX2e}
 
 \ProvidesClass{limecv}[\filedate\space Version%
@@ -38,14 +37,6 @@
 %
 % process key-value class options
 \RequirePackage{kvoptions}
-
-
-
-%%%%%% TODO switch case implementation!
-% https://tex.stackexchange.com/questions/5116/making-switch-case-with-etoolboxs-ifdefequal
-%%%%%
-
-
 
 %-------------------------------------------------------
 %
@@ -175,11 +166,9 @@
 % TODO: check relevance!
 \tikzset{
   interesticon/.style = {%
-    below=0.4cm of text,
     minimum width=3em
   },
   interesttext/.style = {%
-    below=0cm of icon
   },
   timedottext/.style = {%
     black,
@@ -293,8 +282,10 @@
 % https://tex.stackexchange.com/questions/34563
 % 
 \ifxetex
-  \NewDocumentCommand{\kright}{m}{\leavevmode #1\kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
-  \NewDocumentCommand{\kleft}{m}{\leavevmode \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
+  \NewDocumentCommand{\kright}{m}{\leavevmode #1%
+    \kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
+  \NewDocumentCommand{\kleft}{m}{\leavevmode %
+    \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
 \else
   \NewDocumentCommand{\kright}{m}{#1}
   \NewDocumentCommand{\kleft}{m}{#1}
@@ -304,7 +295,7 @@
 % Argument order: string - character number
 \ExplSyntaxOn
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
-\tl_item:nn { #1 } { #2 }%
+  \tl_item:nn { #1 } { #2 }%
 }
 \ExplSyntaxOff
 
@@ -535,10 +526,12 @@
 % typeset two skills
 \NewDocumentCommand{\cvSkillTwo}{mmmm}{%
   \ifcv@firstskill
-    \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2 & \cvSkill{#3} & #4}
+    \g@addto@macro\cv@skillsTable{\cvSkill{#1} %
+      & #2 & \cvSkill{#3} & #4}
     \cv@firstskillfalse
   \else
-    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2 & \cvSkill{#3} & #4}
+    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} %
+      & #2 & \cvSkill{#3} & #4}
   \fi
 }
 
@@ -558,12 +551,14 @@
 %
 
 \NewDocumentEnvironment{cvMainContent}{}{%
-  %  \begin{scope}[on background layer]
-  %    \node [note,below right=-5mm of if, anchor=north west, text width=2cm] (note1) {using a note here};
-  %  %you may also use align = center instead of text width = ...
-  %  \end{scope}
-
-  \begin{tikzpicture}[every node/.style={inner sep=0pt,outer sep=0pt},remember picture,overlay,shift={($(current page.north west)+(\cvSideWidth+3\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
+  \begin{tikzpicture}[%
+    every node/.style={%
+      inner sep=0pt,
+      outer sep=0pt},
+      remember picture,
+      overlay,
+      shift={($(current page.north west)+%
+        (\cvSideWidth+3\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
 }{%
   \end{tikzpicture}
 }
@@ -575,7 +570,8 @@
       every node/.style={inner sep=0pt,outer sep=0pt},
       remember picture,
       overlay,
-      shift={($(current page.north west)+(\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
+      shift={($(current page.north west)+%
+      (\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
 }{%
     \end{tikzpicture}%
 }
@@ -768,19 +764,31 @@
     position={},address line 1={},address line 2={},
     address line 3={},phone work={},mobile phone={},#2}
     \ifcv@refStored%
-      \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep-0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}L{0.5\cvMainWidth-0.5\cvTimeDotSep-0.5\cvTableSepWidth}@{}}%
-        \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
-        \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
-        \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
-        \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
-        \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
-        \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
-        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
-        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
+      \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep%
+            -0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}%
+          L{0.5\cvMainWidth-0.5\cvTimeDotSep%
+            -0.5\cvTableSepWidth}@{}}%
+        \ifcv@refName            \cv@refAName         %
+          & \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refACompany      %
+          & \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refAPosition     %
+          & \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refAAddressLineA %
+          & \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refAAddressLineB %
+          & \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refAAddressLineC %
+          & \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    %
+          & \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  %
+          & \cv@refBMobilePhone  \fi %
       \end{tabular}%
       \pgfkeys{/@cv/references/value stored = false}%
     \else%
-      \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep}@{}}%
+      \begin{tabular}{@{}L{0.5\cvMainWidth%
+          -0.5\cvTimeDotSep}@{}}%
         \ifcv@refName            \cv@refBName         \fi %
         \ifcv@refCompany      \\ \cv@refBCompany      \fi %
         \ifcv@refPosition     \\ \cv@refBPosition     \fi %
@@ -803,7 +811,8 @@
   \vspace*{\fill}
   \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
-    \fill[cvGreenLight] (current page.north west) rectangle ++(\cvSideWidth+2\cvMargin,-\paperheight);
+    \fill[cvGreenLight] (current page.north west) rectangle %
+      ++(\cvSideWidth+2\cvMargin,-\paperheight);
   \end{tikzpicture}%
   \begin{minipage}{\cvSideWidth}
     \begin{center}
@@ -815,8 +824,10 @@
 
 \newenvironment{cvSideBar*}{%
   \begin{tikzpicture}[remember picture,overlay]
-    \draw (current page.center) ++(\paperwidth/2,\paperheight/2) node (h3) {};
-    \draw (h3) ++(-\cvSideWidth-2\cvMargin,-\paperheight) node (h4) {};
+    \draw (current page.center) %
+      ++(\paperwidth/2,\paperheight/2) node (h3) {};
+    \draw (h3) %
+      ++(-\cvSideWidth-2\cvMargin,-\paperheight) node (h4) {};
     \draw[fill=cvGreenLight,cvGreenLight] (h3) rectangle (h4);
   \end{tikzpicture}
   \begin{minipage}{\cvSideWidth}
@@ -844,14 +855,17 @@
 
 \NewDocumentCommand{\cv@ContactTemplate}{mm}{
   \NewDocumentCommand{#1}{m}{
-      \ifcv@contactfirst \\ \else \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
+      \ifcv@contactfirst \\ \else %
+        \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
         \pgfmatrixnextcell \node[contactText]{##1};
   }
 }
 \NewDocumentCommand{\cv@ContactTemplateLink}{mm}{
   \NewDocumentCommand{#1}{mm}{
-      \ifcv@contactfirst \\ \else\global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
-        \pgfmatrixnextcell \node[contactText]{\@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
+      \ifcv@contactfirst \\ \else %
+        \global\cv@contactfirsttrue \fi\node[contactIcon]{#2}; 
+        \pgfmatrixnextcell \node[contactText]{%
+          \@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
   }
 }
 
@@ -872,10 +886,8 @@
   \cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
   \cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
 
-  % flags source: https://commons.wikimedia.org/wiki/Category:SVG_sovereign_state_flags
-
-
-  \begin{tikzpicture}[every node/.style={inner sep=0pt, outer sep=0pt}]
+  \begin{tikzpicture}[%
+    every node/.style={inner sep=0pt, outer sep=0pt}]
     \matrix [
       column 1/.style={anchor=center},
       column 2/.style={anchor=west,align=left},
@@ -898,9 +910,12 @@
 
 \newcounter{cv@cvInterestCounter}
 \setcounter{cv@cvInterestCounter}{1}
+\newcounter{cv@cvInterestCounterPrev}
+\setcounter{cv@cvInterestCounterPrev}{1}
 
-\newif\ifcv@interestShortContent
-\cv@interestShortContentfalse
+
+\newif\ifcv@interestContent
+\cv@interestContentfalse
 
 \NewDocumentCommand{\cv@TypesetTableRows}{}{}
 
@@ -913,7 +928,7 @@
       \end{tikzpicture}
     \fi
   \else
-    \ifcv@interestShortContent
+    \ifcv@interestContent
       \begin{tabular}{@{}cl@{}}
         \cv@TypesetTableRows
       \end{tabular}
@@ -924,17 +939,18 @@
 \NewDocumentCommand{\cv@interestOpen}{}{
   \ifcv@interestLong
     \cv@interesttikzopentrue
-    \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
+    \begin{tikzpicture}[%
+      every node/.style={inner sep=0cm,outer sep=0cm}]
   \else
     \global\def\cv@TypesetTableRows{}
-    \cv@interestShortContentfalse
+    \cv@interestContentfalse
   \fi
 }
 
 \NewDocumentCommand{\cv@definecv@interestSection}{}{
   \NewDocumentCommand{\cv@interestSection}{m}{%
     \cv@interestClose
-    \ifcv@interestShortContent
+    \ifcv@interestContent
 
       \vspace*{8pt}
     \fi
@@ -950,14 +966,23 @@
     \cv@interestOpen
     % parse optinal argument if present
     % TODO: replace this with a simple if!
-    \ifnum\value{cv@cvInterestCounter}>1 %
-      \node[interesticon] (icon) {##1};
-      \node[interesttext] (text) {##2};
+    \ifcv@interestContent %
+      \node[below=0.4cm of cv@interest text %
+        \the\value{cv@cvInterestCounterPrev},interesticon] 
+        (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
+      \node[below=0cm of cv@interest icon %
+        \the\value{cv@cvInterestCounter},interesttext] 
+      (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \else
-      \node[] (icon) {##1};
-      \node[interesttext] (text) {##2};
+      \node[interesticon] (cv@interest icon %
+        \the\value{cv@cvInterestCounter}) {##1};
+      \node[below=0cm of cv@interest icon %
+        \the\value{cv@cvInterestCounter},interesttext] 
+        (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \fi
     \stepcounter{cv@cvInterestCounter}
+    \stepcounter{cv@cvInterestCounterPrev}
+    \cv@interestContenttrue
   }
 }
 
@@ -970,34 +995,32 @@
     \g@addto@macro\cv@TypesetTableRows{&}%
     \g@addto@macro\cv@TypesetTableRows{##2}%
     \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
-    \stepcounter{cv@cvInterestCounter}
-    \cv@interestShortContenttrue
+    \cv@interestContenttrue
   }
 }
 
-%TODO: switch case here!!
+\ExplSyntaxOn
 \NewDocumentEnvironment{cvInterests}{o}{%
   % set defaults
   \cv@interestLongtrue
   % parse optional arguments
+  
   \@IfNoValueOrEmptyTF{#1}{}{%
-    \ifnum\pdf@strcmp{#1}{short}=\z@ %
-      \cv@interestLongfalse%
-    \else %
-      \ifnum\pdf@strcmp{#1}{long}=\z@ %
-      \cv@interestLongtrue%
-      \else %
-      % add \MessageBreak
-        \ClassError{limecv}{Unkown option `#1' for cvInterests environment.}{Only `long' and `short' are valid options for this environment.}%
-      \fi%
-    \fi%
+    \str_case:nnF {#1}{
+      {long}{\cv@interestLongtrue}
+      {short}{\cv@interestLongfalse}
+    }{\ClassError{limecv}{Unkown option `#1' for cvInterests %
+      environment.}{Only `long' and `short' are valid options %
+      for this environment.}}
   }
   
   \cv@definecv@interestSection
   % define new commands
-  \NewDocumentCommand{\cvInterestsPersonal}{}{\cv@interestSection{\faUser\ \emph{Personal}}}
+  \NewDocumentCommand{\cvInterestsPersonal}{}{%
+    \cv@interestSection{\faUser\ \emph{Personal}}}
   %
-  \NewDocumentCommand{\cvInterestsProfessional}{}{\cv@interestSection{\faBriefcase\ \emph{Professional}}}
+  \NewDocumentCommand{\cvInterestsProfessional}{}{%
+    \cv@interestSection{\faBriefcase\ \emph{Professional}}}
   %
   \ifcv@interestLong
     \cv@definecvInterestLong
@@ -1010,6 +1033,7 @@
 }{%
   \cv@interestClose
 }
+\ExplSyntaxOff
 
 %-------------------------------------------------------
 %
@@ -1055,29 +1079,51 @@
     \cv@projectHeightfalse
     % parse optional arguments
     \@IfNoValueOrEmptyTF{##1}{}{\setkeys{cv@Project}{##1}}
-    \ifnodedefined{project \the\value{cv@projectPrevious} description}{}{%
-      \node (project \the\value{cv@projectPrevious} description) {};
+    \ifnodedefined{project \the\value{cv@projectPrevious} %
+      description}{}{%
+      \node (project \the\value{cv@projectPrevious} %
+        description) {};
     }
     % draw image
     \ifcv@projectImage 
       \ifcv@projectWidth
-        \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
+        \node[below=\cv@projectSep of project %
+          \the\value{cv@projectPrevious} description] 
+          (project \the\value{cv@projectCurrent} image) 
+          {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
       \else
         \ifcv@projectHeight
-          \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description] (project \the\value{cv@projectCurrent} image) {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
+          \node[below=\cv@projectSep of project %
+          \the\value{cv@projectPrevious} description] 
+          (project \the\value{cv@projectCurrent} image) 
+          {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
         \else
-          \ClassError{limecv}{No width or height specified, but image specified.}{Always specify the height or width if an image is set.}
+          \ClassError{limecv}{No width or height specified, %
+          but image specified.}{Always specify the height or %
+          width if an image is set.}
         \fi
       \fi
       % draw title (and add href if specified)
-      \node[text width=\cvSideWidth,align=center,below=0.2cm of project \the\value{cv@projectCurrent} image] (project \the\value{cv@projectCurrent} title) {%
+      \node[%
+        text width=\cvSideWidth,
+        align=center,
+        below=0.2cm of project \the\value{cv@projectCurrent} image] 
+        (project \the\value{cv@projectCurrent} title) {%
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \else
       % draw title (and add href if specified)
-      \node[below=\cv@projectSep of project \the\value{cv@projectPrevious} description,text width=\cvSideWidth,align=center] (project \the\value{cv@projectCurrent} title) {%
+      \node[below=\cv@projectSep of project %
+        \the\value{cv@projectPrevious} description,
+        text width=\cvSideWidth,
+        align=center] 
+        (project \the\value{cv@projectCurrent} title) {%
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \fi
-    \node[below=0.2cm of project \the\value{cv@projectCurrent} title,text width=\cvSideWidth,align=center] (project \the\value{cv@projectCurrent} description) {##3};
+    \node[
+      below=0.2cm of project \the\value{cv@projectCurrent} title,
+      text width=\cvSideWidth,
+      align=center] 
+      (project \the\value{cv@projectCurrent} description) {##3};
     
     \setlength\cv@projectSep\cvSectionSep
     % increase counter value
@@ -1104,18 +1150,22 @@
 \setcounter{cv@languages}{1}
 
 \pgfkeys{/@cv/languages/.is family,
-/@cv/languages/.unknown/.style = {\pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
+/@cv/languages/.unknown/.style = {%
+  \pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
 
 
 \newenvironment{cvLanguages}{%
   \NewDocumentCommand{\cvLanguage}{mm}{%
-    {\globaldefs=1\relax\pgfkeys{/@cv/languages/lang\the\value{cv@languages} = ##2}}
-    \node[languageText]{##1}; \pgfmatrixnextcell \node[progressArea] (cv@language \the\value{cv@languages}) {}; \\
+    {\globaldefs=1\relax\pgfkeys{%
+      /@cv/languages/lang\the\value{cv@languages} = ##2}}
+    \node[languageText]{##1}; \pgfmatrixnextcell %
+      \node[progressArea] (cv@language \the\value{cv@languages}) {}; \\
     \stepcounter{cv@languages}
   }%
   \ruleline{Languages}%
   \vspace{4pt}
-  \begin{tikzpicture}[every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
+  \begin{tikzpicture}[%
+    every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
   \matrix [
     column 1/.style={anchor=east},
     column sep=6pt,
@@ -1194,24 +1244,32 @@
 }
 
 \newenvironment{cvCoverLetter}{%
-  \begin{tikzpicture}[remember picture,overlay, every node/.style={inner sep=0cm,outer sep=0cm}]
+  \begin{tikzpicture}[%
+      remember picture,
+      overlay, 
+      every node/.style={inner sep=0cm,outer sep=0cm}]
     % draw green background
     \begin{scope}[on background layer]
-      \draw (current page.center) ++(-\paperwidth/2,\paperheight/2) node (h5) {};
+      \draw (current page.center) %
+        ++(-\paperwidth/2,\paperheight/2) node (h5) {};
       \draw (h5) ++(\paperwidth,-\cvCoverLetterHeight) node (h6) {};
       \draw[fill=cvGreenLight,cvGreenLight] (h5) rectangle (h6);
     \end{scope}
-    \draw (current page.north east) ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,-\cvCoverLetterHeight/2) node (h7) {};
+    \draw (current page.north east) %
+      ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,
+         -\cvCoverLetterHeight/2) node (h7) {};
     \node[anchor=east] at (h7) (cv cover letter name){%
       \fontsize{50}{60}\selectfont
-      % trick to expand argument such that `kleft` sees an alphabetic constant (i.e. a single letter)
+      % trick to expand argument such that `kleft` sees an 
+      % alphabetic constant (i.e. a single letter)
       \begingroup\edef\y{\endgroup%
         \noexpand\kleft{\cv@FirstNameLetter}}%
       \y
       \StrGobbleLeft{\pgfkeysvalueof{/@cv/info/first name}}{1}\space
       \StrGobbleRight{\pgfkeysvalueof{/@cv/info/last name}}{1}
       % same trick
-      % trick to expand argument such that `kleft` sees an alphabetic constant (i.e. a single letter)
+      % trick to expand argument such that `kleft` sees an 
+      % alphabetic constant (i.e. a single letter)
       \begingroup\edef\y{\endgroup%
         \noexpand\kright{\cv@LastNameLetter}}%
       \y
