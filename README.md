@@ -22,6 +22,10 @@ After installing this package, make sure you have the following fonts installed:
 * [FontAwesome][FA]
 * [Fira][fira]
 
+## Documentation
+
+The class documentation can be found [here][docs].
+
 ## Roadmap
 
 Below is a list of upcoming features and important todo's. After these have been resolved, the first stable release will be released.
@@ -43,3 +47,4 @@ LPPL v1.3c See LICENSE file.
 [blog]: https://olivierpieters.be/blog/archive/tag/business-card
 [FA]: http://fontawesome.io
 [fira]: https://github.com/mozilla/Fira
+[docs]: http://ctan.org/tex-archive/macros/generic/limecv/limecv.pdf
