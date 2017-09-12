@@ -33,7 +33,7 @@ Below is a list of upcoming features and important todo's. After these have been
 - [ ] Publish to CTAN.
 - [ ] Initial release.
 - [x] LuaLaTeX support.
-- [ ] LaTeX support.
+- [x] LaTeX support.
 - [ ] Cleaned code.
 - [ ] `.dtx` source code format.
 - [ ] Real testing by third party.
