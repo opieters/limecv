@@ -954,6 +954,7 @@
 
 \newif\ifcv@contactfirst
 \NewDocumentEnvironment{cvContact}{}{%
+  \vspace{\cvSectionSBSep}
   \ruleline{Contact}%
   \vspace{\cvSectionSBSep}
   
@@ -1332,15 +1333,13 @@
       every node/.style={inner sep=0cm,outer sep=0cm}]
     % draw green background
     \begin{scope}[on background layer]
-      \draw (current page.center) %
-        ++(-\paperwidth/2,\paperheight/2) node (h5) {};
-      \draw (h5) ++(\paperwidth,-\cvCoverLetterHeight) node (h6) {};
-      \draw[fill=cvGreenLight,cvGreenLight] (h5) rectangle (h6);
+      \fill[cvGreenLight] (current page.north west) rectangle %
+        ++(\paperwidth,-\cvCoverLetterHeight);
     \end{scope}
     \draw (current page.north east) %
       ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,
-         -\cvCoverLetterHeight/2) node (h7) {};
-    \node[anchor=east] at (h7) (cv cover letter name){%
+         -\cvCoverLetterHeight/2) node (cv@h7) {};
+    \node[anchor=east] at (cv@h7) (cv cover letter name){%
       \fontsize{50}{60}\selectfont
       % trick to expand argument such that `kleft` sees an 
       % alphabetic constant (i.e. a single letter)
