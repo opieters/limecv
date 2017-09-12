@@ -178,10 +178,7 @@
   progressArea/.style={},
   progressBar/.style={},
   sectionTitle/.style={},
-  sectionEduText/.style={%
-  eventdottext,
-  anchor=north west
-  },
+  sectionEduText/.style={},
   cv@interesticon/.style = {%
     minimum width=\cvHeaderIconWidth,
     interesticon
