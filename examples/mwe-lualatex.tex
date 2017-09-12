@@ -1,0 +1,150 @@
+% !TEX TS-program = lualatex
+% !TEX encoding = UTF-8 Unicode
+
+% mwe-lualatex.cls
+% 
+% Copyright 2017 Olivier Pieters
+%
+% This is a MWE of the `limecv' class that showcases its features 
+% and sane packages to load. This MWE assumes that the LuaLaTeX 
+% compiler is used. It might be necessary to manually specify the 
+% font path for FontAwesome if recent symbols are used.
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Olivier Pieters.
+% Contact the maintainer at: me (at) olivierpieters (dot) be. 
+
+
+\documentclass[a4paper]{limecv}
+  
+  % Defaults used in template design.
+  \usepackage[margin=1cm,noheadfoot]{geometry}
+  
+  % For cover letter.
+  \usepackage{lipsum}
+  
+  \begin{document}
+  
+  % Design of side bar.
+  \begin{cvSideBar}
+    \cvID{John}{Doe}{picture}{position}
+  
+    \begin{cvProfile}
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ullamcorper euismod lorem nec eleifend. Suspendisse ac varius quam. Etiam laoreet nunc orci, vestibulum imperdiet enim elementum at. Duis dictum metus sapien, eu blandit quam malesuada et. Ut viverra maximus eros.
+    \end{cvProfile}
+    
+    \begin{cvContact}
+      \cvContactAddress{Some Street 78\\B-9000 Ghent}
+      \cvContactEmail{mailto:john@doe.tld}{john@doe.tld}
+      \cvContactPhone{+1 781 555 1212}
+      \cvContactWebsite{https://doe.tld}{doe.tld}
+      \cvContactLinkedin{https://www.linkedin.com/in/johndoe/}{johndoe}
+      \cvContactTwitter{https://twitter.com/johndoe}{@johndoe}
+      \cvContactKeybase{https://keybase.io/johndoe}{\texttt{AAAA 5555 BBBB FFFF}}
+    \end{cvContact}
+    
+    \begin{cvLanguages}
+      \cvLanguage{English (native)}{5}
+      \cvLanguage{German (B2)}{3}
+      \cvLanguage{Spanish}{3}
+    \end{cvLanguages}
+    
+    \begin{cvInterests}[short]
+      \cvInterestsPersonal
+      \cvInterest{\faTrain}{model trains}
+      \cvInterest{\faMicrochip}{electronics}
+      \cvInterest{\faSuitcase}{travelling}
+      \cvInterestsProfessional
+      \cvInterest{\faFilm}{film}
+      \cvInterest{\faCamera}{photography}
+    \end{cvInterests}
+    
+    \begin{cvProjects}
+      \cvProject[image=limecv-icon,width=1cm,link=https://github.com/opieters/limecv]{\texttt{limecv}}{A \LaTeX\ CV document class.}
+    \end{cvProjects}
+    
+  \end{cvSideBar}%
+  \hfill%
+  %
+  % Design of main section.
+  %
+  \begin{cvMainContent}
+    % education section
+    \begin{cvEducation}
+      \cvItem{Evening class: Chinese\\
+      Some School, City. September 2015 -- June 2016\\
+      Achieved A2 language skill in Chinese (Mandarin).}
+      \cvItem{Bachelor of Science in Biochemistry and Biotechnology\\
+      University, City. September 2009 -- June 2012\\
+      General training in the basic sciences and the molecular life science.}
+      \cvItem{Master of Science in Biochemistry and Biotechnology\\
+      University, City. September 2012 -- June 2015\\
+      Acquisition of insight into and knowledge of possibilities for application in the area of biochemistry and biotechnology, specific with applications in biomedical application and due problem-solving reasoning skills.}
+    \end{cvEducation}
+    
+    % experience section
+    \begin{cvExperience}
+      \cvItem{Student Job\\
+              \textsc{\selectfont Company X}, Location X. Summer 2010\\
+              Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet ultricies ipsum ultrices ut.};
+      \cvItem{Internship\\
+              \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet et ex.};
+      \cvItem{Internship\\
+              \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae sodales felis elit in ipsum.};
+    \end{cvExperience}
+    
+    \begin{cvSkills}
+      \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
+      \cvSkillTwo{4}{Python}{4}{VHDL}
+      \cvSkillTwo{4}{Microsoft Office}{4}{macOS}
+      \cvSkillTwo{3}{C, C++}{1}{Javascript}
+      \cvSkillTwo{3}{HTML5/CSS}{3}{Bash}
+    \end{cvSkills}
+  
+    \begin{cvReferences}
+      \cvAddReference{%
+        name=Jane Smith,
+        company=Company ABC Co.\ Ltd.,
+        position=Job title,
+        address line 1=Street lane 2,
+        address line 2=B-1150 Brussels,
+        mobile phone=+1 781 555 1212}%
+    \end{cvReferences}
+  
+  \end{cvMainContent}
+  
+  \clearpage
+  
+  \begin{cvCoverLetter}
+  
+  \cvBeneficiary{%
+    name=Jane Smith,
+    position=Position,
+    company=Company,
+    address line 1=Address line 1,
+    address line 2=Address line 2}
+  
+  Dear Miss.\ Smith
+  
+  \vspace{\baselineskip}
+  
+  \lipsum[1-3]
+  
+  \vspace{\margin}
+  
+  \cvFullName
+  
+  \end{cvCoverLetter}
+  
+  \end{document}
