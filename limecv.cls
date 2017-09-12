@@ -47,6 +47,8 @@
 \cv@fontPathfalse
 \DeclareStringOption{path}
 \AddToKeyvalOption*{path}{\cv@fontPathtrue}
+\DeclareStringOption[Fira Sans]{sansfont}
+\DeclareStringOption[Fira Mono]{monofont}
 \ProcessKeyvalOptions*
 
 %-------------------------------------------------------
@@ -277,9 +279,9 @@
   \RequirePackage{fontawesome}
 
   % set fonts
-  \setmainfont[Numbers={Monospaced}]{Fira Sans}
-  \setsansfont{Fira Sans}
-  \setmonofont{Fira Mono}
+  \setmainfont[Numbers={Monospaced}]{\limecv@sansfont}
+  \setsansfont{\limecv@sansfont}
+  \setmonofont{\limecv@monofont}
   \ifcv@fontPath
     \newfontfamily{\cv@FA}[Path=\limecv@path]%
       {FontAwesome}
