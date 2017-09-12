@@ -9,3 +9,5 @@ limecv.cls
 *.glo
 mwe-xelatex.pdf
 limecv.pdf
+mwe-latex.pdf
+mwe-lualatex.pdf

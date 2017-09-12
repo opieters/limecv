@@ -27,7 +27,7 @@
 \documentclass[a4paper]{limecv}
   
   % Defaults used in template design.
-  \usepackage[margin=1cm,noheadfoot]{geometry}
+  \usepackage[margin=\cvMargin,noheadfoot]{geometry}
   
   % For cover letter.
   \usepackage{lipsum}
@@ -61,7 +61,7 @@
     \begin{cvInterests}[short]
       \cvInterestsPersonal
       \cvInterest{\faTrain}{model trains}
-      \cvInterest{\faMicrochip}{electronics}
+      \cvInterest{\faGamepad}{gaming}
       \cvInterest{\faSuitcase}{travelling}
       \cvInterestsProfessional
       \cvInterest{\faFilm}{film}
@@ -72,13 +72,10 @@
       \cvProject[image=limecv-icon,width=1cm,link=https://github.com/opieters/limecv]{\texttt{limecv}}{A \LaTeX\ CV document class.}
     \end{cvProjects}
     
-  \end{cvSideBar}%
-  \hfill%
-  %
-  % Design of main section.
-  %
+  \end{cvSideBar}
+
   \begin{cvMainContent}
-    % education section
+
     \begin{cvEducation}
       \cvItem{Evening class: Chinese\\
       Some School, City. September 2015 -- June 2016\\
@@ -91,7 +88,6 @@
       Acquisition of insight into and knowledge of possibilities for application in the area of biochemistry and biotechnology, specific with applications in biomedical application and due problem-solving reasoning skills.}
     \end{cvEducation}
     
-    % experience section
     \begin{cvExperience}
       \cvItem{Student Job\\
               \textsc{\selectfont Company X}, Location X. Summer 2010\\
@@ -119,7 +115,7 @@
         position=Job title,
         address line 1=Street lane 2,
         address line 2=B-1150 Brussels,
-        mobile phone=+1 781 555 1212}%
+        mobile phone=+1 781 555 1212}% <<-- important!
     \end{cvReferences}
   
   \end{cvMainContent}
@@ -141,7 +137,7 @@
   
   \lipsum[1-3]
   
-  \vspace{\margin}
+  \vspace{\cvMargin}
   
   \cvFullName
   
