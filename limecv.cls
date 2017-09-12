@@ -88,8 +88,6 @@
 \RequirePackage{xstring}
 % key-value parsing within document
 \RequirePackage{xkeyval}
-% TODO: function?
-\RequirePackage{pdftexcmds}
 
 
 %-------------------------------------------------------
@@ -165,7 +163,6 @@
   backgrounds,
   matrix}
 
-% TODO: check relevance!
 \tikzset{
   interesticon/.style = {},
   interesttext/.style = {},
@@ -432,6 +429,9 @@
 \newlength\cvSkillSep
 \setlength\cvSkillSep{1ex}
 
+\newlength\cvHeaderIconWidth
+\setlength\cvHeaderIconWidth{0pt}
+
 %-------------------------------------------------------
 %
 %   New styling commands
@@ -440,12 +440,6 @@
 % Style main section title
 \NewDocumentCommand{\cvSection}{m}{\Large\textbf{#1}}
 
-% TODO: make this more dynamic!
-\newlength\cvHeaderIconWidth
-\setlength\cvHeaderIconWidth{%
-  \maxof{\widthof{\cvSection{\faBriefcase}}}{\widthof{%
-    \cvSection{\faGraduationCap}}}}
-%\setlength{\cvHeaderIconWidth}{0pt}
 
 % Typeset skill level
 \newcount\my@repeat@count
@@ -482,48 +476,52 @@
 
 % Draw everything associated with main section title.
 \NewDocumentCommand{\cv@Title}{mm}{%
-\ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
-  \node[%
-    below=\cvSectionSep of cv@last item %
-      \the\value{cv@lastItem}.south west,
-    cv@sectionTitle] 
-    (cv@title \the\value{cv@titleNext}) 
+  \ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
+    \setlength\cvHeaderIconWidth{\maxof{\cvHeaderIconWidth}{\widthof{\cvSection{#2}}}}%
+    \protected@write\@auxout{}{\global\cvHeaderIconWidth=\the\cvHeaderIconWidth}
+    \node[%
+      below=\cvSectionSep of cv@last item %
+        \the\value{cv@lastItem}.south west,
+      cv@sectionTitle] 
+      (cv@title \the\value{cv@titleNext}) 
+      {\begingroup\edef\y{\endgroup%
+      \cvSection\bgroup\noexpand\kleft{%
+        \extract{#1}{1}}}%
+      \y\StrGobbleLeft{#1}{1}\egroup};
+    \node[%
+      left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
+      cv@headerIcon] 
+      {#2};
+    \node[
+      below=\cvSectionSep of cv@last item %
+        \the\value{cv@lastItem}.south west,
+      cv@sectionTitle] 
+      (cv@title \the\value{cv@titleNext} dummy) {%
+        \phantom{\cvSection{Education}}};
+    \begin{scope}[on background layer]
+      \draw[line width=\cvTitleLineWidth,cvGreen] 
+        let \p1=(cv@title \the\value{cv@titleNext} %
+                dummy.south west), 
+            \p2=(current page.east) in 
+        (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
+    \end{scope}
+  }{%
+    \node[cv@sectionTitle] at (0,0) (cv@title %
+      \the\value{cv@titleNext})
     {\begingroup\edef\y{\endgroup%
-    \cvSection\bgroup\noexpand\kleft{%
-      \extract{#1}{1}}}%
+    \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
     \y\StrGobbleLeft{#1}{1}\egroup};
-  \node[left=\cvTimeDotSep of cv@title %
-    \the\value{cv@titleNext},cv@headerIcon] {#2};
-  \node[
-    below=\cvSectionSep of cv@last item %
-      \the\value{cv@lastItem}.south west,
-    cv@sectionTitle] 
-    (cv@title \the\value{cv@titleNext} dummy) {%
-      \phantom{\cvSection{Education}}};
-  \begin{scope}[on background layer]
-    \draw[line width=\cvTitleLineWidth,cvGreen] 
-      let \p1=(cv@title \the\value{cv@titleNext} %
-               dummy.south west), 
-          \p2=(current page.east) in 
-      (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
-  \end{scope}
-}{%
-  \node[cv@sectionTitle] at (0,0) (cv@title %
-    \the\value{cv@titleNext})
-  {\begingroup\edef\y{\endgroup%
-  \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
-  \y\StrGobbleLeft{#1}{1}\egroup};
-  \node[
-    left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
-    cv@headerIcon] 
-    {#2};
-  \begin{scope}[on background layer]
-    \draw[line width=\cvTitleLineWidth,cvGreen] 
-      let \p1=(cv@title \the\value{cv@titleNext}%
-               .south west), 
-          \p2=(current page.east) in 
-      (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
-  \end{scope}
+    \node[%
+      left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
+      cv@headerIcon] 
+      {#2};
+    \begin{scope}[on background layer]
+      \draw[line width=\cvTitleLineWidth,cvGreen] 
+        let \p1=(cv@title \the\value{cv@titleNext}%
+                .south west), 
+            \p2=(current page.east) in 
+        (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
+    \end{scope}
 }%
 \stepcounter{cv@titlePrev}%
 \stepcounter{cv@titleNext}
@@ -1033,8 +1031,6 @@
 \NewDocumentCommand{\cv@definecvInterestLong}{}{
   \NewDocumentCommand{\cvInterest}{mm}{%
     \cv@interestOpen
-    % parse optinal argument if present
-    % TODO: replace this with a simple if!
     \ifcv@interestContent %
       \node[below=\cvItemSep of cv@interest text %
         \the\value{cv@cvInterestCounterPrev},cv@interesticon] 
