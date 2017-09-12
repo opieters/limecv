@@ -1,4 +1,4 @@
-# limecv <img src="src/images/limecv-icon.png" alt="limecv project icon" width="20px"/>
+# limecv <img src="src/images/limecv-icon.png" alt="limecv project icon" width="40px"/>
 
 `limecv` is a document class to typeset curriculum vitæ in LaTeX.
 
@@ -22,20 +22,44 @@ After installing this package, make sure you have the following fonts installed:
 * [FontAwesome][FA]
 * [Fira][fira]
 
+The following packages need to be installed on your system they are all available on CTAN: 
+`kvoptions`,
+`ifxetex`,
+`ifluatex`,
+`xparse`,
+`calc`,
+`xcolor`,
+`tabularx`,
+`hyperref`,
+`url`,
+`parskip`,
+`xstring`,
+`xkeyval`,
+`tikz`,
+`graphicx`,
+`fontspec` (XeLaTeX and LuaLaTeX only) and
+`fontawesome`.
+
 ## Documentation
 
 The class documentation can be found [here][docs].
+
+Alternatively, the documentation can also be created by running `pdflatex limecv.dtx` in the source folder.
+
+## Examples
+
+To compile the examples in `/examples/`, install the package from CTAN or compile from source by running: `pdflatex limecv.ins` from the `/src/` folder and copy the resulting `limecv.cls` file to the `/examples/` folder.
 
 ## Roadmap
 
 Below is a list of upcoming features and important todo's. After these have been resolved, the first stable release will be released.
 
-- [ ] Publish to CTAN.
-- [ ] Initial release.
+- [x] Publish to CTAN.
+- [x] Initial release.
 - [x] LuaLaTeX support.
 - [x] LaTeX support.
 - [ ] Cleaned code.
-- [ ] `.dtx` source code format.
+- [x] `.dtx` source code format.
 - [ ] Real testing by third party.
 
 ## Licence
