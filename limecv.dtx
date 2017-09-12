@@ -1,34 +1,74 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2017 by Olivier Pieters
-% -------------------------------------
+% Copyright (C) 2017 by Olivier Pieters - me (at) olivierpieters (dot) be
+% ---------------------------------------------------------------------------
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
 %
-% This file may be distributed and/or modified under the
-% conditions of the GPL-3.0 License, a version can be found
-% in the GitHub repository:
+% This work has the LPPL maintenance status `maintained'.
 %
-%    https://github.com/opieters/limecv
+% The Current Maintainer of this work is Olivier Pieters.
+%
+% This work consists of the files limecv.dtx and limecv.ins
+% and the derived filebase limecv.sty.
 %
 % \fi
 %
 % \iffalse
+%<*driver>
+\ProvidesFile{limecv.dtx}
+%</driver>
 %<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<package>\ProvidesClass{limecv}
-%<package>   [2017/10/27 v0.1 limecv class]
+%<*package>
+    [2017/09/12 v0.1 limecv Document class for CVs.]
+%</package>
 %
 %<*driver>
 \documentclass{ltxdoc}
+\usepackage{listings}
+\usepackage{tikz}
 \usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{xparse}
+
+\NewDocumentCommand{\cvRequirement}{m}{\textbf{#1}}
+
+\definecolor{cvGreen}{HTML}{357F2D}
+\definecolor{cvGreenLight}{HTML}{b8e4b3}
+\definecolor{cvRed}{HTML}{7f2d35}
+\definecolor{cvDark}{HTML}{2F3142}
+\definecolor{cvAccent}{HTML}{474A65}
+
+\lstset{%
+  basicstyle=\ttfamily, % font style and size
+  breakatwhitespace=false,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  language=[LaTeX]{TeX},
+  keywordstyle=\color{blue},
+  commentstyle=\color{red}
+}
+
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
 \begin{document}
   \DocInput{limecv.dtx}
+  \PrintChanges
+  \PrintIndex
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{48}
+% \CheckSum{1466}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -47,20 +87,2233 @@
 %   Right brace   \}     Tilde         \~}
 %
 %
-% \changes{v0.1}{2015/10/04}{Initial version}
+% \changes{v0.1}{2017/09/12}{Initial version.}
 %
-% \GetFileInfo{limecv.cls}
+% \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
-% \DoNotIndex{<list of control sequences>}
+% \providecommand*{\url}{\texttt}
+% 
+% \def\fileversion{v0.1}
+% \def\filedate{2017/09/12}
 %
-% \title{The \textsf{limecv} documentclass\thanks{This document
-%   corresponds to \textsf{limecv}~\fileversion,
-%   dated \filedate.}}
-% \author{Olivier Pieters \\ \texttt{me (at) olivierpieters (dot) be}}
+% \GetFileInfo{limecv.dtx}
+% \title{The \textsf{limecv} document class\thanks{This document corresponds %
+%   to \textsf{limecv}~\fileversion, dated \filedate.}}
+% \author{Olivier Pieters \\ \url{me (at) olivierpieters (dot) be}}
+% \date{\fileversion~from \filedate}
 %
 % \maketitle
 %
+% \documentclass{ltxdoc}
+% 
+% 
+% \begin{document}
+% 
+% \maketitle
+% 
+% \tableofcontents
+% 
 % \section{Introduction}
+% 
+%   This document class is designed to facilitate easy development of 
+%   curriculum vit\ae\ (CV) a set of predefined macros and environments.
+%   Special elements have been designed of particular sections to ease quick 
+%   creation. This document class was co-designed with a business card, which 
+%   can be found on GitHub: \url{https://github.com/opieters/business-card}.
+% 
+%   The design of this CV is split up in three parts, illustrated by 
+%   \cref{design}. Each of these parts that make up this CV template 
+%   will be detailed in the sections below.
+% 
+% \begin{figure}[!ht]
+%   \centering
+%   \begin{tikzpicture}
+%     \draw (0,0) rectangle ++(4.20,5.94);
+%     \draw[fill=black!20] (0,0) rectangle ++(1.5,5.94);
+%     \draw (0.75,2.97) node {\LARGE 1};
+%     \draw (2.85,2.97) node {\LARGE 2};
+%   \end{tikzpicture}%
+%   \hspace{2cm}%
+%   \begin{tikzpicture}
+%     \draw (0,0) rectangle ++(-4.20,-5.94);
+%     \draw[fill=black!20] (0,0) rectangle ++(-4.2,-1.5);
+%   \end{tikzpicture}
+%   \caption{Illustation of basic template. The left image depicts the actual CV: 
+%     side bar to the left (1) with main content on the right (2). The right 
+%     image depicts the cover letter design.}
+%   \label{design}
+% \end{figure}
+% 
+% \section{Requirements}
+% 
+%   It is advised to use the \cvRequirement{XeLaTeX} compiler. However, there is 
+%   also support for \cvRequirement{LaTeX} and \cvRequirement{LuaLaTeX}. In these 
+%   cases, fonts might be different than intended and side bearings will not be 
+%   corrected, since only the XeLaTeX engine has access to these. In the subsequent 
+%   sections, it will always be assumed that the XeLaTeX compiler is used (unless 
+%   noted otherwise). 
+% 
+%   Any font can be used, though by default the \cvRequirement{Fira}
+%   \footnote{\url{https://github.com/mozilla/Fira}} font is used. This should be
+%   installed and accessable by the typesetting system. If another font is desired, 
+%   it can be overwritten using the \lstinline|sansfont| document class options and 
+%   |\cvMainFont| command. 
+% 
+%   \cvRequirement{FontAwesome}\footnote{\url{http://fontawesome.io}} is the icon 
+%   font used. This font should also be available and cannot be replaced by another 
+%   icon font. 
+% 
+% \section{General Macros and Document Class Options}
+% 
+% \section{Side Bar}
+% 
+%   The side bar should contain personal information such as your name, job title 
+%   (or industry or similar), contact information, small bio, interests and language 
+%   skills. Special environments and commands have been defined for each of these 
+%   sections and will be described below. 
+% 
+%   Everything that should be inside the side bar should be placed in the |cvSideBar| 
+%   environment. This environment is placed on the left side of the page by default. 
+%   If it should be typeset on the right side, use the starred version (|cvSideBar*|)
+% 
+%   The following environments are available inside the side bar environment: 
+%   |cvProfile|, |cvContact|, |cvLanguages|, |cvInterests| and |cvProjects|.
+%   
+%   \DescribeMacro{\cvID}
+%   This command typesets a picture (in a circle) with name and position underneath it.
+%   The argument order is: |\cvID{|\meta{first name}|}{|\meta{last name}|}{|
+%   \meta{picture location}|}{|\meta{job position}|}|. Empty fields are allowed for 
+%   the third and fourth arguments. No picture and no job position will then be 
+%   typeset. Example code: 
+%   \begin{lstlisting}
+% \cvID{John}{Doe}{profile_picture}{Broaker}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvProfile} 
+%   This environment contains a brief profile description or biography. No additional 
+%   arguments are allowed. Example code:
+%   \begin{lstlisting}
+% \begin{cvProfile}
+%   A short biography goes here.
+% \end{cvProfile}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvContact} 
+%   All the contact information goes here. Inside this environment, the following 
+%   commands are available: 
+%   \begin{itemize}
+%     \item \DescribeMacro{\cvContactAddress} |\cvContactAddress{|\meta{address}|}| 
+%       typesets an address. How this address should be typeset exactly is left to the 
+%       user. The use of line breaks (|\\|) is allowed;
+%     \item \DescribeMacro{\cvContactEmail} 
+%      |\cvContactEmail{|\meta{link}|}{|\meta{email address}|}| typesets an email 
+%      address. The link variable should be a something like |mailto:john@doe.tld|. 
+%      Clicking on the email address will then automatically open the default email 
+%      client with this address as recipient. If the link argument is left empty, no 
+%      link will be created. 
+%     \item \DescribeMacro{\cvContactPhone} 
+%       |\cvContactPhone{|\meta{mobile phone number}|}| typesets a mobile phone number.
+%     \item \DescribeMacro{\cvContactWebsite} 
+%      |\cvContactWebsite{|\meta{link}|}{|\meta{website URL}|}| typesets a website. The 
+%      link variable should be a something like |https://johndoe.tld|. Clicking on the 
+%      website will then automatically open the default web browser. If the link argument 
+%      is left empty, no action will be performed upon clicking on the website.
+%     \item \DescribeMacro{\cvContactGithub} 
+%       |\cvContactGithub{|\meta{link}|}{|\meta{username}|}| typesets a GitHub profile. 
+%       The link variable should be a valid link to the GitHub profile (for example 
+%       |https://github.com/johndoe|). Clicking on the username will then automatically 
+%       open the default web browser. If the link argument is left empty, no action will 
+%       be performed upon clicking on the website.
+%     \item \DescribeMacro{\cvContactLinkedin} 
+%       |\cvContactLinkedin{|\meta{link}|}{|\meta{username}|}| typesets a LinkedIn profile. 
+%       The link variable should be a link to your LinkedIn profile homepage (for example 
+%       |https://www.linkedin.com/in/johndoe/|). Clicking on the username will then 
+%       automatically open the default web browser. If the link argument is left empty, 
+%       no action will be performed upon clicking on the website. 
+%     \item \DescribeMacro{\cvContactTwitter} 
+%       |\cvContactTwitter{|\meta{link}|}{|\meta{username}|}| typesets a Twitter profile. 
+%       The link variable should direct to your Twitter profile. An example link looks as 
+%       follows: |https://twitter.com/johndoe|. Clicking on the username will then 
+%       automatically open the default web browser. If the link argument is left empty, 
+%       no action will be performed upon clicking on the website.this address as recipient. 
+%       If the link argument is left empty, no link will be created. 
+%     \item \DescribeMacro{\cvContactKeybase} 
+%       |\cvContactKeybase{|\meta{link}|}{|\meta{fingerprint}|}| typesets a keybase 
+%       fingerprint (and account). The link variable should be a link to the KeyBase 
+%       profile (e.g.\ |https://keybase.io/johndoe|). Clicking on the fingerprint will then 
+%       automatically open the default web browser. If the link argument is left empty, no 
+%       action will be performed upon clicking on the website.
+%   \end{itemize}
+%   
+%   A full example:
+%   \begin{lstlisting}
+% \begin{cvContact}
+%   \cvContactAddress{Some Street 78\\B-9000 Ghent\\Belgium}
+%   \cvContactEmail{mailto:john@doe.tld}{john@doe.tld}
+%   \cvContactPhone{+1 781 555 1212}
+%   \cvContactWebsite{https://doe.tld}{doe.tld}
+%   \cvContactGithub{https://github.com/johndoe}{johndoe}
+%   \cvContactLinkedin{https://www.linkedin.com/in/johndoe/}{johndoe}
+%   \cvContactTwitter{https://twitter.com/johndoe}{@johndoe}
+%   \cvContactKeybase{https://keybase.io/johndoe}{\texttt{AAAA 5555 BBBB FFFF}}
+% \end{cvContact}
+%   \end{lstlisting}
+% 
+%   If you wish to add contact information that is not available by default, you can extend 
+%   the command using two internal commands: |\cv@ContactTemplateLink| and 
+%   |\cv@ContactTemplate|. See the source code for usage instructions.
+% 
+%   \DescribeMacro{cvLanguages} This environment is used to showcase language skills. The 
+%   \DescribeMacro{\cvLanguage} |\cvLanguage{|\meta{language}|}{|\meta{skill level}|}| 
+%   should be used inside this environment. The skill level is a real value with a maximum 
+%   value of 5. If higher values are used, the result will not be typeset properly. An 
+%   example is included below.
+% 
+%   \begin{lstlisting}
+% \begin{cvLanguages}
+%   \cvLanguage{English (native)}{5}
+%   \cvLanguage{German (B1)}{3}
+%   \cvLanguage{Spanish}{3}
+% \end{cvLanguages}  
+%   \end{lstlisting}
+% 
+%   \DescribeMacro{cvInterests} Typeset interests (can be both professional and personal) 
+%   using |cvInterests|. By default it just typesets a list of items in the long format 
+%   (|long|). The short format can be activated by passing the |short| option to the 
+%   environment. Inside this environment, three commands can be used: |\cvInterestsPersonal|, 
+%   |\cvInterestsProfessional| and |\cvInterest|. \DescribeMacro{\cvInterestsPersonal} 
+%   |\cvInterestsPersonal| and \DescribeMacro{\cvInterestsProfessional} 
+%   |\cvInterestsProfessional| add optional sections inside this environment to differentiate 
+%   between personal and professional interests respectively. Both macros have no options nor 
+%   arguments. The \DescribeMacro{\cvInterest} |\cvInterest{|\meta{icon}|}{|\meta{interest}|}| 
+%   command takes an icon and interest as arguments. Note that if \LaTeX\ is used, the icon 
+%   argument will be ignored. In this case, there is also no difference between the |long| 
+%   and |short| options of the |cvInterests| environment.
+%   
+%   Examples that illustrate the different options are depicted below:
+% 
+%   \begin{lstlisting}
+% \begin{cvInterests}
+%   \cvInterestsPersonal
+%   \cvInterest{\faTrain}{model trains}
+%   \cvInterest{\faFlask}{(applied) sciences}
+%   \cvInterest{\faSuitcase}{travelling}
+%   \cvInterestsProfessional
+%   \cvInterest{\faGraduationCap}{machine learning}
+%   \cvInterest{\faMicrochip}{electronics}
+%   \cvInterest{\faCogs}{robotics}
+% \end{cvInterests}
+%   \end{lstlisting}
+%   
+%   \begin{lstlisting}
+% \begin{cvInterests}[short]
+%   \cvInterestsPersonal
+%   \cvInterest{\faTrain}{model trains}
+%   \cvInterest{\faFlask}{(applied) sciences}
+%   \cvInterest{\faSuitcase}{travelling}
+%   \cvInterest{\faCamera}{photography}
+%   \cvInterest{\faGamepad}{gaming}
+%   \cvInterest{\faMusic}{music}
+% \end{cvInterests}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvProjects} If you have interesting (side) projects that are relevant for 
+%   your CV, you can list them using the |cvProjects| environment. Inside this environment 
+%   you can use the \DescribeMacro{\cvProject} 
+%   |\cvProject[|\meta{options}|]{|\meta{name}|}{|\meta{description}|}| macro to list all 
+%   your projects. The only options currently allowed in \meta{options} are to pass an image
+%   (using |image|) and a URL (using |link|). This image must be an external file and the user
+%   must handle its size through |width| or |height|. Example usage:
+%   
+%   \begin{lstlisting}
+% \begin{cvProjects}
+%   \cvProject[image=clock,width=1cm]{yanic}{An IoT nixie clock.}
+%   \cvProject{\texttt{limecv}}{A \LaTeX\ document class for curriculum vit\ae.}
+% \end{cvProjects}
+%   \end{lstlisting}
+%   
+%   It is currently not possible to extend the side bar with additional environments. To add
+%   your own, look at the source code and create your own \LaTeX-style hack.  
+% 
+% \section{Main Content}
+% 
+%   The main content section includes details on your education, experience, skills, references
+%   and more. Several environments have been designed to suit specific needs. These will be
+%   discussed next.
+%   
+%   \DescribeMacro{cvMainContent} 
+%   Everything in the main content section should be encapsulated in the |cvMainContent| 
+%   environment. This environment defines four new environments: |cvEducation|, 
+%   |cvExperience|, |cvSkills| and |cvReferences|. These four environments are self 
+%   explanatory in terms of function. Subsequently, we will detail each of these 
+%   environments.
+%   
+%   Note that |cvMainContent| also has a starred variant (|cvMainContent*|). The 
+%   function is similar to |cvSideBar*|, in the sense that it places everything to the 
+%   left instead of the default right location.
+%   
+%   \DescribeMacro{cvEducation} 
+%   The education environment creates a timeline styled list of your education. Individual 
+%   education items should be listed by means of the |\cvItem{|\meta{details}|}| macro which 
+%   is available within this environment. Instead of forcing a specific layout structure, it 
+%   was preferred to leave the actual markup to the end user. \emph{All} information 
+%   concerning a single education should be passed to this single argument. However, the user
+%   is always welcome to create his own styling macro that takes multiple arguments. This is
+%   illustrated by the examples below.
+%   
+%   \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{without} special user markup 
+%     command.}]
+% \begin{cvEducation}
+%   \cvItem{Evening class: Chinese\\
+%   Some School, City. September 2015 -- June 2016\\
+%   Achieved A2 language skill in Chinese (Mandarin).}
+%   \cvItem{Bachelor of Science in Biochemistry and Biotechnology\\
+%   University, City. September 2009 -- June 2012\\
+%   General training in the basic sciences and the molecular life science.}
+%   \cvItem{Master of Science in Biochemistry and Biotechnology\\
+%   University, City. September 2012 -- June 2015\\
+%   Acquisition of insight into and knowledge of possibilities for application in the area 
+%   of biochemistry and biotechnology, specific with applications in biomedical application 
+%   and due problem-solving reasoning skills.}
+% \end{cvEducation}
+%   \end{lstlisting}
+%   
+%   \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user markup 
+%     command.}]
+% % in preamble:
+% \newfontfamily\firaMedium{Fira Sans Medium}
+% \NewDocumentCommand{\cvEducation}{mmm}{{\firaMedium #1}\\ #2\\ \emph{#3}}
+% % in document:
+% \begin{cvEducation}
+%   \cvItem{\cvEducation{Evening class: Chinese}%
+%             {Some School, City. September 2015 -- June 2016}%
+%             {Achieved A2 language skill in Chinese (Mandarin).}}
+%   \cvItem{\cvEducation{Bachelor of Science in Biochemistry and Biotechnology}%
+%             {University, City. September 2009 -- June 2012}%
+%             {General training in the basic sciences and the molecular life science.}}
+%   \cvItem{\cvEducation{Master of Science in Biochemistry and Biotechnology}%
+%             {University, City. September 2012 -- June 2015}%
+%             {Acquisition of insight into and knowledge of possibilities for application 
+%              in the area of biochemistry and biotechnology, specific with applications 
+%              in biomedical application and due problem-solving reasoning skills.}}
+% \end{cvEducation}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvExperience} 
+%   |cvExperience| works very similar to |cvEducation|. If follows the exact same structure 
+%   and has the same design philosophy where you should use |\cvItem| inside this environment 
+%   to typeset the individual items in a timeline style. \Cref{} illustrates this with an example.
+% 
+%   \begin{lstlisting}[caption={\lstinline!cvExperience! code example.}]
+% \begin{cvExperience}
+%   \cvItem{Student Job\\
+%     \textsc{\selectfont Company X}, Location X. Summer 2010\\
+%     Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. 
+%     Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet 
+%     ultricies ipsum ultrices ut.};
+%   \cvItem{Internship\\
+%     \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
+%      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
+%      eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
+%      lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet 
+%      et ex.};
+%   \cvItem{Internship\\
+%     \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
+%     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
+%     eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
+%     lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet 
+%     et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae 
+%     sodales felis elit in ipsum.};
+% \end{cvExperience}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvSkills} 
+%   The skills section is contained within the |cvSkills| environment. This environment typesets 
+%   your skills on a 5-level (discrete) scale (with the default |dot| option) or a 5-level 
+%   continuous scale with the |bar| option. These are divided in two columns. To that end, 
+%   two macros are available: |cvSkillOne| and |cvSkillTwo|. \DescribeMacro{cvSkillTwo} 
+%   |cvSkillTwo{|\meta{skill level}|}{|\meta{skill}|}{|\meta{skill level}|}{|\meta{skill}|}| 
+%   typesets a row of two skills. If you have an odd number of items, \DescribeMacro{cvSkillOne} 
+%   |cvSkillOne| should be used. An example of a skill-list can be found in \cref{cvSkills}.
+%   
+%   \begin{lstlisting}[caption={Illustration of the \lstinline!cvSkills! environment.},label=cvSkills]
+% \begin{cvSkills}
+%   \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
+%   \cvSkillTwo{4}{Python}{4}{VHDL}
+%   \cvSkillTwo{4}{Microsoft Office}{4}{macOS}
+%   \cvSkillOne{3}{C, C++}
+% \end{cvSkills}
+%   \end{lstlisting}
+%   
+%   \DescribeMacro{cvReferences}
+%   The final section is intended to list all your references. These go inside the |cvReferences| 
+%   environment. The enumeration of the different items should be done using the 
+%   \DescribeMacro{\cvAddReference} |\cvAddReference{|\meta{information}|}| macro. The following
+%   keys are available: |name|, |company|, |job|, |address line 1|, |address line 2|, 
+%   |address line 3|, |mobile phone|, |work phone| and |email|. These are all optional arguments
+%   and will be typeset consistently between the two references per row. If icons are 
+%   undesirable, use the |noicon| option for the environment. \Cref{cvReferences} illustrates
+%   the usage of this environment.
+%   
+%   \emph{Important remark}: the comment after the usage of |\cvAddReference| is required! 
+%   Otherwise, spacing will not be as designed.
+%   
+%   \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
+% \begin{cvReferences}
+%   \cvAddReference{%
+%     name=Jane Smith,
+%     company=Company ABC Co.\ Ltd.,
+%     job=Job title,
+%     address line 1=Street lane 2,
+%     address line 2=B-1150 Brussels,
+%     mobile phone=+1 781 555 1212}% <<-- Important!!!
+% \end{cvReferences}
+%   \end{lstlisting}
+% 
+% \section{Cover Letter}
+% 
+%   A final (optional) part of a CV is the cover letter. This is a fairly simple part to create
+%   design wise, but probably the hardest to write in an actual CV. 
+% 
+%   \DescribeMacro{cvCoverLetter}
+%   The cover letter environment is |cvCoverLetter| and contains all the cover letter details.
+%   It will automatically add a header with your name and position based on the information
+%   filled in in |\cvID|. 
+%   
+%   \DescribeMacro{\cvBeneficiary}
+%   The |\cvBeneficiary{|\meta{options}|}| macro offers a convenience wrapper to typeset the
+%   beneficiary. Possible options are |name|, |position|, |company|, |address line 1|,
+%   |address line 2| and |address line 3|. The remainder of the cover letter design is up 
+%   to the user. An example design can be found in \cref{cvCoverLetter}.
+%   
+%   \DescribeMacro{\cvFullName}
+%   |\cvFullName| typeset the authors name based on the data provided in |cvID|. 
+% 
+%   \begin{lstlisting}[caption={\lstinline!cvCoverLetter! code example.},label=cvCoverLetter]
+% \section{Cover Letter}
+% 
+% \begin{cvCoverLetter}
+% 
+% \cvBeneficiary{%
+%   name=Jane Smith,
+%   position=Position,
+%   company=Company,
+%   address line 1=Address line 1,
+%   address line 2=Address line 2}
+% 
+% Dear Miss.\ Smith
+% 
+% \vspace{\baselineskip}
+% \lipsum[1-3]
+% \vspace{\margin}
+% 
+% \cvFullName
+% 
+% \end{cvCoverLetter}
+%   \end{lstlisting}
+% 
+% \section{Change Style and Layout}
+% 
+%   To change the style, one can redefine the colours, lengths and TikZ styles used throughout 
+%   the document class.
+% 
+%   By default the following colours are defined:
+%   \begin{itemize}
+%     \item |cvGreen| default dark green colour (hex value: {\color{cvGreen} |357F2D|})
+%     \item |cvGreenLight| light green colour, for larger shapes and backgrounds (hex value: 
+%       {\color{cvGreenLight} |B8E4B3|})
+%     \item |cvDark| default text colour (hex value: {\color{cvDark} |2F3142|})
+%     \item |cvRed| currently not used (hex value: {\color{cvRed} |7F2D35|})
+%     \item |cvAccent| lighter grey shade for accented text (hex value: {\color{cvAccent} 
+%       |474A65|})
+%   \end{itemize}
+%   
+%   To change these, use the code from \cref{cvColour} in the preamble:
+%   
+%   \begin{lstlisting}[caption={Colour editing.},label=cvColour]
+% \definecolor{cvDark}{HTML}{000000}
+%   \end{lstlisting}
+%   
+%   By overwriting the following styles, one can change the appearance of multiple TikZ nodes. 
+%   The following styles are available.
+%   \begin{itemize}
+%     \item |interesticon|
+%     \item |interesttext|
+%     \item |eventdottext|
+%     \item |invisibletimedot|
+%     \item |timedot|
+%     \item |eventdot|
+%     \item |contactIcon|
+%     \item |contactText|
+%     \item |headerIcon|
+%     \item |skillLevel|
+%     \item |languageText|
+%     \item |skillText|
+%     \item |progressArea|
+%     \item |progressBar|
+%     \item |sectionTitle|
+%     \item |sectionEduText|
+%   \end{itemize}
+%   
+%   Adding your own styles is easy with the code from \cref{cvTikZStyle}.
+%   
+%   \begin{lstlisting}[caption={Change TikZ style.},label=cvTikZStyle]
+% \tikzset{
+%   interesticon/.style = {},
+% }
+%   \end{lstlisting}
+%   
+% \begin{itemize}
+%   \item |\cvColSep| Distance between columns of |cvSkills|. 
+%     Default value: |1cm|.
+%   \item |\cvNodeSep| Not used currently. 
+%     Default value: |0.75cm|.
+%   \item |\cvTimeDotDiameter| Size of the dots in a timeline. 
+%     Default value: |3pt|.
+%   \item |\cvMargin| Margin around the entire page. 
+%     Default value: |1cm|.
+%   \item |\cvSideWidth| Width of the side bar. 
+%     Default value: |0.3\paperwidth-\cvMargin|.
+%   \item |\cvMainWidth| Width of the main content section. 
+%     Default value: |\paperwidth-4\cvMargin-\cvSideWidth|.
+%   \item |\cvTimeDotSep| Distance between timeline dot and text. 
+%     Default value: |0.4cm|.
+%   \item |\cvStartEndSep| Not used. 
+%     Default value: |0.3cm|.
+%   \item |\cvItemSep| Distance between |cvItem| entries. 
+%     Default value: |0.4cm|.
+%   \item |\cvTableSepWidth| Distance between two columns of |cvReferences| environment. 
+%     Default value: |0.3cm|.
+%   \item |\cvCoverLetterHeight| Height of the coloured bar at the top of the cover letter. 
+%     Default value: |\cvSideWidth|.
+%   \item |\cvCoverLetterWidth| Width of the cover letter text. This can be used to improve 
+%     to layout. Default value: |\cvMainWidth+3\cvMargin|.
+%   \item |\cvPictureWidth| Diameter of the profile picture. 
+%     Default value: |4cm|.
+%   \item |\cvProgressAreaWidth| Length of a progress bar for the languages section. 
+%     Default value: |5em|.
+%   \item |\cvProgressAreaHeight| Height of a progress bar for the languages section. 
+%     Default value: |0.75em|.
+%   \item |\cvSectionSep| Distance between sections of the main content section. 
+%     Default value: |0.6cm|.
+%   \item |\cvSectionSBSep| Distance between sections of the side bar section. 
+%     Default value: |4pt|.
+%   \item |\cvTitleLineWidth| Line width of horizontal line below section title.
+%      Default value: |2pt|.
+%   \item |\cvTitleLineSpacing| Distance from bottom of the titles of the main content section to 
+%     the horizontal centre of line. Default value: |0.1cm|.
+%   \item |\cv@projectSep| Internal length. 
+%     Automatically set to |\cvItemSep|.
+%   \item |\cvProjectDetailsSep| Internal spacing between details of a single project. 
+%     Default value: |0.2cm|.
+%   \item |\cvInterestDetailsSep| Distance between items in case the |long| options is used for the 
+%     |cvInterests| environment. Default value: |0cm|.
+%   \item |\cvContactItemSep| Distance between items in the |cvContact| environment. 
+%     Default value: |5pt|.
+%   \item |\cvCoverLetterLineWidth| Line width of line below cover letter name. 
+%     Default value: |3pt|.
+%   \item |\cvCoverLetterPositionSpacing| Distance between name and position in the cover letter. 
+%     Default value: |10pt|.
+%   \item |\cvSBSectionLineWidth| Line width of left and right lines next to the titles of in the 
+%     side bar. Default value: |1pt|.
+%   \item |\cvCoverLetterLineSpacing| Distance between name and line below it in the cover letter. 
+%     Default value: |0pt|.
+%   \item |\cvIDNameSep| Distance between first and last name. 
+%     Default value: |0.1cm|.
+%   \item |\cvPositionSep| Distance before and after the position. 
+%     Default value: |0.5cm|.
+%   \item |\cvSkillSep| Distance between skills. 
+%     Default value: |1ex|.
+%   \item |\cvHeaderIconWidth| Automatically set, currently has no visible effect on document. 
+%     Default value: |0pt|.
+% \end{itemize}
+%   
+%   
+% \section{Example}
+% 
+%   The source code of a typical CV document can be found below. 
+%   \Cref{example-cv,example-cover-letter} depict the resulting PDF documents.
+% 
+%   \begin{figure}[!ht]
+%     \includegraphics[width=\textwidth,page=1]{mwe-xelatex.pdf}
+%     \caption{Example CV (scaled).}
+%     \label{example-cv}
+%   \end{figure}
+% 
+%   \begin{figure}[!ht]
+%     \includegraphics[width=\textwidth,page=2]{mwe-xelatex.pdf}
+%     \caption{Example cover letter (scaled).}
+%     \label{example-cover-letter}
+%   \end{figure}
+% 
+%   \lstinputlisting[language=tex]{mwe-xelatex.tex}
+% 
+% \section{Source Code}
+% 
+% \lstinputlisting[language=tex]{limecv.cls}
+% 
+% \PrintIndex
+% 
+% \StopEventually{}
+%
+% \section{Implementation}
+%
+% \iffalse
+%<*package>
+% \fi
+%
+% limecv.cls
+% 
+% Copyright 2017 Olivier Pieters
+%
+% A (Xe/Lua)LaTeX document class
+%
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Olivier Pieters.
+% Contact the maintainer at: me (at) olivierpieters (dot) be.
+%
+%
+%
+% Changelog
+%
+% v0.1: initial release
+%
+%    \begin{macrocode}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{limecv}[\filedate\space Version%
+\fileversion\space by Olivier Pieters]
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+% Include minimal required packages
+%
+% process key-value class options
+%    \begin{macrocode}
+\RequirePackage{kvoptions}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+% Process options of this class.
+%
+%    \begin{macrocode}
+\DeclareBoolOption[false]{print}
+\newif\ifcv@fontPath
+\cv@fontPathfalse
+\DeclareStringOption{path}
+\AddToKeyvalOption*{path}{\cv@fontPathtrue}
+\DeclareStringOption[Fira Sans]{sansfont}
+\DeclareStringOption[Fira Mono]{monofont}
+\ProcessKeyvalOptions*
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%  Process general class options
+%
+% pass document options to article class, which forms 
+% base of this document class
+%    \begin{macrocode}
+\DeclareOption*{%
+  \PassOptionsToClass{\CurrentOption}{article}%
+}
+\ProcessOptions\relax
+\LoadClass{article}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%  Include required packages
+%
+% check if XeTeX is used
+%    \begin{macrocode}
+\RequirePackage{ifxetex}
+%    \end{macrocode}
+% check if LuaTeX is used
+%    \begin{macrocode}
+\RequirePackage{ifluatex}
+%    \end{macrocode}
+% Advanced command definitions
+%    \begin{macrocode}
+\RequirePackage{xparse}
+%    \end{macrocode}
+% complex length calculations
+%    \begin{macrocode}
+\RequirePackage{calc}
+%    \end{macrocode}
+% colour options
+%    \begin{macrocode}
+\RequirePackage{xcolor}
+%    \end{macrocode}
+% advanced table options
+%    \begin{macrocode}
+\RequirePackage{tabularx}
+%    \end{macrocode}
+% links
+%    \begin{macrocode}
+\RequirePackage{hyperref}
+\RequirePackage{url}
+%    \end{macrocode}
+% remove paragraph indent
+%    \begin{macrocode}
+\RequirePackage{parskip}
+%    \end{macrocode}
+% string operations
+%    \begin{macrocode}
+\RequirePackage{xstring}
+%    \end{macrocode}
+% key-value parsing within document
+%    \begin{macrocode}
+\RequirePackage{xkeyval}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   Define colours
+%
+%    \begin{macrocode}
+\definecolor{cvGreen}{HTML}{357F2D}
+\definecolor{cvGreenLight}{HTML}{b8e4b3}
+\definecolor{cvRed}{HTML}{7f2d35}
+\definecolor{cvDark}{HTML}{2F3142}
+\definecolor{cvAccent}{HTML}{474A65}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   Define new table column types with fixed width.
+%
+%    \begin{macrocode}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\%
+\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\%
+\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\%
+\arraybackslash\hspace{0pt}}m{#1}}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   Misc and helper commands
+%
+% Add comma in a cvReference entry.
+%    \begin{macrocode}
+\NewDocumentCommand{\cvComma}{}{,}
+%    \end{macrocode}
+% Define check if argument is empty
+% argument order: |{argument}{if empty}{if not empty}|
+% 
+% Based on: http://tex.stackexchange.com/questions/63223
+%
+%    \begin{macrocode}
+\ExplSyntaxOn
+\DeclareExpandableDocumentCommand{\@IfNoValueOrEmptyTF}%
+  {mmm}{\IfNoValueTF{#1}{#2}{
+    \tl_if_empty:nTF {#1} {#2} {#3}%
+   }
+}
+\ExplSyntaxOff
+%    \end{macrocode}
+%
+% \begin{macro}{\ifnodedefined}
+% Check if node is defined.
+% Based on: https://tex.stackexchange.com/questions/37709
+%    \begin{macrocode}
+\long\def\ifnodedefined#1#2#3{%
+  \@ifundefined{pgf@sh@ns@#1}{#3}{#2}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%-------------------------------------------------------
+%
+%   Update global font colour
+%
+%    \begin{macrocode}
+\NewDocumentCommand{\globalcolor}{m}{%
+  \color{#1}\global\let\default@color\current@color
+}
+\AtBeginDocument{\globalcolor{cvDark}}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   TikZ
+%
+%    \begin{macrocode}
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\usetikzlibrary{%
+  calc,
+  positioning,
+  fit,
+  arrows.meta,
+  backgrounds,
+  matrix}
+\tikzset{
+  interesticon/.style = {},
+  interesttext/.style = {},
+  eventdottext/.style = {},
+  invisibletimedot/.style = {},
+  timedot/.style = {},
+  contactIcon/.style={},
+  contactText/.style={},
+  headerIcon/.style={},
+  skillLevel/.style={},
+  languageText/.style={},
+  skillText/.style={},
+  progressArea/.style={},
+  progressBar/.style={},
+  sectionTitle/.style={},
+  sectionEduText/.style={%
+  eventdottext,
+  anchor=north west
+  },
+  cv@interesticon/.style = {%
+    minimum width=\cvHeaderIconWidth,
+    interesticon
+  },
+  cv@interesttext/.style = {%
+    interesttext,
+  },
+  cv@eventdottext/.style = {%
+    text width=\cvMainWidth-\cvTimeDotSep,
+    black,
+    anchor=north west,
+    eventdottext,
+  },
+  cv@invisibletimedot/.style = {%
+    circle,
+    minimum width=\cvTimeDotDiameter,
+    anchor=center,
+    invisibletimedot,
+  },
+  cv@timedot/.style = {%
+    cv@invisibletimedot,
+    draw,
+    fill,
+    black,
+    timedot,
+  },
+  cv@contactIcon/.style={%
+    minimum height=\baselineskip,
+    contactIcon,
+  },
+  cv@contactText/.style={%
+    minimum height=\baselineskip,
+    text depth=0pt,
+    contactText,
+  },
+  cv@headerIcon/.style={%
+    minimum width=\cvHeaderIconWidth,
+    anchor=center,
+    headerIcon,
+  },
+  cv@skillLevel/.style={skillLevel,},
+  cv@languageText/.style={languageText,},
+  cv@skillText/.style={skillText,},
+  cv@progressArea/.style={%
+    minimum width=\cvProgressAreaWidth,
+    minimum height=\cvProgressAreaHeight,
+    rectangle,
+    draw,
+    cvGreen,
+    progressArea
+  },
+  cv@progressBar/.style={%
+    minimum height=\cvProgressAreaHeight,
+    rectangle,
+    draw,
+    fill,
+    cvGreen,
+    anchor=west,
+    progressBar
+  },
+  cv@sectionTitle/.style={%
+    anchor=north west,
+    align=left,
+    sectionTitle,
+  },
+  cv@sectionEduText/.style={%
+    cv@eventdottext,
+    anchor=north west,
+    sectionEduText,
+  },
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   XeLaTeX/LuaLaTeX specific
+%
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@loadFonts}{}{
+  \RequirePackage{fontspec}  
+  \RequirePackage{fontawesome}
+%    \end{macrocode}
+% set fonts
+%    \begin{macrocode}
+  \setmainfont[Numbers={Monospaced}]{\limecv@sansfont}
+  \setsansfont{\limecv@sansfont}
+  \setmonofont{\limecv@monofont}
+  \ifcv@fontPath
+    \newfontfamily{\cv@FA}[Path=\limecv@path]%
+      {FontAwesome}
+  \else
+    \newfontfamily{\cv@FA}{FontAwesome}
+  \fi
+%    \end{macrocode}
+% define some missing icons
+%    \begin{macrocode}
+  \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA%
+    \symbol{"F2B9}}}
+  \ProvideDocumentCommand{\faVcard}{}{{\cv@FA%
+    \symbol{"F2BB}}}
+  \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
+    \symbol{"F2DB}}}
+%    \end{macrocode}
+% future possibility: 
+% https://raw.githubusercontent.com/xdanaux/moderncv/
+% master/moderncviconsmarvosym.sty
+%    \begin{macrocode}
+}
+\ifxetex
+  \cv@loadFonts
+\else
+  \ifluatex
+    \cv@loadFonts
+  \else
+    \RequirePackage{fontawesome}
+    \RenewDocumentCommand{\familydefault}{}{\sfdefault}
+  \fi
+\fi
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   XeLaTeX/LuaLaTeX specific
+%
+% Removes left/right side bearing of character
+%
+% Based on:
+% https://tex.stackexchange.com/questions/274479
+% https://tex.stackexchange.com/questions/34563
+% 
+%    \begin{macrocode}
+\ifxetex
+  \NewDocumentCommand{\kright}{m}{\leavevmode #1%
+    \kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
+  \NewDocumentCommand{\kleft}{m}{\leavevmode %
+    \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
+\else
+  \NewDocumentCommand{\kright}{m}{#1}
+  \NewDocumentCommand{\kleft}{m}{#1}
+\fi
+%    \end{macrocode}
+% Extracts n-th charcter from a string
+% Argument order: string - character number
+%    \begin{macrocode}
+\ExplSyntaxOn
+\DeclareExpandableDocumentCommand{\extract}{mm}{%
+  \tl_item:nn { #1 } { #2 }%
+}
+\ExplSyntaxOff
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   Page layout
+%
+% remove page numbers
+%    \begin{macrocode}
+\pagenumbering{gobble}
+%    \end{macrocode}
+% remove all page styling
+%    \begin{macrocode}
+\pagestyle{empty}
+%    \end{macrocode}
+% not used
+%    \begin{macrocode}
+\newlength\cvColSep
+\setlength\cvColSep{1cm} % 2 times column separation!
+%    \end{macrocode}
+% not used
+%    \begin{macrocode}
+\newlength\cvNodeSep 
+\setlength\cvNodeSep{0.75cm}
+\newlength\cvTimeDotDiameter 
+\setlength\cvTimeDotDiameter{3pt}
+\newlength\cvMargin
+\setlength\cvMargin{1cm}
+\newlength\cvSideWidth
+\setlength\cvSideWidth{0.3\paperwidth-\cvMargin}
+\newlength\cvMainWidth
+\setlength\cvMainWidth{\paperwidth-4\cvMargin-\cvSideWidth}
+\newlength\cvTimeDotSep
+\setlength\cvTimeDotSep{0.4cm}
+\newlength\cvStartEndSep
+\setlength\cvStartEndSep{0.3cm}
+\newlength\cvItemSep
+\setlength\cvItemSep{0.4cm}
+\newlength\cvTableSepWidth
+\setlength\cvTableSepWidth{0.3cm}
+\newlength\cvCoverLetterHeight
+\setlength\cvCoverLetterHeight{\cvSideWidth}
+\newlength\cvCoverLetterWidth
+\setlength\cvCoverLetterWidth{\cvMainWidth+3\cvMargin}
+\newlength\cvPictureWidth
+\setlength\cvPictureWidth{4cm}
+%    \end{macrocode}
+% progress area size definition
+%    \begin{macrocode}
+\newlength\cvProgressAreaWidth
+\setlength\cvProgressAreaWidth{5em}
+\newlength\cvProgressAreaHeight
+\setlength\cvProgressAreaHeight{0.75em}
+\newlength\cvSectionSep
+\setlength\cvSectionSep{0.6cm}
+\newlength\cvSectionSBSep
+\setlength\cvSectionSBSep{4pt}
+%    \end{macrocode}
+% line width of horizontal line below section title
+%    \begin{macrocode}
+\newlength\cvTitleLineWidth
+\setlength\cvTitleLineWidth{2pt}
+%    \end{macrocode}
+% distance from bottom of text to centre of line
+%    \begin{macrocode}
+\newlength\cvTitleLineSpacing
+\setlength\cvTitleLineSpacing{0.1cm}
+%    \end{macrocode}
+% set to \cvItemSep by default (do not overwrite!)
+%    \begin{macrocode}
+\newlength\cv@projectSep
+\setlength\cv@projectSep{0cm}
+%    \end{macrocode}
+% internal spacing between details of a single project
+%    \begin{macrocode}
+\newlength\cvProjectDetailsSep
+\setlength\cvProjectDetailsSep{0.2cm}
+\newlength\cvInterestDetailsSep
+\setlength\cvInterestDetailsSep{0cm}
+\newlength\cvContactItemSep
+\setlength\cvContactItemSep{5pt}
+%    \end{macrocode}
+% line width of line below cover letter name
+%    \begin{macrocode}
+\newlength\cvCoverLetterLineWidth
+\setlength\cvCoverLetterLineWidth{3pt}
+\newlength\cvCoverLetterPositionSpacing
+\setlength\cvCoverLetterPositionSpacing{10pt}
+\newlength\cvSBSectionLineWidth
+\setlength\cvSBSectionLineWidth{1pt}
+\newlength\cvCoverLetterLineSpacing
+\setlength\cvCoverLetterLineSpacing{0pt}
+\newlength\cvIDNameSep
+\setlength\cvIDNameSep{0.1cm}
+\newlength\cvPositionSep
+\setlength\cvPositionSep{0.5cm}
+\newlength\cvSkillSep
+\setlength\cvSkillSep{1ex}
+\newlength\cvHeaderIconWidth
+\setlength\cvHeaderIconWidth{0pt}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   New styling commands
+%
+%
+% Style main section title
+%    \begin{macrocode}
+\NewDocumentCommand{\cvSection}{m}{\Large\textbf{#1}}
+%    \end{macrocode}
+% Typeset skill level
+%    \begin{macrocode}
+\newcount\my@repeat@count
+\NewDocumentCommand{\cvSkill}{m}{%
+  \begingroup
+  \my@repeat@count=\z@
+  \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
+    \my@repeat@count\@ne}%
+  \my@repeat@count=\numexpr5-\z@\relax
+  \@whilenum\my@repeat@count>#1\do{\faCircleO\advance%
+    \my@repeat@count\m@ne}%
+  \endgroup
+}
+%    \end{macrocode}
+% Create horizontal line from edge to edge for side bar
+% section titles.
+%
+% Based on: 
+%   https://tex.stackexchange.com/questions/65731
+% Alternative: 
+%   https://tex.stackexchange.com/questions/15119
+%    \begin{macrocode}
+\NewDocumentCommand{\cvhrulefill}{}{{\color{cvGreen}%
+\leavevmode\leaders\hrule height \cvSBSectionLineWidth\hfill\kern\z@}}
+\NewDocumentCommand{\ruleline}{m}{\par\noindent\raisebox{.6ex}{%
+\makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
+\raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
+%    \end{macrocode}
+% Title counters
+%    \begin{macrocode}
+\newcounter{cv@titlePrev}
+\setcounter{cv@titlePrev}{0}
+\newcounter{cv@titleNext}
+\setcounter{cv@titleNext}{1}
+%    \end{macrocode}
+% Draw everything associated with main section title.
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@Title}{mm}{%
+  \ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
+    \setlength\cvHeaderIconWidth{\maxof{\cvHeaderIconWidth}{\widthof{\cvSection{#2}}}}%
+    \protected@write\@auxout{}{\global\cvHeaderIconWidth=\the\cvHeaderIconWidth}
+    \node[%
+      below=\cvSectionSep of cv@last item %
+        \the\value{cv@lastItem}.south west,
+      cv@sectionTitle] 
+      (cv@title \the\value{cv@titleNext}) 
+      {\begingroup\edef\y{\endgroup%
+      \cvSection\bgroup\noexpand\kleft{%
+        \extract{#1}{1}}}%
+      \y\StrGobbleLeft{#1}{1}\egroup};
+    \node[%
+      left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
+      cv@headerIcon] 
+      {#2};
+    \node[
+      below=\cvSectionSep of cv@last item %
+        \the\value{cv@lastItem}.south west,
+      cv@sectionTitle] 
+      (cv@title \the\value{cv@titleNext} dummy) {%
+        \phantom{\cvSection{Education}}};
+    \begin{scope}[on background layer]
+      \draw[line width=\cvTitleLineWidth,cvGreen] 
+        let \p1=(cv@title \the\value{cv@titleNext} %
+                dummy.south west), 
+            \p2=(current page.east) in 
+        (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
+    \end{scope}
+  }{%
+    \node[cv@sectionTitle] at (0,0) (cv@title %
+      \the\value{cv@titleNext})
+    {\begingroup\edef\y{\endgroup%
+    \cvSection\bgroup\noexpand\kleft{\extract{#1}{1}}}%
+    \y\StrGobbleLeft{#1}{1}\egroup};
+    \node[%
+      left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
+      cv@headerIcon] 
+      {#2};
+    \begin{scope}[on background layer]
+      \draw[line width=\cvTitleLineWidth,cvGreen] 
+        let \p1=(cv@title \the\value{cv@titleNext}%
+                .south west), 
+            \p2=(current page.east) in 
+        (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
+    \end{scope}
+}%
+\stepcounter{cv@titlePrev}%
+\stepcounter{cv@titleNext}
+}
+%    \end{macrocode}
+% Draw the timeline
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@EndSectionDraw}{}{
+  \draw (start) to (end.center);}
+%    \end{macrocode}
+% Item counters
+%    \begin{macrocode}
+\newcounter{cv@itemPrev}
+\setcounter{cv@itemPrev}{0}
+\newcounter{cv@itemNext}
+\setcounter{cv@itemNext}{1}
+\newcounter{cv@lastItem}
+\setcounter{cv@lastItem}{1}
+%    \end{macrocode}
+% List a timeline entry
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@definecvItem}{}{
+  \NewDocumentCommand{\cvItem}{m}{%
+    \ifnodedefined{item \the\value{cv@itemPrev}}{%
+      \node[%
+        below=\cvItemSep of item %
+          \the\value{cv@itemPrev}.south west,
+        cv@eventdottext] 
+        (item \the\value{cv@itemNext} header) 
+        {\phantom{Evening}};
+      \node[%
+        below=\cvItemSep of item %
+          \the\value{cv@itemPrev}.south west,
+        cv@sectionEduText] 
+        (item \the\value{cv@itemNext}) 
+        {##1};
+      \node[%
+        left=\cvTimeDotSep of item %
+          \the\value{cv@itemNext} header,
+        cv@timedot] 
+        {};
+    }{
+      \node[%
+        below=\cvItemSep of cv@title %
+          \the\value{cv@titlePrev}.south west,
+        cv@eventdottext] 
+        (item \the\value{cv@itemNext} header) 
+        {\phantom{Evening}};
+      \node[
+        below=\cvItemSep of cv@title %
+          \the\value{cv@titlePrev}.south west,
+        cv@sectionEduText] 
+        (item \the\value{cv@itemNext}) 
+        {##1};
+      \node[
+        left=\cvTimeDotSep of item %
+          \the\value{cv@itemNext} header,
+        cv@timedot] 
+        (start) 
+        {};
+    }
+    \node[
+      left=\cvTimeDotSep of item %
+        \the\value{cv@itemNext}.south west,
+      cv@invisibletimedot] 
+      (end) 
+      {};
+    \stepcounter{cv@itemPrev}
+    \stepcounter{cv@itemNext}
+  }
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   Commands specific for cvSkills section
+%
+%
+% information in temporary command yes/no
+%    \begin{macrocode}
+\newif\ifcv@firstskill
+%    \end{macrocode}
+% temporary command that stores skill information
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@skillsTable}{}{}
+%    \end{macrocode}
+% typeset two skills
+%    \begin{macrocode}
+\NewDocumentCommand{\cvSkillTwo}{mmmm}{%
+  \ifcv@firstskill
+    \g@addto@macro\cv@skillsTable{\cvSkill{#1} %
+      & #2 & \cvSkill{#3} & #4}
+    \cv@firstskillfalse
+  \else
+    \g@addto@macro\cv@skillsTable{\\[\cvSkillSep] \cvSkill{#1} %
+      & #2 & \cvSkill{#3} & #4}
+  \fi
+}
+%    \end{macrocode}
+% typeset one skill
+%    \begin{macrocode}
+\NewDocumentCommand{\cvSkillOne}{mm}{%
+  \ifcv@firstskill
+    \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2}
+    \cv@firstskillfalse
+  \else
+    \g@addto@macro\cv@skillsTable{\\[\cvSkillSep] \cvSkill{#1} & #2}
+  \fi
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvMainContent environments
+%
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvMainContent}{}{%
+  \begin{tikzpicture}[%
+    every node/.style={%
+      inner sep=0pt,
+      outer sep=0pt},
+    remember picture,
+    overlay,
+    shift={($(current page.north west)+%
+      (\cvSideWidth+3\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
+}{%
+  \end{tikzpicture}
+}
+\NewDocumentEnvironment{cvMainContent*}{}{%
+  \stepcounter{titlePrev}
+  \stepcounter{titleNext}
+    \begin{tikzpicture}[%
+      every node/.style={
+        inner sep=0pt,
+        outer sep=0pt},
+      remember picture,
+      overlay,
+      shift={($(current page.north west)+%
+      (\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
+}{%
+    \end{tikzpicture}%
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvEductation environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvEducation}{}{%
+    \cv@Title{Education}{\faGraduationCap}
+%    \end{macrocode}
+% insures uniqueness
+%    \begin{macrocode}
+    \stepcounter{cv@itemPrev}
+    \stepcounter{cv@itemNext}
+    \cv@definecvItem
+  }{%
+    \cv@EndSectionDraw
+    \stepcounter{cv@lastItem}
+    \draw (item \the\value{cv@itemPrev}.south west) 
+      node (cv@last item \the\value{cv@lastItem}) {};
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvExperience environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvExperience}{}{%
+  \cv@Title{Experience}{\faBriefcase}
+%    \end{macrocode}
+% insures uniqueness
+%    \begin{macrocode}
+  \stepcounter{cv@itemPrev}
+  \stepcounter{cv@itemNext}
+  \cv@definecvItem
+}{%
+  \cv@EndSectionDraw
+  \stepcounter{cv@lastItem}
+  \draw (item \the\value{cv@itemPrev}.south west) 
+    node (cv@last item \the\value{cv@lastItem}) {};
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvSkills environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvSkills}{}{%
+  \cv@Title{Skills}{\faStar}
+  \global\cv@firstskilltrue
+}{%
+  \node[
+    below=\cvSectionSep of cv@title \the\value{cv@titlePrev}%
+      .south west,
+    anchor=north west] (skills) %
+    {\begin{tabular}{@{}ll@{\hskip\cvColSep}ll@{}}%
+    \cv@skillsTable
+    \end{tabular}};
+  \stepcounter{cv@lastItem}
+  \draw (skills.south west) node %
+    (cv@last item \the\value{cv@lastItem}) {};
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvReferences environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvReferences}{}{%
+  \cv@Title{References}{\faLink}
+  \node[
+    below=\cvSectionSep of cv@title \the\value{cv@titlePrev}.%
+      south west,
+    anchor=north west,
+    ] (cv@References) \bgroup %
+}{%
+  \egroup;
+  \stepcounter{cv@lastItem}
+  \draw (cv@References.south west) node %
+    (cv@last item \the\value{cv@lastItem}) {};
+}
+%    \end{macrocode}
+%   Key-value parsing structure
+%    \begin{macrocode}
+\pgfkeys{/@cv/references/.is family,
+         /@cv/references/.unknown/.style = %
+         {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+         .initial = #1}}
+\newif\ifcv@refName
+\pgfkeys{/@cv/references/name/.is if=cv@refName}
+\pgfkeys{/@cv/references/name=false}
+\newif\ifcv@refPosition
+\pgfkeys{/@cv/references/position/.is if=cv@refPosition}
+\pgfkeys{/@cv/references/position=false}
+\newif\ifcv@refCompany
+\pgfkeys{/@cv/references/company/.is if=cv@refCompany}
+\pgfkeys{/@cv/references/copmany=false}
+\newif\ifcv@refAddressLineA
+\pgfkeys{/@cv/references/address line 1/.is if=%
+  cv@refAddressLineA}
+\pgfkeys{/@cv/references/address line 1=false}
+  \newif\ifcv@refAddressLineB
+\pgfkeys{/@cv/references/address line 2/.is if=%
+  cv@refAddressLineB}
+\pgfkeys{/@cv/references/address line 2=false}
+\newif\ifcv@refAddressLineC
+\pgfkeys{/@cv/references/address line 3/.is if=%
+  cv@refAddressLineC}
+\pgfkeys{/@cv/references/address line 3=false}
+\newif\ifcv@refWorkPhone
+\pgfkeys{/@cv/references/work phone/.is if=%
+  cv@refWorkPhone}
+\pgfkeys{/@cv/references/work phone=false}
+\newif\ifcv@refMobilePhone
+\pgfkeys{/@cv/references/mobile phone/.is if=%
+  cv@refMobilePhone}
+\pgfkeys{/@cv/references/mobile phone=false}
+\newif\ifcv@refStored
+\pgfkeys{/@cv/references/value stored/.is if=%
+  cv@refStored}
+\pgfkeys{/@cv/references/value stored=false}
+%    \end{macrocode}
+%
+% \begin{key}{cvAddReferenceA}{name}
+% keys
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{name}{%
+  \global\def\cv@refAName{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/name = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{company}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{company}{%
+  \global\def\cv@refACompany{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/company = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{position}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{position}{%
+  \global\def\cv@refAPosition{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/position = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{address line 1}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{address line 1}{%
+  \global\def\cv@refAAddressLineA{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 1 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{address line 2}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{address line 2}{%
+  \global\def\cv@refAAddressLineB{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 2 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{address line 3}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{address line 3}{%
+  \global\def\cv@refAAddressLineC{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 3 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{phone work}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{phone work}{%
+  \global\def\cv@refAPhoneWork{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/phone work = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceA}{mobile phone}
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{mobile phone}{%
+  \global\def\cv@refAMobilePhone{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{name}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{name}{%
+  \global\def\cv@refBName{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/name = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{company}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{company}{%
+  \global\def\cv@refBCompany{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/company = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{position}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{position}{%
+  \global\def\cv@refBPosition{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/position = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{address line 1}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{address line 1}{%
+  \global\def\cv@refBAddressLineA{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 1 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{address line 2}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{address line 2}{%
+  \global\def\cv@refBAddressLineB{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 2 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{address line 3}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{address line 3}{%
+  \global\def\cv@refBAddressLineC{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 3 = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{phone work}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{phone work}{%
+  \global\def\cv@refBPhoneWork{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/phone work = true}}}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cvAddReferenceB}{mobile phone}
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{mobile phone}{%
+  \global\def\cv@refBMobilePhone{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
+\NewDocumentCommand{\cvAddReference}{sm}{%
+  \IfBooleanTF{#1}{%
+    \setkeys{cvAddReferenceA}{name=,company=,
+      position=,address line 1=,address line 2=,
+      address line 3=,phone work=,mobile phone=,#2}
+    \pgfkeys{/@cv/references/name = true}%
+  }{%
+    \setkeys{cvAddReferenceB}{name=,company=,
+    position=,address line 1=,address line 2=,
+    address line 3=,phone work=,mobile phone=,#2}
+    \ifcv@refStored%
+      \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep%
+            -0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}%
+          L{0.5\cvMainWidth-0.5\cvTimeDotSep%
+            -0.5\cvTableSepWidth}@{}}%
+        \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
+      \end{tabular}%
+      \pgfkeys{/@cv/references/value stored = false}%
+    \else%
+      \begin{tabular}{@{}L{0.5\cvMainWidth%
+          -0.5\cvTimeDotSep}@{}}%
+        \ifcv@refName            \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refBMobilePhone  \fi %
+      \end{tabular}%
+    \fi%
+  }%
+}
+%    \end{macrocode}
+% \end{key}
+%
+%-------------------------------------------------------
+%
+%   cvSideBar environment
+%
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvSideBar}{}{%
+  \vspace*{\fill}
+  \vspace*{-0.5\cvMargin}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cvGreenLight] (current page.north west) rectangle %
+      ++(\cvSideWidth+2\cvMargin,-\paperheight);
+  \end{tikzpicture}%
+  \begin{minipage}{\cvSideWidth}
+    \begin{center}
+}{%
+    \end{center}
+  \end{minipage}
+  \vspace*{\fill}
+}
+\NewDocumentEnvironment{cvSideBar*}{}{%
+  \vspace*{\fill}
+  \vspace*{-0.5\cvMargin}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cvGreenLight] (current page.north east) rectangle %
+      ++(-\cvSideWidth-2\cvMargin,-\paperheight);
+  \end{tikzpicture}%
+  \begin{minipage}{\cvSideWidth}
+    \begin{center}
+}{%
+    \end{center}
+  \end{minipage}
+  \vspace*{\fill}
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvProfile environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvProfile}{}{%
+  \vspace{\cvSectionSBSep}
+  \ruleline{Profile}
+}{%
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvContact environment
+%
+%
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@ContactTemplate}{mm}{
+  \NewDocumentCommand{#1}{m}{
+      \ifcv@contactfirst \\ \else %
+        \global\cv@contactfirsttrue \fi\node[cv@contactIcon]{#2}; 
+        \pgfmatrixnextcell \node[cv@contactText]{##1};
+  }
+}
+\NewDocumentCommand{\cv@ContactTemplateLink}{mm}{
+  \NewDocumentCommand{#1}{mm}{
+      \ifcv@contactfirst \\ \else %
+        \global\cv@contactfirsttrue \fi\node[cv@contactIcon]{#2}; 
+        \pgfmatrixnextcell \node[cv@contactText]{%
+          \@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
+  }
+}
+\newif\ifcv@contactfirst
+\NewDocumentEnvironment{cvContact}{}{%
+  \vspace{\cvSectionSBSep}
+  \ruleline{Contact}%
+  \vspace{\cvSectionSBSep}
+  
+  \global\cv@contactfirstfalse
+  \cv@ContactTemplate{\cvContactAddress}{\faMapMarker}
+  \cv@ContactTemplate{\cvContactPhone}{\faPhone}
+  
+  \cv@ContactTemplateLink{\cvContactEmail}{\faEnvelope}
+  \cv@ContactTemplateLink{\cvContactWebsite}{\faGlobe}
+  \cv@ContactTemplateLink{\cvContactGithub}{\faGithub}
+  \cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedinSquare}
+  \cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
+  \cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
+  \begin{tikzpicture}[%
+    every node/.style={inner sep=0pt, outer sep=0pt}]
+    \matrix [
+      column 1/.style={anchor=center},
+      column 2/.style={anchor=west,align=left},
+      column sep=\cvContactItemSep,
+      row sep=\cvContactItemSep,
+      inner sep=0pt, 
+      outer sep=0pt] (contact) \bgroup
+}{%
+  \\\egroup; % \\ required, does not compile otherwise
+  \end{tikzpicture}%
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvInterests environment
+%
+%    \begin{macrocode}
+\newif\ifcv@interestLong
+\cv@interestLongtrue
+\newcounter{cv@cvInterestCounter}
+\setcounter{cv@cvInterestCounter}{1}
+\newcounter{cv@cvInterestCounterPrev}
+\setcounter{cv@cvInterestCounterPrev}{1}
+\newif\ifcv@interestContent
+\cv@interestContentfalse
+\NewDocumentCommand{\cv@TypesetTableRows}{}{}
+\newif\ifcv@interesttikzopen
+\cv@interesttikzopenfalse
+\NewDocumentCommand{\cv@interestClose}{}{
+  \ifcv@interestLong
+    \ifcv@interesttikzopen
+      \end{tikzpicture}
+    \fi
+  \else
+    \ifcv@interestContent
+      \begin{tabular}{@{}cl@{}}
+        \cv@TypesetTableRows
+      \end{tabular}
+    \fi
+  \fi
+}
+\NewDocumentCommand{\cv@interestOpen}{}{
+  \ifcv@interestLong
+    \cv@interesttikzopentrue
+    \begin{tikzpicture}[%
+      every node/.style={inner sep=0cm,outer sep=0cm}]
+  \else
+    \global\def\cv@TypesetTableRows{}
+    \cv@interestContentfalse
+  \fi
+}
+\NewDocumentCommand{\cv@definecv@interestSection}{}{
+  \NewDocumentCommand{\cv@interestSection}{m}{%
+    \cv@interestClose
+    \ifcv@interestContent
+      \vspace*{2\cvSectionSBSep}
+    \fi
+    {\color{cvGreen}---} ##1 {\color{cvGreen}---}
+    \vspace*{\cvSectionSBSep}
+    
+    \cv@interestOpen
+  }
+}
+\NewDocumentCommand{\cv@definecvInterestLong}{}{
+  \NewDocumentCommand{\cvInterest}{mm}{%
+    \cv@interestOpen
+    \ifcv@interestContent %
+      \node[below=\cvItemSep of cv@interest text %
+        \the\value{cv@cvInterestCounterPrev},cv@interesticon] 
+        (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
+      \node[below=\cvInterestDetailsSep of cv@interest icon %
+        \the\value{cv@cvInterestCounter},cv@interesttext] 
+      (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
+    \else
+      \node[cv@interesticon] (cv@interest icon %
+        \the\value{cv@cvInterestCounter}) {##1};
+      \node[below=\cvInterestDetailsSep of cv@interest icon %
+        \the\value{cv@cvInterestCounter},cv@interesttext] 
+        (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
+    \fi
+    \stepcounter{cv@cvInterestCounter}
+    \stepcounter{cv@cvInterestCounterPrev}
+    \cv@interestContenttrue
+  }
+}
+\NewDocumentCommand{\cv@definecvInterestShort}{}{
+%    \end{macrocode}
+% https://tex.stackexchange.com/questions/12761
+%    \begin{macrocode}
+  %\def\Z{\vphantom{\parbox[c]{1cm}{\Huge Something Long}}}
+  \NewDocumentCommand{\cvInterest}{mm}{%
+%    \end{macrocode}
+% parse optinal argument if present
+%    \begin{macrocode}
+    \g@addto@macro\cv@TypesetTableRows{##1}%
+    \g@addto@macro\cv@TypesetTableRows{&}%
+    \g@addto@macro\cv@TypesetTableRows{##2}%
+    \g@addto@macro\cv@TypesetTableRows{\\[\cvInterestDetailsSep]}%
+    \cv@interestContenttrue
+  }
+}
+\ExplSyntaxOn
+\NewDocumentEnvironment{cvInterests}{o}{%
+%    \end{macrocode}
+% set defaults
+%    \begin{macrocode}
+  \cv@interestLongtrue
+%    \end{macrocode}
+% parse optional arguments
+%    \begin{macrocode}
+  
+  \@IfNoValueOrEmptyTF{#1}{}{%
+    \str_case:nnF {#1}{
+      {long}{\cv@interestLongtrue}
+      {short}{\cv@interestLongfalse}
+    }{\ClassError{limecv}{Unkown option `#1' for cvInterests %
+      environment.}{Only `long' and `short' are valid options %
+      for this environment.}}
+  }
+  
+  \cv@definecv@interestSection
+%    \end{macrocode}
+% define new commands
+%    \begin{macrocode}
+  \NewDocumentCommand{\cvInterestsPersonal}{}{%
+    \cv@interestSection{\faUser\ \emph{Personal}}}
+%    \end{macrocode}
+%    \begin{macrocode}
+  \NewDocumentCommand{\cvInterestsProfessional}{}{%
+    \cv@interestSection{\faBriefcase\ \emph{Professional}}}
+%    \end{macrocode}
+%    \begin{macrocode}
+  \ifcv@interestLong
+    \cv@definecvInterestLong
+  \else
+    \cv@definecvInterestShort
+  \fi
+  %%%%%%
+  \vspace{\cvSectionSBSep}
+  \ruleline{Interests}%
+  \vspace{\cvSectionSBSep}
+}{%
+  \cv@interestClose
+}
+\ExplSyntaxOff
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvProject environment
+%
+%
+%    \begin{macrocode}
+\newif\ifcv@projectImage
+\cv@projectImagefalse
+\newif\ifcv@projectLink
+\cv@projectLinkfalse
+\newif\ifcv@projectWidth
+\cv@projectWidthfalse
+\newif\ifcv@projectHeight
+\cv@projectHeightfalse
+\newcounter{cv@projectCurrent}
+\setcounter{cv@projectCurrent}{1}
+\newcounter{cv@projectPrevious}
+\setcounter{cv@projectPrevious}{0}
+%    \end{macrocode}
+%
+% \begin{key}{cv@Project}{image}
+%    \begin{macrocode}
+\define@key{cv@Project}{image}{%
+  \global\def\cv@projectImage{#1}%
+  \cv@projectImagetrue}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cv@Project}{link}
+%    \begin{macrocode}
+\define@key{cv@Project}{link}{%
+  \global\def\cv@projectLink{#1}%
+  \cv@projectLinktrue}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cv@Project}{width}
+%    \begin{macrocode}
+\define@key{cv@Project}{width}{%
+  \global\def\cv@projectWidth{#1}%
+  \cv@projectWidthtrue}
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{key}{cv@Project}{height}
+%    \begin{macrocode}
+\define@key{cv@Project}{height}{%
+  \global\def\cv@projectHeight{#1}%
+  \cv@projectHeighttrue}
+\NewDocumentCommand{\cv@definecvProject}{}{
+  \NewDocumentCommand{\cvProject}{omm}{%
+%    \end{macrocode}
+% default settings
+%    \begin{macrocode}
+    \cv@projectImagefalse
+    \cv@projectLinkfalse
+    \cv@projectWidthfalse
+    \cv@projectHeightfalse
+%    \end{macrocode}
+% parse optional arguments
+%    \begin{macrocode}
+    \@IfNoValueOrEmptyTF{##1}{}{\setkeys{cv@Project}{##1}}
+    \ifnodedefined{project \the\value{cv@projectPrevious} %
+      description}{}{%
+      \node (project \the\value{cv@projectPrevious} %
+        description) {};
+    }
+%    \end{macrocode}
+% draw image
+%    \begin{macrocode}
+    \ifcv@projectImage 
+      \ifcv@projectWidth
+        \node[below=\cv@projectSep of project %
+          \the\value{cv@projectPrevious} description] 
+          (project \the\value{cv@projectCurrent} image) 
+          {\includegraphics[width=\cv@projectWidth]{\cv@projectImage}};
+      \else
+        \ifcv@projectHeight
+          \node[below=\cv@projectSep of project %
+          \the\value{cv@projectPrevious} description] 
+          (project \the\value{cv@projectCurrent} image) 
+          {\includegraphics[height=\cv@projectHeight]{\cv@projectImage}};
+        \else
+          \ClassError{limecv}{No width or height specified, %
+          but image specified.}{Always specify the height or %
+          width if an image is set.}
+        \fi
+      \fi
+%    \end{macrocode}
+% draw title (and add href if specified)
+%    \begin{macrocode}
+      \node[%
+        text width=\cvSideWidth,
+        align=center,
+        below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} image] 
+        (project \the\value{cv@projectCurrent} title) {%
+      \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
+    \else
+%    \end{macrocode}
+% draw title (and add href if specified)
+%    \begin{macrocode}
+      \node[below=\cv@projectSep of project %
+        \the\value{cv@projectPrevious} description,
+        text width=\cvSideWidth,
+        align=center] 
+        (project \the\value{cv@projectCurrent} title) {%
+      \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
+    \fi
+    \node[
+      below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} title,
+      text width=\cvSideWidth,
+      align=center] 
+      (project \the\value{cv@projectCurrent} description) {##3};
+    
+    \setlength\cv@projectSep\cvItemSep
+%    \end{macrocode}
+% increase counter value
+%    \begin{macrocode}
+    \stepcounter{cv@projectCurrent}
+    \stepcounter{cv@projectPrevious}
+  }
+}
+%    \end{macrocode}
+% \end{key}
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvProjects}{}{%
+  \vspace{\cvSectionSBSep}
+  \ruleline{Projects}%
+  \vspace{\cvSectionSBSep}
+  \cv@definecvProject
+  \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
+}{
+  \end{tikzpicture}
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvLanguages environment
+%
+%    \begin{macrocode}
+\newcounter{cv@languages}
+\setcounter{cv@languages}{1}
+\pgfkeys{/@cv/languages/.is family,
+/@cv/languages/.unknown/.style = {%
+  \pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
+\NewDocumentEnvironment{cvLanguages}{}{%
+  \NewDocumentCommand{\cvLanguage}{mm}{%
+    {\globaldefs=1\relax\pgfkeys{%
+      /@cv/languages/lang\the\value{cv@languages} = ##2}}
+    \node[cv@languageText]{##1}; \pgfmatrixnextcell %
+      \node[cv@progressArea] (cv@language \the\value{cv@languages}) {}; \\
+    \stepcounter{cv@languages}
+  }%
+  \vspace{\cvSectionSBSep}
+  \ruleline{Languages}%
+  \vspace{\cvSectionSBSep}
+  \begin{tikzpicture}[%
+    every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
+  \matrix [
+    column 1/.style={anchor=east},
+    column sep=1.5\cvSectionSBSep,
+    row sep=1.5\cvSectionSBSep,
+    column 2/.style={anchor=west,align=left}
+  ] (contact) \bgroup
+}{%
+  \\\egroup;
+  \newcounter{cv@languagelevel}
+  \setcounter{cv@languagelevel}{1}
+  \loop\ifnum\value{cv@languagelevel}<\value{cv@languages}
+    \draw (cv@language \the\value{cv@languagelevel}.west) %
+      node[%
+        cv@progressBar,
+        minimum width=\pgfkeysvalueof{%
+        /@cv/languages/lang\the\value{cv@languagelevel}}em]%
+        {};
+    \stepcounter{cv@languagelevel}
+  \repeat
+  \end{tikzpicture}
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvCoverLetter environment
+%
+%
+%
+% \begin{key}{cvCoverLetter}{name}
+% cover letter keys
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{name}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterName}
+%    \begin{macrocode}
+\global\def\cv@coverletterName{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{cvCoverLetter}{company}
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{company}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterCompany}
+%    \begin{macrocode}
+\global\def\cv@coverletterCompany{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{cvCoverLetter}{position}
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{position}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterPosition}
+%    \begin{macrocode}
+\global\def\cv@coverletterPosition{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{cvCoverLetter}{address line 1}
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{address line 1}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterAddressLineA}
+%    \begin{macrocode}
+\global\def\cv@coverletterAddressLineA{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{cvCoverLetter}{address line 2}
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{address line 2}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterAddressLineB}
+%    \begin{macrocode}
+\global\def\cv@coverletterAddressLineB{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+% \begin{key}{cvCoverLetter}{address line 3}
+%    \begin{macrocode}
+\define@key{cvCoverLetter}{address line 3}{%
+%    \end{macrocode}
+% \end{key}
+%
+%
+% \begin{macro}{\cv@coverletterAddressLineC}
+%    \begin{macrocode}
+\global\def\cv@coverletterAddressLineC{#1}}
+\NewDocumentCommand{\cv@definecvBeneficiary}{}{
+  \NewDocumentCommand{\cvBeneficiary}{m}{%
+    \setkeys{cvCoverLetter}{name={},company={},
+      position={},address line 1={},address line 2={},
+      address line 3={},##1}
+    \begin{tabular}{@{}l}
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterName}{}{%
+        \MakeUppercase{\cv@coverletterName}} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterCompany}{}{\\ %
+        \cv@coverletterCompany} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterPosition}{}{\\ %
+        \cv@coverletterPosition} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineA}{}{\\ %
+        \cv@coverletterAddressLineA} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineB}{}{\\ %
+        \cv@coverletterAddressLineB} %
+      \@IfNoValueOrEmptyTF{%
+        \cv@coverletterAddressLineC}{}{\\ %
+        \cv@coverletterAddressLineC} %
+    \end{tabular}%
+    \vspace{\cvMargin}
+  }
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@definecvFullName}{}{
+  \NewDocumentCommand{\cvFullName}{}{%
+    \pgfkeysvalueof{/@cv/info/first name} %
+    \pgfkeysvalueof{/@cv/info/last name}
+  }
+}
+\NewDocumentEnvironment{cvCoverLetter}{}{%
+  \begin{tikzpicture}[%
+      remember picture,
+      overlay, 
+      every node/.style={inner sep=0cm,outer sep=0cm}]
+%    \end{macrocode}
+% draw green background
+%    \begin{macrocode}
+    \begin{scope}[on background layer]
+      \fill[cvGreenLight] (current page.north west) rectangle %
+        ++(\paperwidth,-\cvCoverLetterHeight);
+    \end{scope}
+    \draw (current page.north east) %
+      ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,
+         -\cvCoverLetterHeight/2) node (cv@h7) {};
+    \node[anchor=east] at (cv@h7) (cv cover letter name){%
+      \fontsize{50}{60}\selectfont
+%    \end{macrocode}
+% trick to expand argument such that `kleft` sees an 
+% alphabetic constant (i.e. a single letter)
+%    \begin{macrocode}
+      \begingroup\edef\y{\endgroup%
+        \noexpand\kleft{\cv@FirstNameLetter}}%
+      \y
+      \StrGobbleLeft{\pgfkeysvalueof{/@cv/info/first name}}{1}\space
+      \StrGobbleRight{\pgfkeysvalueof{/@cv/info/last name}}{1}
+%    \end{macrocode}
+% same trick
+% trick to expand argument such that `kleft` sees an 
+% alphabetic constant (i.e. a single letter)
+%    \begin{macrocode}
+      \begingroup\edef\y{\endgroup%
+        \noexpand\kright{\cv@LastNameLetter}}%
+      \y
+      };
+    \node[%
+      align=right,
+      cvAccent,
+      below=\cvCoverLetterPositionSpacing of cv cover letter name.south east,
+      anchor=north east]{%
+        \StrGobbleRight{\pgfkeysvalueof{/@cv/info/position}}{1}
+    \begingroup\edef\y{\endgroup%
+      \noexpand\kright{\cv@PositionLetter}}%
+    \y};
+    
+    \begin{scope}[on background layer]
+      \draw[line width=\cvCoverLetterLineWidth,cvGreen] 
+         ($(cv cover letter name.south west)+(0,-\cvCoverLetterLineSpacing)$) to 
+         ($(cv cover letter name.south east)+(0,-\cvCoverLetterLineSpacing)$);
+    \end{scope}
+  \end{tikzpicture}
+  \vspace{\dimexpr\cvCoverLetterHeight\relax}
+  
+  \begin{center}
+    \begin{minipage}{\cvCoverLetterWidth}
+      \today
+      
+      \vspace{\baselineskip}
+      \cv@definecvBeneficiary
+      \cv@definecvFullName
+}{%
+    \end{minipage}
+  \end{center}
+}
+%    \end{macrocode}
+%-------------------------------------------------------
+%
+%   cvID macro
+%
+%
+%    \begin{macrocode}
+\pgfkeys{/@cv/info/.is family,
+         /@cv/info/.unknown/.style = %
+         {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+         .initial = #1}}
+%    \end{macrocode}
+% first name, second name, picture, position
+%    \begin{macrocode}
+\NewDocumentCommand{\cvID}{mmmm}{
+  \@IfNoValueOrEmptyTF{#3}{}{
+    \begin{tikzpicture}
+      \node[
+        circle,
+        text=white,
+        minimum size=\cvPictureWidth,
+        path picture={
+          \node at (path picture bounding box.center){
+            \includegraphics[width=\cvPictureWidth]{#3}
+          };
+        }]
+        {};
+    \end{tikzpicture}
+  }
+  {\LARGE
+  #1
+  \vspace{\cvIDNameSep}
+  #2}
+  
+  \vspace{\cvPositionSep}
+  
+  \@IfNoValueOrEmptyTF{#4}{}{\color{cvAccent} #4}
+  
+  \vspace{\cvPositionSep}
+  {\globaldefs=1\relax\pgfkeys{/@cv/info/first name = %
+    #1}\def\cv@FirstNameLetter{\extract{#1}{1}}}
+  {\globaldefs=1\relax\pgfkeys{/@cv/info/last name = %
+    #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
+  {\globaldefs=1\relax\pgfkeys{/@cv/info/position = %
+    #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
+}\usepackage{fontawesome}%    \end{macrocode}
+
+%
+% \iffalse
+%</package>
+% \fi
 %
 % \Finale
 \endinput
+
