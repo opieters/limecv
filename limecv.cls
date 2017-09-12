@@ -144,7 +144,7 @@
 %
 %   Update global font colour
 %
-\newcommand{\globalcolor}[1]{%
+\NewDocumentCommand{\globalcolor}{m}{%
   \color{#1}\global\let\default@color\current@color
 }
 
@@ -169,11 +169,9 @@
 \tikzset{
   interesticon/.style = {},
   interesttext/.style = {},
-  timedottext/.style = {},
   eventdottext/.style = {},
   invisibletimedot/.style = {},
   timedot/.style = {},
-  eventdot/.style = {},
   contactIcon/.style={},
   contactText/.style={},
   headerIcon/.style={},
@@ -194,10 +192,6 @@
   cv@interesttext/.style = {%
     interesttext,
   },
-  cv@timedottext/.style = {%
-    black,
-    timedottext,
-  },
   cv@eventdottext/.style = {%
     text width=\cvMainWidth-\cvTimeDotSep,
     black,
@@ -206,23 +200,16 @@
   },
   cv@invisibletimedot/.style = {%
     circle,
-    minimum width=3pt,
+    minimum width=\cvTimeDotDiameter,
     anchor=center,
     invisibletimedot,
   },
   cv@timedot/.style = {%
     cv@invisibletimedot,
     draw,
-    minimum width=3pt,
     fill,
     black,
     timedot,
-  },
-  cv@eventdot/.style = {%
-    fill=black,
-    circle,
-    minimum width=2\cvNodeDiameter,
-    eventdot
   },
   cv@contactIcon/.style={%
     minimum height=\baselineskip,
@@ -242,15 +229,15 @@
   cv@languageText/.style={languageText,},
   cv@skillText/.style={skillText,},
   cv@progressArea/.style={%
-    minimum width=5em,
-    minimum height=0.75em,
+    minimum width=\cvProgressAreaWidth,
+    minimum height=\cvProgressAreaHeight,
     rectangle,
     draw,
     cvGreen,
     progressArea
   },
   cv@progressBar/.style={%
-    minimum height=0.75em,
+    minimum height=\cvProgressAreaHeight,
     rectangle,
     draw,
     fill,
@@ -305,6 +292,9 @@
 \else
   \ifluatex
     \cv@loadFonts
+  \else
+    \RequirePackage{fontawesome}
+    \RenewDocumentCommand{\familydefault}{}{\sfdefault}
   \fi
 \fi
 
@@ -345,13 +335,16 @@
 % remove all page styling
 \pagestyle{empty}
 
+% not used
 \newlength\cvColSep
-\setlength\cvColSep{0.25cm} % 2 times column separation!
+\setlength\cvColSep{1cm} % 2 times column separation!
 
+% not used
 \newlength\cvNodeSep 
-\setlength\cvNodeSep {0.75cm}
-\newlength\cvNodeDiameter 
-\setlength\cvNodeDiameter{2pt}
+\setlength\cvNodeSep{0.75cm}
+
+\newlength\cvTimeDotDiameter 
+\setlength\cvTimeDotDiameter{3pt}
 
 % TODO: make this more dynamic!
 \newlength\cvHeaderIconWidth
@@ -378,8 +371,8 @@
 \newlength\cvStartEndSep
 \setlength\cvStartEndSep{0.3cm}
 
-\newlength\cvSectionSep
-\setlength\cvSectionSep{0.4cm}
+\newlength\cvItemSep
+\setlength\cvItemSep{0.4cm}
 
 \newlength\cvTableSepWidth
 \setlength\cvTableSepWidth{0.3cm}
@@ -393,6 +386,38 @@
 \newlength\cvPictureWidth
 \setlength\cvPictureWidth{4cm}
 
+% progress area size definition
+\newlength\cvProgressAreaWidth
+\setlength\cvProgressAreaWidth{5em}
+
+\newlength\cvProgressAreaHeight
+\setlength\cvProgressAreaHeight{0.75em}
+
+\newlength\cvSectionSep
+\setlength\cvSectionSep{0.6cm}
+
+\newlength\cvSectionSBSep
+\setlength\cvSectionSBSep{4pt}
+
+% line width of horizontal line below section title
+\newlength\cvTitleLineWidth
+\setlength\cvTitleLineWidth{2pt}
+
+% distance from bottom of text to centre of line
+\newlength\cvTitleLineSpacing
+\setlength\cvTitleLineSpacing{0.1cm}
+
+% set to \cvItemSep by default (do not overwrite!)
+\newlength\cv@projectSep
+\setlength\cv@projectSep{0cm}
+
+% internal spacing between details of a single project
+\newlength\cvProjectDetailsSep
+\setlength\cvProjectDetailsSep{0.2cm}
+
+\newlength\cvInterestDetailsSep
+\setlength\cvInterestDetailsSep{0cm}
+
 
 %-------------------------------------------------------
 %
@@ -404,7 +429,7 @@
 
 % Typeset skill level
 \newcount\my@repeat@count
-\newcommand{\cvSkill}[1]{%
+\NewDocumentCommand{\cvSkill}{m}{%
   \begingroup
   \my@repeat@count=\z@
   \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
@@ -425,7 +450,7 @@
 \NewDocumentCommand{\cvhrulefill}{}{{\color{cvGreen}%
 \leavevmode\leaders\hrule height 1pt\hfill\kern\z@}}
 
-\newcommand*\ruleline[1]{\par\noindent\raisebox{.6ex}{%
+\NewDocumentCommand{\ruleline}{m}{\par\noindent\raisebox{.6ex}{%
 \makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
 \raisebox{-.6ex}{#1}\hspace{1ex}\cvhrulefill}}}
 
@@ -436,10 +461,10 @@
 \setcounter{cv@titleNext}{1}
 
 % Draw everything associated with main section title.
-\newcommand{\cv@Title}[2]{%
+\NewDocumentCommand{\cv@Title}{mm}{%
 \ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
   \node[%
-    below=0.6cm of cv@last item %
+    below=\cvSectionSep of cv@last item %
       \the\value{cv@lastItem}.south west,
     cv@sectionTitle] 
     (cv@title \the\value{cv@titleNext}) 
@@ -450,17 +475,17 @@
   \node[left=\cvTimeDotSep of cv@title %
     \the\value{cv@titleNext},cv@headerIcon] {#2};
   \node[
-    below=0.6cm of cv@last item %
+    below=\cvSectionSep of cv@last item %
       \the\value{cv@lastItem}.south west,
     cv@sectionTitle] 
     (cv@title \the\value{cv@titleNext} dummy) {%
       \phantom{\cvSection{Education}}};
   \begin{scope}[on background layer]
-    \draw[line width=2pt,cvGreen] 
+    \draw[line width=\cvTitleLineWidth,cvGreen] 
       let \p1=(cv@title \the\value{cv@titleNext} %
                dummy.south west), 
           \p2=(current page.east) in 
-      (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
+      (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
   \end{scope}
 }{%
   \node[cv@sectionTitle] at (0,0) (cv@title %
@@ -477,7 +502,7 @@
       let \p1=(cv@title \the\value{cv@titleNext}%
                .south west), 
           \p2=(current page.east) in 
-      (\x1,\y1-0.1cm) to (\x2,\y1-0.1cm);
+      (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
   \end{scope}
 }%
 \stepcounter{cv@titlePrev}%
@@ -502,13 +527,13 @@
   \NewDocumentCommand{\cvItem}{m}{%
     \ifnodedefined{item \the\value{cv@itemPrev}}{%
       \node[%
-        below=\cvSectionSep of item %
+        below=\cvItemSep of item %
           \the\value{cv@itemPrev}.south west,
         cv@eventdottext] 
         (item \the\value{cv@itemNext} header) 
         {\phantom{Evening}};
       \node[%
-        below=\cvSectionSep of item %
+        below=\cvItemSep of item %
           \the\value{cv@itemPrev}.south west,
         cv@sectionEduText] 
         (item \the\value{cv@itemNext}) 
@@ -520,13 +545,13 @@
         {};
     }{
       \node[%
-        below=\cvSectionSep of cv@title %
+        below=\cvItemSep of cv@title %
           \the\value{cv@titlePrev}.south west,
         cv@eventdottext] 
         (item \the\value{cv@itemNext} header) 
         {\phantom{Evening}};
       \node[
-        below=\cvSectionSep of cv@title %
+        below=\cvItemSep of cv@title %
           \the\value{cv@titlePrev}.south west,
         cv@sectionEduText] 
         (item \the\value{cv@itemNext}) 
@@ -592,10 +617,10 @@
     every node/.style={%
       inner sep=0pt,
       outer sep=0pt},
-      remember picture,
-      overlay,
-      shift={($(current page.north west)+%
-        (\cvSideWidth+3\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
+    remember picture,
+    overlay,
+    shift={($(current page.north west)+%
+      (\cvSideWidth+3\cvMargin+\cvTimeDotSep,-\cvMargin)$)}]
 }{%
   \end{tikzpicture}
 }
@@ -604,7 +629,9 @@
   \stepcounter{titlePrev}
   \stepcounter{titleNext}
     \begin{tikzpicture}[%
-      every node/.style={inner sep=0pt,outer sep=0pt},
+      every node/.style={
+        inner sep=0pt,
+        outer sep=0pt},
       remember picture,
       overlay,
       shift={($(current page.north west)+%
@@ -617,7 +644,7 @@
 %
 %   cvEductation environment
 %
-\newenvironment{cvEducation}{%
+\NewDocumentEnvironment{cvEducation}{}{%
     \cv@Title{Education}{\faGraduationCap}
     % insures uniqueness
     \stepcounter{cv@itemPrev}
@@ -634,7 +661,7 @@
 %
 %   cvExperience environment
 %
-\newenvironment{cvExperience}{%
+\NewDocumentEnvironment{cvExperience}{}{%
   \cv@Title{Experience}{\faBriefcase}
   % insures uniqueness
   \stepcounter{cv@itemPrev}
@@ -651,15 +678,15 @@
 %
 %   cvSkills environment
 %
-\newenvironment{cvSkills}{%
+\NewDocumentEnvironment{cvSkills}{}{%
   \cv@Title{Skills}{\faStar}
   \global\cv@firstskilltrue
 }{%
   \node[
-    below=0.6cm of cv@title \the\value{cv@titlePrev}%
+    below=\cvSectionSep of cv@title \the\value{cv@titlePrev}%
       .south west,
     anchor=north west] (skills) %
-    {\begin{tabular}{@{}llll@{}}%
+    {\begin{tabular}{@{}ll@{\hskip\cvColSep}ll@{}}%
     \cv@skillsTable
     \end{tabular}};
   \stepcounter{cv@lastItem}
@@ -671,10 +698,10 @@
 %
 %   cvReferences environment
 %
-\newenvironment{cvReferences}{%
+\NewDocumentEnvironment{cvReferences}{}{%
   \cv@Title{References}{\faLink}
   \node[
-    below=0.6cm of cv@title \the\value{cv@titlePrev}.%
+    below=\cvSectionSep of cv@title \the\value{cv@titlePrev}.%
       south west,
     anchor=north west,
     ] (cv@References) \bgroup %
@@ -844,7 +871,7 @@
 %   cvSideBar environment
 %
 
-\newenvironment{cvSideBar}{%
+\NewDocumentEnvironment{cvSideBar}{}{%
   \vspace*{\fill}
   \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
@@ -859,30 +886,29 @@
   \vspace*{\fill}
 }
 
-\newenvironment{cvSideBar*}{%
+\NewDocumentEnvironment{cvSideBar*}{}{%
+  \vspace*{\fill}
+  \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
-    \draw (current page.center) %
-      ++(\paperwidth/2,\paperheight/2) node (h3) {};
-    \draw (h3) %
-      ++(-\cvSideWidth-2\cvMargin,-\paperheight) node (h4) {};
-    \draw[fill=cvGreenLight,cvGreenLight] (h3) rectangle (h4);
-  \end{tikzpicture}
+    \fill[cvGreenLight] (current page.north east) rectangle %
+      ++(-\cvSideWidth-2\cvMargin,-\paperheight);
+  \end{tikzpicture}%
   \begin{minipage}{\cvSideWidth}
-    %\vspace*{2cm}
     \begin{center}
 }{%
     \end{center}
-  \end{minipage}%
+  \end{minipage}
+  \vspace*{\fill}
 }
 
 %-------------------------------------------------------
 %
 %   cvProfile environment
 %
-\newenvironment{cvProfile}{%
+\NewDocumentEnvironment{cvProfile}{}{%
   \ruleline{Profile}
 }{%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
 }
 
 %-------------------------------------------------------
@@ -907,9 +933,9 @@
 }
 
 \newif\ifcv@contactfirst
-\newenvironment{cvContact}{%
+\NewDocumentEnvironment{cvContact}{}{%
   \ruleline{Contact}%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
   
   \global\cv@contactfirstfalse
 
@@ -935,7 +961,7 @@
 }{%
   \\\egroup; % \\ required, does not compile otherwise
   \end{tikzpicture}%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
 }
 
 %-------------------------------------------------------
@@ -989,11 +1015,11 @@
     \cv@interestClose
     \ifcv@interestContent
 
-      \vspace*{8pt}
+      \vspace*{2\cvSectionSBSep}
     \fi
     {\color{cvGreen}---} ##1 {\color{cvGreen}---}
 
-    \vspace*{4pt}
+    \vspace*{\cvSectionSBSep}
     
     \cv@interestOpen
   }
@@ -1004,16 +1030,16 @@
     % parse optinal argument if present
     % TODO: replace this with a simple if!
     \ifcv@interestContent %
-      \node[below=0.4cm of cv@interest text %
+      \node[below=\cvItemSep of cv@interest text %
         \the\value{cv@cvInterestCounterPrev},cv@interesticon] 
         (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
-      \node[below=0cm of cv@interest icon %
+      \node[below=\cvInterestDetailsSep of cv@interest icon %
         \the\value{cv@cvInterestCounter},cv@interesttext] 
       (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \else
       \node[cv@interesticon] (cv@interest icon %
         \the\value{cv@cvInterestCounter}) {##1};
-      \node[below=0cm of cv@interest icon %
+      \node[below=\cvInterestDetailsSep of cv@interest icon %
         \the\value{cv@cvInterestCounter},cv@interesttext] 
         (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \fi
@@ -1066,7 +1092,7 @@
   \fi
   %%%%%%
   \ruleline{Interests}%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
 }{%
   \cv@interestClose
 }
@@ -1103,9 +1129,6 @@
 \define@key{cv@Project}{height}{%
   \global\def\cv@projectHeight{#1}%
   \cv@projectHeighttrue}
-
-\newlength\cv@projectSep
-\setlength\cv@projectSep{0cm}
 
 \NewDocumentCommand{\cv@definecvProject}{}{
   \NewDocumentCommand{\cvProject}{omm}{%
@@ -1144,7 +1167,7 @@
       \node[%
         text width=\cvSideWidth,
         align=center,
-        below=0.2cm of project \the\value{cv@projectCurrent} image] 
+        below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} image] 
         (project \the\value{cv@projectCurrent} title) {%
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \else
@@ -1157,12 +1180,12 @@
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \fi
     \node[
-      below=0.2cm of project \the\value{cv@projectCurrent} title,
+      below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} title,
       text width=\cvSideWidth,
       align=center] 
       (project \the\value{cv@projectCurrent} description) {##3};
     
-    \setlength\cv@projectSep\cvSectionSep
+    \setlength\cv@projectSep\cvItemSep
     % increase counter value
     \stepcounter{cv@projectCurrent}
     \stepcounter{cv@projectPrevious}
@@ -1171,7 +1194,7 @@
 
 \NewDocumentEnvironment{cvProjects}{}{%
   \ruleline{Projects}%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
 
   \cv@definecvProject
   \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
@@ -1191,7 +1214,7 @@
   \pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
 
 
-\newenvironment{cvLanguages}{%
+\NewDocumentEnvironment{cvLanguages}{}{%
   \NewDocumentCommand{\cvLanguage}{mm}{%
     {\globaldefs=1\relax\pgfkeys{%
       /@cv/languages/lang\the\value{cv@languages} = ##2}}
@@ -1200,13 +1223,13 @@
     \stepcounter{cv@languages}
   }%
   \ruleline{Languages}%
-  \vspace{4pt}
+  \vspace{\cvSectionSBSep}
   \begin{tikzpicture}[%
     every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
   \matrix [
     column 1/.style={anchor=east},
-    column sep=6pt,
-    row sep=6pt,
+    column sep=1.5\cvSectionSBSep,
+    row sep=1.5\cvSectionSBSep,
     column 2/.style={anchor=west,align=left}
   ] (contact) \bgroup
 }{%
@@ -1280,7 +1303,7 @@
   }
 }
 
-\newenvironment{cvCoverLetter}{%
+\NewDocumentEnvironment{cvCoverLetter}{}{%
   \begin{tikzpicture}[%
       remember picture,
       overlay, 
@@ -1388,4 +1411,4 @@
     #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
   {\globaldefs=1\relax\pgfkeys{/@cv/info/position = %
     #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
-}
+}\usepackage{fontawesome}
