@@ -186,7 +186,7 @@
   anchor=north west
   },
   cv@interesticon/.style = {%
-    minimum width=3em,
+    minimum width=\cvHeaderIconWidth,
     interesticon
   },
   cv@interesttext/.style = {%
@@ -346,16 +346,6 @@
 \newlength\cvTimeDotDiameter 
 \setlength\cvTimeDotDiameter{3pt}
 
-% TODO: make this more dynamic!
-\newlength\cvHeaderIconWidth
-\ifxetex
-  \setlength\cvHeaderIconWidth{%
-    \maxof{\widthof{\faBriefcase}}{\widthof{%
-      \faGraduationCap}}}
-\else
-  \setlength{\cvHeaderIconWidth}{0pt}
-\fi
-
 \newlength\cvMargin
 \setlength\cvMargin{1cm}
 
@@ -418,6 +408,29 @@
 \newlength\cvInterestDetailsSep
 \setlength\cvInterestDetailsSep{0cm}
 
+\newlength\cvContactItemSep
+\setlength\cvContactItemSep{5pt}
+
+% line width of line below cover letter name
+\newlength\cvCoverLetterLineWidth
+\setlength\cvCoverLetterLineWidth{3pt}
+
+\newlength\cvCoverLetterPositionSpacing
+\setlength\cvCoverLetterPositionSpacing{10pt}
+
+\newlength\cvSBSectionLineWidth
+\setlength\cvSBSectionLineWidth{1pt}
+
+\newlength\cvCoverLetterLineSpacing
+\setlength\cvCoverLetterLineSpacing{0pt}
+
+\newlength\cvIDNameSep
+\setlength\cvIDNameSep{0.1cm}
+\newlength\cvPositionSep
+\setlength\cvPositionSep{0.5cm}
+
+\newlength\cvSkillSep
+\setlength\cvSkillSep{1ex}
 
 %-------------------------------------------------------
 %
@@ -426,6 +439,13 @@
 
 % Style main section title
 \NewDocumentCommand{\cvSection}{m}{\Large\textbf{#1}}
+
+% TODO: make this more dynamic!
+\newlength\cvHeaderIconWidth
+\setlength\cvHeaderIconWidth{%
+  \maxof{\widthof{\cvSection{\faBriefcase}}}{\widthof{%
+    \cvSection{\faGraduationCap}}}}
+%\setlength{\cvHeaderIconWidth}{0pt}
 
 % Typeset skill level
 \newcount\my@repeat@count
@@ -448,7 +468,7 @@
 % Alternative: 
 %   https://tex.stackexchange.com/questions/15119
 \NewDocumentCommand{\cvhrulefill}{}{{\color{cvGreen}%
-\leavevmode\leaders\hrule height 1pt\hfill\kern\z@}}
+\leavevmode\leaders\hrule height \cvSBSectionLineWidth\hfill\kern\z@}}
 
 \NewDocumentCommand{\ruleline}{m}{\par\noindent\raisebox{.6ex}{%
 \makebox[\linewidth]{\cvhrulefill\hspace{1ex}%
@@ -498,7 +518,7 @@
     cv@headerIcon] 
     {#2};
   \begin{scope}[on background layer]
-    \draw[line width=2pt,cvGreen] 
+    \draw[line width=\cvTitleLineWidth,cvGreen] 
       let \p1=(cv@title \the\value{cv@titleNext}%
                .south west), 
           \p2=(current page.east) in 
@@ -592,7 +612,7 @@
       & #2 & \cvSkill{#3} & #4}
     \cv@firstskillfalse
   \else
-    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} %
+    \g@addto@macro\cv@skillsTable{\\[\cvSkillSep] \cvSkill{#1} %
       & #2 & \cvSkill{#3} & #4}
   \fi
 }
@@ -603,7 +623,7 @@
     \g@addto@macro\cv@skillsTable{\cvSkill{#1} & #2}
     \cv@firstskillfalse
   \else
-    \g@addto@macro\cv@skillsTable{\\[1ex] \cvSkill{#1} & #2}
+    \g@addto@macro\cv@skillsTable{\\[\cvSkillSep] \cvSkill{#1} & #2}
   \fi
 }
 
@@ -906,9 +926,9 @@
 %   cvProfile environment
 %
 \NewDocumentEnvironment{cvProfile}{}{%
+  \vspace{\cvSectionSBSep}
   \ruleline{Profile}
 }{%
-  \vspace{\cvSectionSBSep}
 }
 
 %-------------------------------------------------------
@@ -954,14 +974,13 @@
     \matrix [
       column 1/.style={anchor=center},
       column 2/.style={anchor=west,align=left},
-      column sep=5pt,
-      row sep=5pt,
+      column sep=\cvContactItemSep,
+      row sep=\cvContactItemSep,
       inner sep=0pt, 
       outer sep=0pt] (contact) \bgroup
 }{%
   \\\egroup; % \\ required, does not compile otherwise
   \end{tikzpicture}%
-  \vspace{\cvSectionSBSep}
 }
 
 %-------------------------------------------------------
@@ -1057,7 +1076,7 @@
     \g@addto@macro\cv@TypesetTableRows{##1}%
     \g@addto@macro\cv@TypesetTableRows{&}%
     \g@addto@macro\cv@TypesetTableRows{##2}%
-    \g@addto@macro\cv@TypesetTableRows{\\[5pt]}%
+    \g@addto@macro\cv@TypesetTableRows{\\[\cvInterestDetailsSep]}%
     \cv@interestContenttrue
   }
 }
@@ -1091,6 +1110,7 @@
     \cv@definecvInterestShort
   \fi
   %%%%%%
+  \vspace{\cvSectionSBSep}
   \ruleline{Interests}%
   \vspace{\cvSectionSBSep}
 }{%
@@ -1193,6 +1213,7 @@
 }
 
 \NewDocumentEnvironment{cvProjects}{}{%
+  \vspace{\cvSectionSBSep}
   \ruleline{Projects}%
   \vspace{\cvSectionSBSep}
 
@@ -1222,6 +1243,7 @@
       \node[cv@progressArea] (cv@language \the\value{cv@languages}) {}; \\
     \stepcounter{cv@languages}
   }%
+  \vspace{\cvSectionSBSep}
   \ruleline{Languages}%
   \vspace{\cvSectionSBSep}
   \begin{tikzpicture}[%
@@ -1337,7 +1359,7 @@
     \node[%
       align=right,
       cvAccent,
-      below=10pt of cv cover letter name.south east,
+      below=\cvCoverLetterPositionSpacing of cv cover letter name.south east,
       anchor=north east]{%
         \StrGobbleRight{\pgfkeysvalueof{/@cv/info/position}}{1}
     \begingroup\edef\y{\endgroup%
@@ -1345,9 +1367,9 @@
     \y};
     
     \begin{scope}[on background layer]
-      \draw[line width=3pt,cvGreen] 
-         (cv cover letter name.south west) to 
-         (cv cover letter name.south east);
+      \draw[line width=\cvCoverLetterLineWidth,cvGreen] 
+         ($(cv cover letter name.south west)+(0,-\cvCoverLetterLineSpacing)$) to 
+         ($(cv cover letter name.south east)+(0,-\cvCoverLetterLineSpacing)$);
     \end{scope}
   \end{tikzpicture}
 
@@ -1396,15 +1418,15 @@
   {\LARGE
   #1
 
-  \vspace{0.1cm}
+  \vspace{\cvIDNameSep}
 
   #2}
   
-  \vspace{0.5cm}
+  \vspace{\cvPositionSep}
   
   \@IfNoValueOrEmptyTF{#4}{}{\color{cvAccent} #4}
   
-  \vspace{0.5cm}
+  \vspace{\cvPositionSep}
   {\globaldefs=1\relax\pgfkeys{/@cv/info/first name = %
     #1}\def\cv@FirstNameLetter{\extract{#1}{1}}}
   {\globaldefs=1\relax\pgfkeys{/@cv/info/last name = %
