@@ -42,9 +42,9 @@
 
 \section{Introduction}
 
-This document class is designed to facilitate easy development of curriculum vit\ae\ (CV) with this particular design. Special elements have been designed of particular sections to ease quick creation. This document class was co-designed with a business card, which can be found on GitHub: \url{https://github.com/opieters/business-card}.
+  This document class is designed to facilitate easy development of curriculum vit\ae\ (CV) a set of predefined macros and environments. Special elements have been designed of particular sections to ease quick creation. This document class was co-designed with a business card, which can be found on GitHub: \url{https://github.com/opieters/business-card}.
 
-The design of this CV is split up in three parts, illustated by \cref{design}. Each of these parts that make up this CV template, will be detailed in the sections below.
+  The design of this CV is split up in three parts, illustrated by \cref{design}. Each of these parts that make up this CV template will be detailed in the sections below.
 
 \begin{figure}[!ht]
   \centering
@@ -65,7 +65,7 @@ The design of this CV is split up in three parts, illustated by \cref{design}. E
 
 \section{Requirements}
 
-  Currently, it is advised to use the \cvRequirement{XeLaTeX} compiler. LaTeX will also work, but in that case icons are not available. In the subsequent, it will always be assumed that the XeLaTeX compiler is used (unless noted otherwise). 
+  It is advised to use the \cvRequirement{XeLaTeX} compiler. However, there is also support for \cvRequirement{LaTeX} and \cvRequirement{LuaLaTeX}. In these cases, fonts might be different than intended and side bearings will not be corrected, since only the XeLaTeX engine has access to these. In the subsequent sections, it will always be assumed that the XeLaTeX compiler is used (unless noted otherwise). 
 
   Any font can be used, though by default the \cvRequirement{Fira}\footnote{\url{https://github.com/mozilla/Fira}} font is used. This should be installed and accessable by the typesetting system. If another font is desired, it can be overwritten using the \lstinline|customfont| document class options and |\cvMainFont| command. 
 
@@ -320,11 +320,10 @@ Dear Miss.\ Smith
 \definecolor{cvDark}{HTML}{000000}
   \end{lstlisting}
   
-  By overwriting the following styles, one can change the appearance of multiple TikZ nodes. The following styles are available:
+  By overwriting the following styles, one can change the appearance of multiple TikZ nodes. The following styles are available.
   \begin{itemize}
     \item |interesticon|
     \item |interesttext|
-    \item |timedottext|
     \item |eventdottext|
     \item |invisibletimedot|
     \item |timedot|
@@ -338,6 +337,7 @@ Dear Miss.\ Smith
     \item |progressArea|
     \item |progressBar|
     \item |sectionTitle|
+    \item |sectionEduText|
   \end{itemize}
   
   Adding your own styles is easy with the code from \cref{cvTikZStyle}.
@@ -347,6 +347,40 @@ Dear Miss.\ Smith
   interesticon/.style = {},
 }
   \end{lstlisting}
+  
+\begin{itemize}
+  \item |\cvColSep| Distance between columns of |cvSkills|. Default value: |1cm|.
+  \item |\cvNodeSep| Not used currently. Default value: |0.75cm|.
+  \item |\cvTimeDotDiameter| Size of the dots in a timeline. Default value: |3pt|.
+  \item |\cvMargin| Margin around the entire page. Default value: |1cm|.
+  \item |\cvSideWidth| Width of the side bar. Default value: |0.3\paperwidth-\cvMargin|.
+  \item |\cvMainWidth| Width of the main content section. Default value: |\paperwidth-4\cvMargin-\cvSideWidth|.
+  \item |\cvTimeDotSep| Distance between timeline dot and text. Default value: |0.4cm|.
+  \item |\cvStartEndSep| Not used. Default value: |0.3cm|.
+  \item |\cvItemSep| Distance between |cvItem| entries. Default value: |0.4cm|.
+  \item |\cvTableSepWidth| Distance between two columns of |cvReferences| environment. Default value: |0.3cm|.
+  \item |\cvCoverLetterHeight| Height of the coloured bar at the top of the cover letter. Default value: |\cvSideWidth|.
+  \item |\cvCoverLetterWidth| Width of the cover letter text. This can be used to improve to layout. Default value: |\cvMainWidth+3\cvMargin|.
+  \item |\cvPictureWidth| Diameter of the profile picture. Default value: |4cm|.
+  \item |\cvProgressAreaWidth| Length of a progress bar for the languages section. Default value: |5em|.
+  \item |\cvProgressAreaHeight| Height of a progress bar for the languages section. Default value: |0.75em|.
+  \item |\cvSectionSep| Distance between sections of the main content section. Default value: |0.6cm|.
+  \item |\cvSectionSBSep| Distance between sections of the side bar section. Default value: |4pt|.
+  \item |\cvTitleLineWidth| Line width of horizontal line below section title. Default value: |2pt|.
+  \item |\cvTitleLineSpacing| Distance from bottom of the titles of the main content section to the horizontal centre of line. Default value: |0.1cm|.
+  \item |\cv@projectSep| Internal length. Automatically set to |\cvItemSep|.
+  \item |\cvProjectDetailsSep| Internal spacing between details of a single project. Default value: |0.2cm|.
+  \item |\cvInterestDetailsSep| Distance between items in case the |long| options is used for the |cvInterests| environment. Default value: |0cm|.
+  \item |\cvContactItemSep| Distance between items in the |cvContact| environment. Default value: |5pt|.
+  \item |\cvCoverLetterLineWidth| Line width of line below cover letter name. Default value: |3pt|.
+  \item |\cvCoverLetterPositionSpacing| Distance between name and position in the cover letter. Default value: |10pt|.
+  \item |\cvSBSectionLineWidth| Line width of left and right lines next to the titles of in the side bar. Default value: |1pt|.
+  \item |\cvCoverLetterLineSpacing| Distance between name and line below it in the cover letter. Default value: |0pt|.
+  \item |\cvIDNameSep| Distance between first and last name. Default value: |0.1cm|.
+  \item |\cvPositionSep| Distance before and after the position. Default value: |0.5cm|.
+  \item |\cvSkillSep| Distance between skills. Default value: |1ex|.
+  \item |\cvHeaderIconWidth| Automatically set, currently has no visible effect on document. default value: |0pt|.
+\end{itemize}
   
   
 \section{Example}
