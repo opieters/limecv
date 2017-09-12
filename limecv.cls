@@ -732,11 +732,7 @@
     (cv@last item \the\value{cv@lastItem}) {};
 }
 
-%-------------------------------------------------------
-%
 %   Key-value parsing structure
-%   %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 \pgfkeys{/@cv/references/.is family,
          /@cv/references/.unknown/.style = %
          {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
@@ -787,87 +783,77 @@
 % keys
 \define@key{cvAddReferenceA}{name}{%
   \global\def\cv@refAName{#1}%
-  \pgfkeys{/@cv/references/name = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/name = true}}}
 \define@key{cvAddReferenceA}{company}{%
   \global\def\cv@refACompany{#1}%
-  \pgfkeys{/@cv/references/company = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/company = true}}}
 \define@key{cvAddReferenceA}{position}{%
   \global\def\cv@refAPosition{#1}%
-  \pgfkeys{/@cv/references/position = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/position = true}}}
 \define@key{cvAddReferenceA}{address line 1}{%
   \global\def\cv@refAAddressLineA{#1}%
-  \pgfkeys{/@cv/references/address line 1 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 1 = true}}}
 \define@key{cvAddReferenceA}{address line 2}{%
   \global\def\cv@refAAddressLineB{#1}%
-  \pgfkeys{/@cv/references/address line 2 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 2 = true}}}
 \define@key{cvAddReferenceA}{address line 3}{%
   \global\def\cv@refAAddressLineC{#1}%
-  \pgfkeys{/@cv/references/address line 3 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 3 = true}}}
 \define@key{cvAddReferenceA}{phone work}{%
   \global\def\cv@refAPhoneWork{#1}%
-  \pgfkeys{/@cv/references/phone work = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/phone work = true}}}
 \define@key{cvAddReferenceA}{mobile phone}{%
   \global\def\cv@refAMobilePhone{#1}%
-  \pgfkeys{/@cv/references/mobile phone = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
 
 \define@key{cvAddReferenceB}{name}{%
   \global\def\cv@refBName{#1}%
-  \pgfkeys{/@cv/references/name = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/name = true}}}
 \define@key{cvAddReferenceB}{company}{%
   \global\def\cv@refBCompany{#1}%
-  \pgfkeys{/@cv/references/company = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/company = true}}}
 \define@key{cvAddReferenceB}{position}{%
   \global\def\cv@refBPosition{#1}%
-  \pgfkeys{/@cv/references/position = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/position = true}}}
 \define@key{cvAddReferenceB}{address line 1}{%
   \global\def\cv@refBAddressLineA{#1}%
-  \pgfkeys{/@cv/references/address line 1 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 1 = true}}}
 \define@key{cvAddReferenceB}{address line 2}{%
   \global\def\cv@refBAddressLineB{#1}%
-  \pgfkeys{/@cv/references/address line 2 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 2 = true}}}
 \define@key{cvAddReferenceB}{address line 3}{%
   \global\def\cv@refBAddressLineC{#1}%
-  \pgfkeys{/@cv/references/address line 3 = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/address line 3 = true}}}
 \define@key{cvAddReferenceB}{phone work}{%
   \global\def\cv@refBPhoneWork{#1}%
-  \pgfkeys{/@cv/references/phone work = true}}
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/phone work = true}}}
 \define@key{cvAddReferenceB}{mobile phone}{%
   \global\def\cv@refBMobilePhone{#1}%
-  \pgfkeys{/@cv/references/mobile phone = true}}
-
-
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
 
 \NewDocumentCommand{\cvAddReference}{sm}{%
   \IfBooleanTF{#1}{%
-    \setkeys{cvAddReferenceA}{name={},company={},
-      position={},address line 1={},address line 2={},
-      address line 3={},phone work={},mobile phone={},#2}
+    \setkeys{cvAddReferenceA}{name=,company=,
+      position=,address line 1=,address line 2=,
+      address line 3=,phone work=,mobile phone=,#2}
     \pgfkeys{/@cv/references/name = true}%
   }{%
-    \setkeys{cvAddReferenceB}{name={},company={},
-    position={},address line 1={},address line 2={},
-    address line 3={},phone work={},mobile phone={},#2}
+    \setkeys{cvAddReferenceB}{name=,company=,
+    position=,address line 1=,address line 2=,
+    address line 3=,phone work=,mobile phone=,#2}
     \ifcv@refStored%
       \begin{tabular}{@{}L{0.5\cvMainWidth-0.5\cvTimeDotSep%
             -0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}%
           L{0.5\cvMainWidth-0.5\cvTimeDotSep%
             -0.5\cvTableSepWidth}@{}}%
-        \ifcv@refName            \cv@refAName         %
-          & \cv@refBName         \fi %
-        \ifcv@refCompany      \\ \cv@refACompany      %
-          & \cv@refBCompany      \fi %
-        \ifcv@refPosition     \\ \cv@refAPosition     %
-          & \cv@refBPosition     \fi %
-        \ifcv@refAddressLineA \\ \cv@refAAddressLineA %
-          & \cv@refBAddressLineA \fi %
-        \ifcv@refAddressLineB \\ \cv@refAAddressLineB %
-          & \cv@refBAddressLineB \fi %
-        \ifcv@refAddressLineC \\ \cv@refAAddressLineC %
-          & \cv@refBAddressLineC \fi %
-        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    %
-          & \cv@refBPhoneWork    \fi %
-        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  %
-          & \cv@refBMobilePhone  \fi %
+        \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
+        \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
+        \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
+        \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
+        \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
+        \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
+        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
+        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
       \end{tabular}%
       \pgfkeys{/@cv/references/value stored = false}%
     \else%
