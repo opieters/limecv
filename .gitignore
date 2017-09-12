@@ -1,7 +1,11 @@
 *.log
 *.dvi
-*.pdf
 *.fls
 *.fdb_latexmk
 *.toc
 *.synctex(busy)
+limecv.cls
+*.idx
+*.glo
+mwe-xelatex.pdf
+limecv.pdf
