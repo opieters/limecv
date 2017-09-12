@@ -2,8 +2,6 @@
 
 `limecv` is a document class to typeset curriculum vitæ in LaTeX.
 
-Currenlty, only XeLaTeX and LuaLaTeX are supported. Support for LaTeX is coming soon.
-
 The design of this document class is detailed in [a series of blog posts][blog].  
 
 Example CV:
