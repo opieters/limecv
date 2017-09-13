@@ -68,7 +68,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1462}
+% \CheckSum{1467}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -109,8 +109,9 @@
 % \section{Introduction}
 % 
 %   This document class is designed to facilitate easy development of 
-%   curriculum vit\ae\ (CV) a set of predefined macros and environments.
-%   Special elements have been designed of particular sections to ease quick 
+%   curriculum vit\ae\ (CV). A set of predefined macros and environments are
+%   available for most common sections on a CV. These special elements have 
+%   been designed to ease quick 
 %   creation. This document class was co-designed with a business card, which 
 %   can be found on GitHub: \url{https://github.com/opieters/business-card}.
 % 
@@ -131,15 +132,15 @@
 %     \draw (0,0) rectangle ++(-4.20,-5.94);
 %     \draw[fill=black!20] (0,0) rectangle ++(-4.2,-1.5);
 %   \end{tikzpicture}
-%   \caption{Illustation of basic template. The left image depicts the actual CV: 
-%     side bar to the left (1) with main content on the right (2). The right 
-%     image depicts the cover letter design.}
+%   \caption{Illustation of a basic template. The image to the left depicts the  
+%     actual CV: side bar to the left (1) with main content on the right (2).   
+%     The image to the right depicts the cover letter design.}
 %   \label{design}
 % \end{figure}
 % 
 % \section{Requirements}
 % 
-%   It is advised to use the \cvRequirement{XeLaTeX} compiler. However, there is 
+%   It is advised to use the \cvRequirement{XeLaTeX} engine. However, there is 
 %   also support for \cvRequirement{LaTeX} and \cvRequirement{LuaLaTeX}. In these 
 %   cases, fonts might be different than intended and side bearings will not be 
 %   corrected, since only the XeLaTeX engine has access to these. In the subsequent 
@@ -148,13 +149,15 @@
 % 
 %   Any font can be used, though by default the \cvRequirement{Fira}
 %   \footnote{\url{https://github.com/mozilla/Fira}} font is used. This should be
-%   installed and accessable by the typesetting system. If another font is desired, 
-%   it can be overwritten using the \lstinline|sansfont| document class options and 
-%   |\cvMainFont| command. 
+%   installed and accessible by the typesetting system. If another font is desired, 
+%   it can be overwritten using the |sansfont| document class options and 
+%   |\cvMainFont| command. The mono spaced font can be changed by means of the 
+%   |monofont| class option.
 % 
 %   \cvRequirement{FontAwesome}\footnote{\url{http://fontawesome.io}} is the icon 
 %   font used. This font should also be available and cannot be replaced by another 
-%   icon font. 
+%   icon font. Most modern TeX distributions ship with this font since they provide
+%   the |fontawesome| package. 
 % 
 % \section{General Macros and Document Class Options}
 % 
@@ -178,25 +181,37 @@
 %   \meta{picture location}|}{|\meta{job position}|}|. Empty fields are allowed for 
 %   the third and fourth arguments. No picture and no job position will then be 
 %   typeset. Example code: 
-%   \begin{lstlisting}
-% \cvID{John}{Doe}{profile_picture}{Broaker}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\cvID{John}{Doe}{profile_picture}{Broker}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvProfile} 
 %   This environment contains a brief profile description or biography. No additional 
 %   arguments are allowed. Example code:
-%   \begin{lstlisting}
-% \begin{cvProfile}
-%   A short biography goes here.
-% \end{cvProfile}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvProfile}
+  A short biography goes here.
+\end{cvProfile}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvContact} 
 %   All the contact information goes here. Inside this environment, the following 
 %   commands are available: 
 %   \begin{itemize}
 %     \item \DescribeMacro{\cvContactAddress} |\cvContactAddress{|\meta{address}|}| 
-%       typesets an address. How this address should be typeset exactly is left to the 
+%       typesets an address. How this address should be typeset exactly, is left to the 
 %       user. The use of line breaks (|\\|) is allowed;
 %     \item \DescribeMacro{\cvContactEmail} 
 %      |\cvContactEmail{|\meta{link}|}{|\meta{email address}|}| typesets an email 
@@ -231,7 +246,7 @@
 %       no action will be performed upon clicking on the website.this address as recipient. 
 %       If the link argument is left empty, no link will be created. 
 %     \item \DescribeMacro{\cvContactKeybase} 
-%       |\cvContactKeybase{|\meta{link}|}{|\meta{fingerprint}|}| typesets a keybase 
+%       |\cvContactKeybase{|\meta{link}|}{|\meta{fingerprint}|}| typesets a Keybase 
 %       fingerprint (and account). The link variable should be a link to the KeyBase 
 %       profile (e.g.\ |https://keybase.io/johndoe|). Clicking on the fingerprint will then 
 %       automatically open the default web browser. If the link argument is left empty, no 
@@ -239,39 +254,53 @@
 %   \end{itemize}
 %   
 %   A full example:
-%   \begin{lstlisting}
-% \begin{cvContact}
-%   \cvContactAddress{Some Street 78\\B-9000 Ghent\\Belgium}
-%   \cvContactEmail{mailto:john@doe.tld}{john@doe.tld}
-%   \cvContactPhone{+1 781 555 1212}
-%   \cvContactWebsite{https://doe.tld}{doe.tld}
-%   \cvContactGithub{https://github.com/johndoe}{johndoe}
-%   \cvContactLinkedin{https://www.linkedin.com/in/johndoe/}{johndoe}
-%   \cvContactTwitter{https://twitter.com/johndoe}{@johndoe}
-%   \cvContactKeybase{https://keybase.io/johndoe}{\texttt{AAAA 5555 BBBB FFFF}}
-% \end{cvContact}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvContact}
+  \cvContactAddress{Some Street 78\\B-9000 Ghent\\Belgium}
+  \cvContactEmail{mailto:john@doe.tld}{john@doe.tld}
+  \cvContactPhone{+1 781 555 1212}
+  \cvContactWebsite{https://doe.tld}{doe.tld}
+  \cvContactGithub{https://github.com/johndoe}{johndoe}
+  \cvContactLinkedin{https://www.linkedin.com/in/johndoe/}{johndoe}
+  \cvContactTwitter{https://twitter.com/johndoe}{@johndoe}
+  \cvContactKeybase{https://keybase.io/johndoe}{\texttt{AAAA 5555 BBBB FFFF}}
+\end{cvContact}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 % 
 %   If you wish to add contact information that is not available by default, you can extend 
 %   the command using two internal commands: |\cv@ContactTemplateLink| and 
 %   |\cv@ContactTemplate|. See the source code for usage instructions.
 % 
-%   \DescribeMacro{cvLanguages} This environment is used to showcase language skills. The 
+%   \DescribeMacro{cvLanguages} 
+%   This environment is used to showcase language skills. The 
 %   \DescribeMacro{\cvLanguage} |\cvLanguage{|\meta{language}|}{|\meta{skill level}|}| 
 %   should be used inside this environment. The skill level is a real value with a maximum 
 %   value of 5. If higher values are used, the result will not be typeset properly. An 
 %   example is included below.
 % 
-%   \begin{lstlisting}
-% \begin{cvLanguages}
-%   \cvLanguage{English (native)}{5}
-%   \cvLanguage{German (B1)}{3}
-%   \cvLanguage{Spanish}{3}
-% \end{cvLanguages}  
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvLanguages}
+  \cvLanguage{English (native)}{5}
+  \cvLanguage{German (B1)}{3}
+  \cvLanguage{Spanish}{3}
+\end{cvLanguages}  
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 % 
-%   \DescribeMacro{cvInterests} Typeset interests (can be both professional and personal) 
-%   using |cvInterests|. By default it just typesets a list of items in the long format 
+%   \DescribeMacro{cvInterests} 
+%   Typeset interests (can be both professional and personal) using |cvInterests|.
+%   By default it just typesets a list of items in the long format 
 %   (|long|). The short format can be activated by passing the |short| option to the 
 %   environment. Inside this environment, three commands can be used: |\cvInterestsPersonal|, 
 %   |\cvInterestsProfessional| and |\cvInterest|. \DescribeMacro{\cvInterestsPersonal} 
@@ -285,30 +314,42 @@
 %   
 %   Examples that illustrate the different options are depicted below:
 % 
-%   \begin{lstlisting}
-% \begin{cvInterests}
-%   \cvInterestsPersonal
-%   \cvInterest{\faTrain}{model trains}
-%   \cvInterest{\faFlask}{(applied) sciences}
-%   \cvInterest{\faSuitcase}{travelling}
-%   \cvInterestsProfessional
-%   \cvInterest{\faGraduationCap}{machine learning}
-%   \cvInterest{\faMicrochip}{electronics}
-%   \cvInterest{\faCogs}{robotics}
-% \end{cvInterests}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvInterests}
+  \cvInterestsPersonal
+  \cvInterest{\faTrain}{model trains}
+  \cvInterest{\faFlask}{(applied) sciences}
+  \cvInterest{\faSuitcase}{travelling}
+  \cvInterestsProfessional
+  \cvInterest{\faGraduationCap}{machine learning}
+  \cvInterest{\faMicrochip}{electronics}
+  \cvInterest{\faCogs}{robotics}
+\end{cvInterests}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
-%   \begin{lstlisting}
-% \begin{cvInterests}[short]
-%   \cvInterestsPersonal
-%   \cvInterest{\faTrain}{model trains}
-%   \cvInterest{\faFlask}{(applied) sciences}
-%   \cvInterest{\faSuitcase}{travelling}
-%   \cvInterest{\faCamera}{photography}
-%   \cvInterest{\faGamepad}{gaming}
-%   \cvInterest{\faMusic}{music}
-% \end{cvInterests}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvInterests}[short]
+  \cvInterestsPersonal
+  \cvInterest{\faTrain}{model trains}
+  \cvInterest{\faFlask}{(applied) sciences}
+  \cvInterest{\faSuitcase}{travelling}
+  \cvInterest{\faCamera}{photography}
+  \cvInterest{\faGamepad}{gaming}
+  \cvInterest{\faMusic}{music}
+\end{cvInterests}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvProjects} If you have interesting (side) projects that are relevant for 
 %   your CV, you can list them using the |cvProjects| environment. Inside this environment 
@@ -318,13 +359,19 @@
 %   (using |image|) and a URL (using |link|). This image must be an external file and the user
 %   must handle its size through |width| or |height|. Example usage:
 %   
-%   \begin{lstlisting}
-% \begin{cvProjects}
-%   \cvProject[image=clock,width=1cm]{yanic}{An IoT nixie clock.}
-%   \cvProject{\texttt{limecv}}{A \LaTeX\ document class for curriculum vit\ae.}
-% \end{cvProjects}
-%   \end{lstlisting}
-%   
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\begin{cvProjects}
+  \cvProject[image=clock,width=1cm]{yanic}{An IoT nixie clock.}
+  \cvProject{\texttt{limecv}}{A \LaTeX\ document class for curriculum vit\ae.}
+\end{cvProjects}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+% 
 %   It is currently not possible to extend the side bar with additional environments. To add
 %   your own, look at the source code and create your own \LaTeX-style hack.  
 % 
@@ -349,76 +396,94 @@
 %   The education environment creates a timeline styled list of your education. Individual 
 %   education items should be listed by means of the |\cvItem{|\meta{details}|}| macro which 
 %   is available within this environment. Instead of forcing a specific layout structure, it 
-%   was preferred to leave the actual markup to the end user. \emph{All} information 
+%   was preferred to leave the actual mark-up to the end user. \emph{All} information 
 %   concerning a single education should be passed to this single argument. However, the user
 %   is always welcome to create his own styling macro that takes multiple arguments. This is
 %   illustrated by the examples below.
 %   
-%   \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{without} special user markup 
-%     command.}]
-% \begin{cvEducation}
-%   \cvItem{Evening class: Chinese\\
-%   Some School, City. September 2015 -- June 2016\\
-%   Achieved A2 language skill in Chinese (Mandarin).}
-%   \cvItem{Bachelor of Science in Biochemistry and Biotechnology\\
-%   University, City. September 2009 -- June 2012\\
-%   General training in the basic sciences and the molecular life science.}
-%   \cvItem{Master of Science in Biochemistry and Biotechnology\\
-%   University, City. September 2012 -- June 2015\\
-%   Acquisition of insight into and knowledge of possibilities for application in the area 
-%   of biochemistry and biotechnology, specific with applications in biomedical application 
-%   and due problem-solving reasoning skills.}
-% \end{cvEducation}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{without} special user mark-up 
+    command.}]
+\begin{cvEducation}
+  \cvItem{Evening class: Chinese\\
+  Some School, City. September 2015 -- June 2016\\
+  Achieved A2 language skill in Chinese (Mandarin).}
+  \cvItem{Bachelor of Science in Biochemistry and Biotechnology\\
+  University, City. September 2009 -- June 2012\\
+  General training in the basic sciences and the molecular life science.}
+  \cvItem{Master of Science in Biochemistry and Biotechnology\\
+  University, City. September 2012 -- June 2015\\
+  Acquisition of insight into and knowledge of possibilities for application in the area 
+  of biochemistry and biotechnology, specific with applications in biomedical application 
+  and due problem-solving reasoning skills.}
+\end{cvEducation}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
-%   \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user markup 
-%     command.}]
-% % in preamble:
-% \newfontfamily\firaMedium{Fira Sans Medium}
-% \NewDocumentCommand{\cvEducation}{mmm}{{\firaMedium #1}\\ #2\\ \emph{#3}}
-% % in document:
-% \begin{cvEducation}
-%   \cvItem{\cvEducation{Evening class: Chinese}%
-%             {Some School, City. September 2015 -- June 2016}%
-%             {Achieved A2 language skill in Chinese (Mandarin).}}
-%   \cvItem{\cvEducation{Bachelor of Science in Biochemistry and Biotechnology}%
-%             {University, City. September 2009 -- June 2012}%
-%             {General training in the basic sciences and the molecular life science.}}
-%   \cvItem{\cvEducation{Master of Science in Biochemistry and Biotechnology}%
-%             {University, City. September 2012 -- June 2015}%
-%             {Acquisition of insight into and knowledge of possibilities for application 
-%              in the area of biochemistry and biotechnology, specific with applications 
-%              in biomedical application and due problem-solving reasoning skills.}}
-% \end{cvEducation}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user markup 
+    command.}]
+% in preamble:
+\newfontfamily\firaMedium{Fira Sans Medium}
+\NewDocumentCommand{\cvEducation}{mmm}{{\firaMedium #1}\\ #2\\ \emph{#3}}
+% in document:
+\begin{cvEducation}
+  \cvItem{\cvEducation{Evening class: Chinese}%
+            {Some School, City. September 2015 -- June 2016}%
+            {Achieved A2 language skill in Chinese (Mandarin).}}
+  \cvItem{\cvEducation{Bachelor of Science in Biochemistry and Biotechnology}%
+            {University, City. September 2009 -- June 2012}%
+            {General training in the basic sciences and the molecular life science.}}
+  \cvItem{\cvEducation{Master of Science in Biochemistry and Biotechnology}%
+            {University, City. September 2012 -- June 2015}%
+            {Acquisition of insight into and knowledge of possibilities for application 
+             in the area of biochemistry and biotechnology, specific with applications 
+             in biomedical application and due problem-solving reasoning skills.}}
+\end{cvEducation}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvExperience} 
 %   |cvExperience| works very similar to |cvEducation|. If follows the exact same structure 
 %   and has the same design philosophy where you should use |\cvItem| inside this environment 
-%   to typeset the individual items in a timeline style. \Cref{} illustrates this with an example.
+%   to typeset the individual items in a timeline style. \Cref{cvExperience} illustrates this with an example.
 % 
-%   \begin{lstlisting}[caption={\lstinline!cvExperience! code example.}]
-% \begin{cvExperience}
-%   \cvItem{Student Job\\
-%     \textsc{\selectfont Company X}, Location X. Summer 2010\\
-%     Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. 
-%     Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet 
-%     ultricies ipsum ultrices ut.};
-%   \cvItem{Internship\\
-%     \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
-%      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
-%      eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
-%      lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet 
-%      et ex.};
-%   \cvItem{Internship\\
-%     \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
-%     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
-%     eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
-%     lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet 
-%     et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae 
-%     sodales felis elit in ipsum.};
-% \end{cvExperience}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={\lstinline!cvExperience! code example.},label=cvExperience]
+\begin{cvExperience}
+  \cvItem{Student Job\\
+    \textsc{\selectfont Company X}, Location X. Summer 2010\\
+    Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. 
+    Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet 
+    ultricies ipsum ultrices ut.};
+  \cvItem{Internship\\
+    \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
+     eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
+     lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet 
+     et ex.};
+  \cvItem{Internship\\
+    \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
+    eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
+    lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet 
+    et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae 
+    sodales felis elit in ipsum.};
+\end{cvExperience}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvSkills} 
 %   The skills section is contained within the |cvSkills| environment. This environment typesets 
@@ -429,14 +494,20 @@
 %   typesets a row of two skills. If you have an odd number of items, \DescribeMacro{cvSkillOne} 
 %   |cvSkillOne| should be used. An example of a skill-list can be found in \cref{cvSkills}.
 %   
-%   \begin{lstlisting}[caption={Illustration of the \lstinline!cvSkills! environment.},label=cvSkills]
-% \begin{cvSkills}
-%   \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
-%   \cvSkillTwo{4}{Python}{4}{VHDL}
-%   \cvSkillTwo{4}{Microsoft Office}{4}{macOS}
-%   \cvSkillOne{3}{C, C++}
-% \end{cvSkills}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={Illustration of the \lstinline!cvSkills! environment.},label=cvSkills]
+\begin{cvSkills}
+  \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
+  \cvSkillTwo{4}{Python}{4}{VHDL}
+  \cvSkillTwo{4}{Microsoft Office}{4}{macOS}
+  \cvSkillOne{3}{C, C++}
+\end{cvSkills}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   \DescribeMacro{cvReferences}
 %   The final section is intended to list all your references. These go inside the |cvReferences| 
@@ -451,17 +522,23 @@
 %   \emph{Important remark}: the comment after the usage of |\cvAddReference| is required! 
 %   Otherwise, spacing will not be as designed.
 %   
-%   \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
-% \begin{cvReferences}
-%   \cvAddReference{%
-%     name=Jane Smith,
-%     company=Company ABC Co.\ Ltd.,
-%     job=Job title,
-%     address line 1=Street lane 2,
-%     address line 2=B-1150 Brussels,
-%     mobile phone=+1 781 555 1212}% <<-- Important!!!
-% \end{cvReferences}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
+\begin{cvReferences}
+  \cvAddReference{%
+    name=Jane Smith,
+    company=Company ABC Co.\ Ltd.,
+    job=Job title,
+    address line 1=Street lane 2,
+    address line 2=B-1150 Brussels,
+    mobile phone=+1 781 555 1212}% <<-- Important!!!
+\end{cvReferences}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 % 
 % \section{Cover Letter}
 % 
@@ -482,28 +559,34 @@
 %   \DescribeMacro{\cvFullName}
 %   |\cvFullName| typeset the authors name based on the data provided in |cvID|. 
 % 
-%   \begin{lstlisting}[caption={\lstinline!cvCoverLetter! code example.},label=cvCoverLetter]
-% \section{Cover Letter}
-% 
-% \begin{cvCoverLetter}
-% 
-% \cvBeneficiary{%
-%   name=Jane Smith,
-%   position=Position,
-%   company=Company,
-%   address line 1=Address line 1,
-%   address line 2=Address line 2}
-% 
-% Dear Miss.\ Smith
-% 
-% \vspace{\baselineskip}
-% \lipsum[1-3]
-% \vspace{\margin}
-% 
-% \cvFullName
-% 
-% \end{cvCoverLetter}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={\lstinline!cvCoverLetter! code example.},label=cvCoverLetter]
+\section{Cover Letter}
+
+\begin{cvCoverLetter}
+
+\cvBeneficiary{%
+  name=Jane Smith,
+  position=Position,
+  company=Company,
+  address line 1=Address line 1,
+  address line 2=Address line 2}
+
+Dear Miss.\ Smith
+
+\vspace{\baselineskip}
+\lipsum[1-3]
+\vspace{\margin}
+
+\cvFullName
+
+\end{cvCoverLetter}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 % 
 % \section{Change Style and Layout}
 % 
@@ -523,9 +606,15 @@
 %   
 %   To change these, use the code from \cref{cvColour} in the preamble:
 %   
-%   \begin{lstlisting}[caption={Colour editing.},label=cvColour]
-% \definecolor{cvDark}{HTML}{000000}
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={Colour editing.},label=cvColour]
+\definecolor{cvDark}{HTML}{000000}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 %   By overwriting the following styles, one can change the appearance of multiple TikZ nodes. 
 %   The following styles are available.
@@ -550,11 +639,17 @@
 %   
 %   Adding your own styles is easy with the code from \cref{cvTikZStyle}.
 %   
-%   \begin{lstlisting}[caption={Change TikZ style.},label=cvTikZStyle]
-% \tikzset{
-%   interesticon/.style = {},
-% }
-%   \end{lstlisting}
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}[caption={Change TikZ style.},label=cvTikZStyle]
+\tikzset{
+  interesticon/.style = {},
+}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
 %   
 % \begin{itemize}
 %   \item |\cvColSep| Distance between columns of |cvSkills|. 
@@ -600,7 +695,7 @@
 %   \item |\cvProjectDetailsSep| Internal spacing between details of a single project. 
 %     Default value: |0.2cm|.
 %   \item |\cvInterestDetailsSep| Distance between items in case the |long| options is used for the 
-%     |cvInterests| environment. Default value: |0cm|.
+%     |cvInterests| environment. Default value: |4pt|.
 %   \item |\cvContactItemSep| Distance between items in the |cvContact| environment. 
 %     Default value: |5pt|.
 %   \item |\cvCoverLetterLineWidth| Line width of line below cover letter name. 
@@ -1069,7 +1164,7 @@
 \newlength\cvProjectDetailsSep
 \setlength\cvProjectDetailsSep{0.2cm}
 \newlength\cvInterestDetailsSep
-\setlength\cvInterestDetailsSep{0cm}
+\setlength\cvInterestDetailsSep{4pt}
 \newlength\cvContactItemSep
 \setlength\cvContactItemSep{5pt}
 %    \end{macrocode}
@@ -1707,7 +1802,7 @@
 \newcounter{cv@cvInterestCounter}
 \setcounter{cv@cvInterestCounter}{1}
 \newcounter{cv@cvInterestCounterPrev}
-\setcounter{cv@cvInterestCounterPrev}{1}
+\setcounter{cv@cvInterestCounterPrev}{0}
 \newif\ifcv@interestContent
 \cv@interestContentfalse
 \NewDocumentCommand{\cv@TypesetTableRows}{}{}
@@ -1717,6 +1812,7 @@
   \ifcv@interestLong
     \ifcv@interesttikzopen
       \end{tikzpicture}
+      \global\cv@interesttikzopenfalse
     \fi
   \else
     \ifcv@interestContent
@@ -1728,47 +1824,50 @@
 }
 \NewDocumentCommand{\cv@interestOpen}{}{
   \ifcv@interestLong
-    \cv@interesttikzopentrue
-    \begin{tikzpicture}[%
-      every node/.style={inner sep=0cm,outer sep=0cm}]
+    \ifcv@interesttikzopen
+    \else
+      \cv@interesttikzopentrue
+      \begin{tikzpicture}[%
+        every node/.style={inner sep=0cm,outer sep=0cm}]
+    \fi
   \else
     \global\def\cv@TypesetTableRows{}
-    \cv@interestContentfalse
+    \global\cv@interestContentfalse
   \fi
 }
 \NewDocumentCommand{\cv@definecv@interestSection}{}{
   \NewDocumentCommand{\cv@interestSection}{m}{%
-    \cv@interestClose
+    \cv@interestClose\\
     \ifcv@interestContent
-
       \vspace*{2\cvSectionSBSep}
     \fi
-    {\color{cvGreen}---} ##1 {\color{cvGreen}---}
+    {\color{cvGreen}---} ##1 {\color{cvGreen}---}\\
     \vspace*{\cvSectionSBSep}
-    
     \cv@interestOpen
   }
 }
 \NewDocumentCommand{\cv@definecvInterestLong}{}{
   \NewDocumentCommand{\cvInterest}{mm}{%
-    \cv@interestOpen
     \ifcv@interestContent %
-      \node[below=\cvItemSep of cv@interest text %
-        \the\value{cv@cvInterestCounterPrev},cv@interesticon] 
+      \node[
+        below=\cvItemSep of cv@interest text \the\value{cv@cvInterestCounterPrev},
+        cv@interesticon] 
         (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
-      \node[below=\cvInterestDetailsSep of cv@interest icon %
-        \the\value{cv@cvInterestCounter},cv@interesttext] 
+      \node[
+        below=\cvInterestDetailsSep of cv@interest icon \the\value{cv@cvInterestCounter},
+        cv@interesttext] 
       (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \else
-      \node[cv@interesticon] (cv@interest icon %
-        \the\value{cv@cvInterestCounter}) {##1};
-      \node[below=\cvInterestDetailsSep of cv@interest icon %
-        \the\value{cv@cvInterestCounter},cv@interesttext] 
+      \cv@interestOpen
+      \node[cv@interesticon] (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
+      \node[
+        below=\cvInterestDetailsSep of cv@interest icon \the\value{cv@cvInterestCounter},
+        cv@interesttext] 
         (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \fi
     \stepcounter{cv@cvInterestCounter}
     \stepcounter{cv@cvInterestCounterPrev}
-    \cv@interestContenttrue
+    \global\cv@interestContenttrue
   }
 }
 \NewDocumentCommand{\cv@definecvInterestShort}{}{
@@ -1784,7 +1883,7 @@
     \g@addto@macro\cv@TypesetTableRows{&}%
     \g@addto@macro\cv@TypesetTableRows{##2}%
     \g@addto@macro\cv@TypesetTableRows{\\[\cvInterestDetailsSep]}%
-    \cv@interestContenttrue
+    \global\cv@interestContenttrue
   }
 }
 \ExplSyntaxOn
@@ -2231,7 +2330,8 @@
     #2}\def\cv@LastNameLetter{\extract{#2}{-1}}}
   {\globaldefs=1\relax\pgfkeys{/@cv/info/position = %
     #4}\def\cv@PositionLetter{\extract{#4}{-1}}}
-}\usepackage{fontawesome}%    \end{macrocode}
+}
+%    \end{macrocode}
 
 %
 % \iffalse
