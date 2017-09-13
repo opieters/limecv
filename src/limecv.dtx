@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2017/09/12 v0.1 limecv Document class for CVs.]
+    [2017/09/12 v0.1.1 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -68,7 +68,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1467}
+% \CheckSum{1469}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -88,12 +88,13 @@
 %
 %
 % \changes{v0.1}{2017/09/12}{Initial version.}
+% \changes{v0.1.1}{2017/09/13}{Bug fixes and improved documentation.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1}
+% \def\fileversion{v0.1.1}
 % \def\filedate{2017/09/12}
 %
 % \GetFileInfo{limecv.dtx}
@@ -308,9 +309,7 @@
 %   |\cvInterestsProfessional| add optional sections inside this environment to differentiate 
 %   between personal and professional interests respectively. Both macros have no options nor 
 %   arguments. The \DescribeMacro{\cvInterest} |\cvInterest{|\meta{icon}|}{|\meta{interest}|}| 
-%   command takes an icon and interest as arguments. Note that if \LaTeX\ is used, the icon 
-%   argument will be ignored. In this case, there is also no difference between the |long| 
-%   and |short| options of the |cvInterests| environment.
+%   command takes an icon and interest as arguments.
 %   
 %   Examples that illustrate the different options are depicted below:
 % 
@@ -325,7 +324,6 @@
   \cvInterest{\faSuitcase}{travelling}
   \cvInterestsProfessional
   \cvInterest{\faGraduationCap}{machine learning}
-  \cvInterest{\faMicrochip}{electronics}
   \cvInterest{\faCogs}{robotics}
 \end{cvInterests}
   \end{lstlisting}
@@ -355,7 +353,7 @@
 %   your CV, you can list them using the |cvProjects| environment. Inside this environment 
 %   you can use the \DescribeMacro{\cvProject} 
 %   |\cvProject[|\meta{options}|]{|\meta{name}|}{|\meta{description}|}| macro to list all 
-%   your projects. The only options currently allowed in \meta{options} are to pass an image
+%   your projects. The only options currently allowed in \meta{options} are an image
 %   (using |image|) and a URL (using |link|). This image must be an external file and the user
 %   must handle its size through |width| or |height|. Example usage:
 %   
@@ -385,7 +383,7 @@
 %   Everything in the main content section should be encapsulated in the |cvMainContent| 
 %   environment. This environment defines four new environments: |cvEducation|, 
 %   |cvExperience|, |cvSkills| and |cvReferences|. These four environments are self 
-%   explanatory in terms of function. Subsequently, we will detail each of these 
+%   explanatory in terms of functionality. We will detail each of these 
 %   environments.
 %   
 %   Note that |cvMainContent| also has a starred variant (|cvMainContent*|). The 
@@ -427,7 +425,7 @@
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user markup 
+  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user mark-up 
     command.}]
 % in preamble:
 \newfontfamily\firaMedium{Fira Sans Medium}
@@ -487,12 +485,12 @@
 %   
 %   \DescribeMacro{cvSkills} 
 %   The skills section is contained within the |cvSkills| environment. This environment typesets 
-%   your skills on a 5-level (discrete) scale (with the default |dot| option) or a 5-level 
-%   continuous scale with the |bar| option. These are divided in two columns. To that end, 
+%   your skills on a 5-level (discrete) scale. These are divided into two columns. To that end, 
 %   two macros are available: |cvSkillOne| and |cvSkillTwo|. \DescribeMacro{cvSkillTwo} 
 %   |cvSkillTwo{|\meta{skill level}|}{|\meta{skill}|}{|\meta{skill level}|}{|\meta{skill}|}| 
 %   typesets a row of two skills. If you have an odd number of items, \DescribeMacro{cvSkillOne} 
-%   |cvSkillOne| should be used. An example of a skill-list can be found in \cref{cvSkills}.
+%   |cvSkillOne{|\meta{skill level}|}{|\meta{skill}|}| should be used. An example of a skill-list 
+%   can be found in \cref{cvSkills}.
 %   
 % \iffalse
 %<*example>
@@ -515,12 +513,14 @@
 %   \DescribeMacro{\cvAddReference} |\cvAddReference{|\meta{information}|}| macro. The following
 %   keys are available: |name|, |company|, |job|, |address line 1|, |address line 2|, 
 %   |address line 3|, |mobile phone|, |work phone| and |email|. These are all optional arguments
-%   and will be typeset consistently between the two references per row. If icons are 
-%   undesirable, use the |noicon| option for the environment. \Cref{cvReferences} illustrates
-%   the usage of this environment.
+%   and will be typeset consistently between the two references per row. When adding two references, 
+%   the left one should be specified first using |\cvAddReference*|. This will store the values and 
+%   typeset them when adding the second reference through |\cvAddReference|. Note that 
+%   |\cvAddReference| should be used if only one reference needs to be typese. \Cref{cvReferences} 
+%   illustrates the usage of this environment.
 %   
 %   \emph{Important remark}: the comment after the usage of |\cvAddReference| is required! 
-%   Otherwise, spacing will not be as designed.
+%   Otherwise, spacing will not be as intended.
 %   
 % \iffalse
 %<*example>
@@ -650,7 +650,9 @@ Dear Miss.\ Smith
 % \iffalse
 %</example>
 % \fi
-%   
+
+% Spacing used inside the document can also be modified by the user. The following
+% lengths have been defined:
 % \begin{itemize}
 %   \item |\cvColSep| Distance between columns of |cvSkills|. 
 %     Default value: |1cm|.
@@ -716,6 +718,10 @@ Dear Miss.\ Smith
 %     Default value: |0pt|.
 % \end{itemize}
 %   
+% The fonts can also be changed, either by using the |sansfont| and |monofont| class options, or
+% by using the default ways provided by \LaTeX, XeLaTeX and LuaLaTeX. Note that the |fontspec| 
+% package is already loaded by the class, so you can directly use |\setmainfont| in the preamble
+% if you are using the XeLaTeX or LuaLaTeX engine.
 %   
 % \section{Example}
 % 
@@ -723,14 +729,16 @@ Dear Miss.\ Smith
 %   \Cref{example-cv,example-cover-letter} depict the resulting PDF documents.
 % 
 %   \begin{figure}[!ht]
-%     \includegraphics[width=\textwidth,page=1]{mwe-xelatex.pdf}
+%     \IfFileExists{./mwe-xelatex.pdf}{\includegraphics[width=\textwidth,page=1]%
+%       {mwe-xelatex.pdf}}{No built examples found. Figure not included.}
 %     \caption{Example CV (scaled).}
 %     \label{example-cv}
 %   \end{figure}
 % 
 %   \begin{figure}[!ht]
-%     \includegraphics[width=\textwidth,page=2]{mwe-xelatex.pdf}
-%     \caption{Example cover letter (scaled).}
+%     \IfFileExists{./mwe-xelatex.pdf}{\includegraphics[width=\textwidth,page=2]%
+%       {mwe-xelatex.pdf}}{No built examples found.}
+%     \caption{Example cover letter (scaled). Figure not included.}
 %     \label{example-cover-letter}
 %   \end{figure}
 % 
@@ -1095,7 +1103,7 @@ Dear Miss.\ Smith
 %
 % remove page numbers
 %    \begin{macrocode}
-\pagenumbering{gobble}
+%% \pagenumbering{gobble}
 %    \end{macrocode}
 % remove all page styling
 %    \begin{macrocode}
@@ -2312,7 +2320,7 @@ Dear Miss.\ Smith
           };
         }]
         {};
-    \end{tikzpicture}
+    \end{tikzpicture}\\
   }
   {\LARGE
   #1
