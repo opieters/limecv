@@ -64,6 +64,8 @@ Below is a list of upcoming features and important to-d items. After these have 
 
 LPPL v1.3c See LICENSE file.
 
+Default profile picture courtesy of Twitter. 
+
 © 2017 Olivier Pieters
 
 [blog]: https://olivierpieters.be/blog/archive/tag/limecv
