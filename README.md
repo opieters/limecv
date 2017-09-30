@@ -50,7 +50,7 @@ To compile the examples in `/examples/`, install the package from CTAN or compil
 
 ## Roadmap
 
-Below is a list of upcoming features and important to-d items. After these have been resolved, the first stable release will be released.
+Below is a list of upcoming features and important to-do items. After these have been resolved, the first stable release will be released.
 
 - [x] Publish to CTAN.
 - [x] Initial release.
