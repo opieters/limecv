@@ -2316,6 +2316,7 @@ Dear Miss.\ Smith
   }
 }
 \NewDocumentEnvironment{cvCoverLetter}{}{%
+  \newgeometry{textwidth=\cvCoverLetterWidth,noheadfoot}
   \begin{tikzpicture}[%
       remember picture,
       overlay, 
@@ -2366,18 +2367,15 @@ Dear Miss.\ Smith
          ($(cv cover letter name.south east)+(0,-\cvCoverLetterLineSpacing)$);
     \end{scope}
   \end{tikzpicture}
-  \vspace{\dimexpr\cvCoverLetterHeight\relax}
+  \vspace{\dimexpr\cvCoverLetterHeight-1in-\topmargin\relax}
   
-  \begin{center}
-    \begin{minipage}{\cvCoverLetterWidth}
-      \today
-      
-      \vspace{\baselineskip}
-      \cv@definecvBeneficiary
-      \cv@definecvFullName
+  \today
+
+  \vspace{\baselineskip}
+  \cv@definecvBeneficiary
+  \cv@definecvFullName
 }{%
-    \end{minipage}
-  \end{center}
+  \restoregeometry
 }
 %    \end{macrocode}
 %
