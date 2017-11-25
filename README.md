@@ -11,14 +11,16 @@ Example CV:
   <img src="images/cover_letter.png" alt-="cover letter example" width="300px"/>
 </div>
 
+`limecv` offers support for a bio/profile, contact details, language skills, (general) skills, projects, education, experience and references. It also features a custom cover letter design. 
+
 ## Installation
 
-The package is available from CTAN, to install this document class using your favourite package manager. 
+The package is [available from CTAN](https://ctan.org/pkg/limecv), so you should use a package manager to install this package.
 
 After installing this package, make sure you have the following fonts installed:
 
 * [FontAwesome][FA]
-* [Fira][fira]
+* [Fira][fira] (only needed when using XeLaTeX/LuaLaTeX)
 
 The following packages need to be installed on your system. They are all available on CTAN: 
 `kvoptions`,
@@ -40,25 +42,13 @@ The following packages need to be installed on your system. They are all availab
 
 ## Documentation
 
-The class documentation can be found on CTAN.
+The class documentation can be found on [CTAN](http://mirrors.ctan.org/macros/latex/contrib/limecv/limecv.pdf).
 
 Alternatively, the documentation can also be created by running `pdflatex limecv.dtx`.
 
 ## Examples
 
 To compile the examples in `/examples/`, install the package from CTAN or compile from source by running: `pdflatex limecv.ins` and copy the resulting `limecv.cls` file to the `/examples/` folder.
-
-## Roadmap
-
-Below is a list of upcoming features and important to-do items. After these have been resolved, the first stable release will be released.
-
-- [x] Publish to CTAN.
-- [x] Initial release.
-- [x] LuaLaTeX support.
-- [x] LaTeX support.
-- [ ] Cleaned code.
-- [x] `.dtx` source code format.
-- [ ] Real testing by third party.
 
 ## Licence
 
