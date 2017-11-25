@@ -68,7 +68,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1469}
+% \CheckSum{1526}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -134,7 +134,7 @@
 %     \draw[fill=black!20] (0,0) rectangle ++(-4.2,-1.5);
 %   \end{tikzpicture}
 %   \caption{Illustation of a basic template. The image to the left depicts the  
-%     actual CV: side bar to the left (1) with main content on the right (2).   
+%     actual CV: sidebar to the left (1) with main content on the right (2).   
 %     The image to the right depicts the cover letter design.}
 %   \label{design}
 % \end{figure}
@@ -161,19 +161,34 @@
 %   the |fontawesome| package. 
 % 
 % \section{General Macros and Document Class Options}
+%
+%    \subsection{Internationalisation}
+%      \DescribeMacro{\cvSetLanguage} Currently, there is only internationalisation support for English and Dutch. The default language is English and can be modified using the |\cvSetLanguage| macro. Possible arguments are: |english| and |dutch|. If you want to use a different language, you need to modify the keys that hold the different section titles. These can be in the source code. The following snippet illustrates how this can be done for French:
+%
+% \iffalse
+%<*example>
+% \fi
+  \begin{lstlisting}
+\pgfkeys{/@cv/names/education = Formations}
+\pgfkeys{/@cv/names/skills = Compétences}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%
 % 
-% \section{Side Bar}
+% \section{Sidebar}
 % 
-%   The side bar should contain personal information such as your name, job title 
+%   The sidebar should contain personal information such as your name, job title 
 %   (or industry or similar), contact information, small bio, interests and language 
 %   skills. Special environments and commands have been defined for each of these 
 %   sections and will be described below. 
 % 
-%   Everything that should be inside the side bar should be placed in the |cvSideBar| 
+%   Everything that should be inside the sidebar should be placed in the |cvSidebar| 
 %   environment. This environment is placed on the left side of the page by default. 
-%   If it should be typeset on the right side, use the starred version (|cvSideBar*|)
+%   If it should be typeset on the right side, use the starred version (|cvSidebar*|)
 % 
-%   The following environments are available inside the side bar environment: 
+%   The following environments are available inside the sidebar environment: 
 %   |cvProfile|, |cvContact|, |cvLanguages|, |cvInterests| and |cvProjects|.
 %   
 %   \DescribeMacro{\cvID}
@@ -370,7 +385,7 @@
 %</example>
 % \fi
 % 
-%   It is currently not possible to extend the side bar with additional environments. To add
+%   It is currently not possible to extend the sidebar with additional environments. To add
 %   your own, look at the source code and create your own \LaTeX-style hack.  
 % 
 % \section{Main Content}
@@ -387,7 +402,7 @@
 %   environments.
 %   
 %   Note that |cvMainContent| also has a starred variant (|cvMainContent*|). The 
-%   function is similar to |cvSideBar*|, in the sense that it places everything to the 
+%   function is similar to |cvSidebar*|, in the sense that it places everything to the 
 %   left instead of the default right location.
 %   
 %   \DescribeMacro{cvEducation} 
@@ -662,7 +677,7 @@ Dear Miss.\ Smith
 %     Default value: |3pt|.
 %   \item |\cvMargin| Margin around the entire page. 
 %     Default value: |1cm|.
-%   \item |\cvSideWidth| Width of the side bar. 
+%   \item |\cvSideWidth| Width of the sidebar. 
 %     Default value: |0.3\paperwidth-\cvMargin|.
 %   \item |\cvMainWidth| Width of the main content section. 
 %     Default value: |\paperwidth-4\cvMargin-\cvSideWidth|.
@@ -686,7 +701,7 @@ Dear Miss.\ Smith
 %     Default value: |0.75em|.
 %   \item |\cvSectionSep| Distance between sections of the main content section. 
 %     Default value: |0.6cm|.
-%   \item |\cvSectionSBSep| Distance between sections of the side bar section. 
+%   \item |\cvSectionSBSep| Distance between sections of the sidebar section. 
 %     Default value: |4pt|.
 %   \item |\cvTitleLineWidth| Line width of horizontal line below section title.
 %      Default value: |2pt|.
@@ -705,7 +720,7 @@ Dear Miss.\ Smith
 %   \item |\cvCoverLetterPositionSpacing| Distance between name and position in the cover letter. 
 %     Default value: |10pt|.
 %   \item |\cvSBSectionLineWidth| Line width of left and right lines next to the titles of in the 
-%     side bar. Default value: |1pt|.
+%     sidebar. Default value: |1pt|.
 %   \item |\cvCoverLetterLineSpacing| Distance between name and line below it in the cover letter. 
 %     Default value: |0pt|.
 %   \item |\cvIDNameSep| Distance between first and last name. 
@@ -1092,8 +1107,9 @@ Dear Miss.\ Smith
 % Argument order: string - character number
 %    \begin{macrocode}
 \ExplSyntaxOn
+\cs_generate_variant:Nn\tl_item:nn {f}
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
-  \tl_item:nn { #1 } { #2 }%
+  \tl_item:fn{#1}{#2}%
 }
 \ExplSyntaxOff
 %    \end{macrocode}
@@ -1195,6 +1211,8 @@ Dear Miss.\ Smith
 \newlength\cvHeaderIconWidth
 \setlength\cvHeaderIconWidth{0pt}
 %    \end{macrocode}
+%
+%
 %------------------------------------------------------
 %
 %   New styling commands
@@ -1218,7 +1236,7 @@ Dear Miss.\ Smith
   \endgroup
 }
 %    \end{macrocode}
-% Create horizontal line from edge to edge for side bar
+% Create horizontal line from edge to edge for sidebar
 % section titles.
 %
 % Based on: 
@@ -1279,13 +1297,16 @@ Dear Miss.\ Smith
     \y\StrGobbleLeft{#1}{1}\egroup};
     \node[%
       left=\cvTimeDotSep of cv@title \the\value{cv@titleNext},
-      cv@headerIcon] 
+      cv@headerIcon]
       {#2};
+    \node[cv@sectionTitle] at (0,0)
+      (cv@title \the\value{cv@titleNext} dummy) {%
+        \phantom{\cvSection{Education}}};
     \begin{scope}[on background layer]
-      \draw[line width=\cvTitleLineWidth,cvGreen] 
-        let \p1=(cv@title \the\value{cv@titleNext}%
-                .south west), 
-            \p2=(current page.east) in 
+      \draw[line width=\cvTitleLineWidth,cvGreen]
+        let \p1=(cv@title \the\value{cv@titleNext} %
+                dummy.south west),
+            \p2=(current page.east) in
         (\x1,\y1-\cvTitleLineSpacing) to (\x2,\y1-\cvTitleLineSpacing);
     \end{scope}
 }%
@@ -1359,6 +1380,71 @@ Dear Miss.\ Smith
     \stepcounter{cv@itemNext}
   }
 }
+%    \end{macrocode}
+%
+%-----------------------
+% Language 
+%    \begin{macrocode}
+\pgfkeys{/@cv/names/.is family,
+         /@cv/names/.unknown/.style = %
+         {\pgfkeyscurrentpath/\pgfkeyscurrentname/%
+         .initial = #1}}
+%    \end{macrocode}
+% Set all title names to English (default):
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setEnglish}{}{
+    \pgfkeys{/@cv/names/profile = Profile}%
+    \pgfkeys{/@cv/names/contact = Contact}%
+    \pgfkeys{/@cv/names/languages = Languages}%
+    \pgfkeys{/@cv/names/interests = Interests}%
+    \pgfkeys{/@cv/names/professional = Professional}%
+    \pgfkeys{/@cv/names/personal = Personal}%
+    \pgfkeys{/@cv/names/projects = Projects}%
+    \pgfkeys{/@cv/names/education = Education}%
+    \pgfkeys{/@cv/names/experience = Experience}%
+    \pgfkeys{/@cv/names/references = References}%
+    \pgfkeys{/@cv/names/skills = Skills}%
+}
+%    \end{macrocode}
+%
+% Set all title names to Dutch:
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setDutch}{}{
+    \pgfkeys{/@cv/names/profile = Profiel}%
+    \pgfkeys{/@cv/names/contact = Gegevens}%
+    \pgfkeys{/@cv/names/languages = Talenkennis}%
+    \pgfkeys{/@cv/names/interests = Interesses}%
+    \pgfkeys{/@cv/names/professional = Professioneel}%
+    \pgfkeys{/@cv/names/personal = Persoonlijk}%
+    \pgfkeys{/@cv/names/projects = Projecten}%
+    \pgfkeys{/@cv/names/education = Opleiding}%
+    \pgfkeys{/@cv/names/experience = Werkervaring}%
+    \pgfkeys{/@cv/names/references = Referenties}%
+    \pgfkeys{/@cv/names/skills = Vaardigheden}%
+}
+%    \end{macrocode}
+%
+% Set the actual language to English. This can be overwritten by the user in the preamble
+%
+% Define the command to change the language
+%    \begin{macrocode}
+\ExplSyntaxOn
+\NewDocumentCommand{\cvSetLanguage}{m}{
+    \str_case:nnF {#1}
+    {
+      {dutch} {\cv@setDutch}
+      {english} {\cv@setEnglish}
+    }
+    {\ClassError{limecv}{Unknown option `#1' for cvLanguage %
+     macro.}{Only `english' and `dutch' are valid options %
+     for this macro.}}
+}
+\ExplSyntaxOff
+\cvSetLanguage{english}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+% \cvSetLanguage{english}
 %    \end{macrocode}
 %------------------------------------------------------
 %
@@ -1436,7 +1522,7 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvEducation}{}{%
-    \cv@Title{Education}{\faGraduationCap}
+    \cv@Title{\pgfkeysvalueof{/@cv/names/education}}{\faGraduationCap}
 %    \end{macrocode}
 % insures uniqueness
 %    \begin{macrocode}
@@ -1456,7 +1542,7 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvExperience}{}{%
-  \cv@Title{Experience}{\faBriefcase}
+  \cv@Title{\pgfkeysvalueof{/@cv/names/experience}}{\faBriefcase}
 %    \end{macrocode}
 % insures uniqueness
 %    \begin{macrocode}
@@ -1476,7 +1562,7 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvSkills}{}{%
-  \cv@Title{Skills}{\faStar}
+  \cv@Title{\pgfkeysvalueof{/@cv/names/skills}}{\faStar}
   \global\cv@firstskilltrue
 }{%
   \node[
@@ -1497,7 +1583,7 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvReferences}{}{%
-  \cv@Title{References}{\faLink}
+  \cv@Title{\pgfkeysvalueof{/@cv/names/references}}{\faLink}
   \node[
     below=\cvSectionSep of cv@title \the\value{cv@titlePrev}.%
       south west,
@@ -1705,11 +1791,11 @@ Dear Miss.\ Smith
 %
 %------------------------------------------------------
 %
-%   cvSideBar environment
+%   cvSidebar environment
 %
 %
 %    \begin{macrocode}
-\NewDocumentEnvironment{cvSideBar}{}{%
+\NewDocumentEnvironment{cvSidebar}{}{%
   \vspace*{\fill}
   \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
@@ -1723,7 +1809,7 @@ Dear Miss.\ Smith
   \end{minipage}
   \vspace*{\fill}
 }
-\NewDocumentEnvironment{cvSideBar*}{}{%
+\NewDocumentEnvironment{cvSidear*}{}{%
   \vspace*{\fill}
   \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
@@ -1745,7 +1831,7 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvProfile}{}{%
   \vspace{\cvSectionSBSep}
-  \ruleline{Profile}
+  \ruleline{\pgfkeysvalueof{/@cv/names/profile}}
 }{%
 }
 %    \end{macrocode}
@@ -1773,7 +1859,7 @@ Dear Miss.\ Smith
 \newif\ifcv@contactfirst
 \NewDocumentEnvironment{cvContact}{}{%
   \vspace{\cvSectionSBSep}
-  \ruleline{Contact}%
+  \ruleline{\pgfkeysvalueof{/@cv/names/contact}}%
   \vspace{\cvSectionSBSep}
   
   \global\cv@contactfirstfalse
@@ -1932,7 +2018,7 @@ Dear Miss.\ Smith
   \fi
   %%%%%%
   \vspace{\cvSectionSBSep}
-  \ruleline{Interests}%
+  \ruleline{\pgfkeysvalueof{/@cv/names/interests}}%
   \vspace{\cvSectionSBSep}
 }{%
   \cv@interestClose
@@ -2062,7 +2148,7 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvProjects}{}{%
   \vspace{\cvSectionSBSep}
-  \ruleline{Projects}%
+  \ruleline{\pgfkeysvalueof{/@cv/names/projects}}%
   \vspace{\cvSectionSBSep}
   \cv@definecvProject
   \begin{tikzpicture}[every node/.style={inner sep=0cm,outer sep=0cm}]
@@ -2089,7 +2175,7 @@ Dear Miss.\ Smith
     \stepcounter{cv@languages}
   }%
   \vspace{\cvSectionSBSep}
-  \ruleline{Languages}%
+  \ruleline{\pgfkeysvalueof{/@cv/names/languages}}%
   \vspace{\cvSectionSBSep}
   \begin{tikzpicture}[%
     every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
@@ -2294,6 +2380,8 @@ Dear Miss.\ Smith
   \end{center}
 }
 %    \end{macrocode}
+%
+%
 %------------------------------------------------------
 %
 %   cvID macro
@@ -2323,6 +2411,7 @@ Dear Miss.\ Smith
     \end{tikzpicture}\\
   }
   {\LARGE
+  \vspace{\cvIDNameSep}
   #1
   \vspace{\cvIDNameSep}
   #2}
