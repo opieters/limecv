@@ -68,9 +68,6 @@ echo "Creating ZIP file"
 
 popd
 
-mkdir limecv/limecv/
-mv limecv/* limecv/limecv/
-
 COPYFILE_DISABLE=1 tar -pczf limecv.tar.gz limecv/
 
 echo "Cleaning..."
