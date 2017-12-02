@@ -89,7 +89,8 @@
 %
 % \changes{v0.1}{2017/09/12}{Initial version.}
 % \changes{v0.1.1}{2017/09/13}{Bug fixes and improved documentation.}
-% \changes{v0.1.2}{2017/11/25}{Add internationalisation support. Support cover letters spanning multiple pages.}
+% \changes{v0.1.2}{2017/11/25}{Add internationalisation support. Support cover %
+%   letters spanning multiple pages.}
 % \changes{v0.1.3}{2017/09/25}{Fix checksum issue.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
@@ -144,28 +145,34 @@
 % \section{Requirements}
 % 
 %   It is advised to use the \cvRequirement{XeLaTeX} engine. However, there is 
-%   also support for \cvRequirement{LaTeX} and \cvRequirement{LuaLaTeX}. In these 
-%   cases, fonts might be different than intended and side bearings will not be 
-%   corrected, since only the XeLaTeX engine has access to these. In the subsequent 
-%   sections, it will always be assumed that the XeLaTeX compiler is used (unless 
-%   noted otherwise). 
+%   also support for \cvRequirement{LaTeX} and \cvRequirement{LuaLaTeX}. In 
+%   these cases, fonts might be different than intended and side bearings will 
+%   not be corrected, since only the XeLaTeX engine has access to these. In the 
+%   subsequent sections, it will always be assumed that the XeLaTeX compiler is 
+%   used (unless noted otherwise). 
 % 
 %   Any font can be used, though by default the \cvRequirement{Fira}
-%   \footnote{\url{https://github.com/mozilla/Fira}} font is used. This should be
-%   installed and accessible by the typesetting system. If another font is desired, 
-%   it can be overwritten using the |sansfont| document class options and 
-%   |\cvMainFont| command. The mono spaced font can be changed by means of the 
-%   |monofont| class option.
+%   \footnote{\url{https://github.com/mozilla/Fira}} font is used. This should 
+%   be installed and accessible by the typesetting system. If another font is 
+%   desired, it can be overwritten using the |sansfont| document class options 
+%   and |\cvMainFont| command. The mono spaced font can be changed by means of 
+%   the |monofont| class option.
 % 
-%   \cvRequirement{FontAwesome}\footnote{\url{http://fontawesome.io}} is the icon 
-%   font used. This font should also be available and cannot be replaced by another 
-%   icon font. Most modern TeX distributions ship with this font since they provide
-%   the |fontawesome| package. 
+%   \cvRequirement{FontAwesome}\footnote{\url{http://fontawesome.io}} is the 
+%   icon font used. This font should also be available and cannot be replaced by
+%   another icon font. Most modern TeX distributions ship with this font since 
+%   they provide the |fontawesome| package. 
 % 
 % \section{General Macros and Document Class Options}
 %
 %    \subsection{Internationalisation}
-%      \DescribeMacro{\cvSetLanguage} Currently, there is only internationalisation support for English and Dutch. The default language is English and can be modified using the |\cvSetLanguage| macro. Possible arguments are: |english| and |dutch|. If you want to use a different language, you need to modify the keys that hold the different section titles. These can be in the source code. The following snippet illustrates how this can be done for French:
+%      \DescribeMacro{\cvSetLanguage} Currently, there is only 
+%        internationalisation support for English and Dutch. The default 
+%        language is English and can be modified using the |\cvSetLanguage| 
+%        macro. Possible arguments are: |english| and |dutch|. If you want to 
+%        use a different language, you need to modify the keys that hold the 
+%        different section titles. These can be in the source code. The 
+%        following snippet illustrates how this can be done for French:
 %
 % \iffalse
 %<*example>
@@ -182,23 +189,25 @@
 % \section{Sidebar}
 % 
 %   The sidebar should contain personal information such as your name, job title 
-%   (or industry or similar), contact information, small bio, interests and language 
-%   skills. Special environments and commands have been defined for each of these 
-%   sections and will be described below. 
+%   (or industry or similar), contact information, small bio, interests and 
+%   language skills. Special environments and commands have been defined for 
+%   each of these sections and will be described below. 
 % 
-%   Everything that should be inside the sidebar should be placed in the |cvSidebar| 
-%   environment. This environment is placed on the left side of the page by default. 
-%   If it should be typeset on the right side, use the starred version (|cvSidebar*|)
+%   Everything that should be inside the sidebar should be placed in the 
+%   |cvSidebar| environment. This environment is placed on the left side of the 
+%   page by default. If it should be typeset on the right side, use the starred 
+%   version (|cvSidebar*|)
 % 
 %   The following environments are available inside the sidebar environment: 
 %   |cvProfile|, |cvContact|, |cvLanguages|, |cvInterests| and |cvProjects|.
 %   
 %   \DescribeMacro{\cvID}
-%   This command typesets a picture (in a circle) with name and position underneath it.
-%   The argument order is: |\cvID{|\meta{first name}|}{|\meta{last name}|}{|
-%   \meta{picture location}|}{|\meta{job position}|}|. Empty fields are allowed for 
-%   the third and fourth arguments. No picture and no job position will then be 
-%   typeset. Example code: 
+%   This command typesets a picture (in a circle) with name and position 
+%   underneath it. The argument order is: |\cvID{|\meta{first name}|}{|%
+%   \meta{last name}|}{| \meta{picture location}|}{|\meta{job position}|}|. 
+%   Empty fields are allowed for  the third and fourth arguments. No picture and
+%   no job position will then be  typeset. Example code: 
+% 
 % \iffalse
 %<*example>
 % \fi
@@ -210,8 +219,8 @@
 % \fi
 %   
 %   \DescribeMacro{cvProfile} 
-%   This environment contains a brief profile description or biography. No additional 
-%   arguments are allowed. Example code:
+%   This environment contains a brief profile description or biography. No 
+%   additional arguments are allowed. Example code:
 % \iffalse
 %<*example>
 % \fi
@@ -225,8 +234,8 @@
 % \fi
 %   
 %   \DescribeMacro{cvContact} 
-%   All the contact information goes here. Inside this environment, the following 
-%   commands are available: 
+%   All the contact information goes here. Inside this environment, the  
+%   following commands are available: 
 %   \begin{itemize}
 %     \item \DescribeMacro{\cvContactAddress} |\cvContactAddress{|\meta{address}|}| 
 %       typesets an address. How this address should be typeset exactly, is left to the 
@@ -766,6 +775,8 @@ Dear Miss.\ Smith
 % \iffalse
 %<*class>
 % \fi
+% 
+% \subsection{Licence}
 %
 % limecv.cls
 % 
@@ -787,34 +798,58 @@ Dear Miss.\ Smith
 % The Current Maintainer of this work is Olivier Pieters.
 % Contact the maintainer at: me (at) olivierpieters (dot) be.
 %
-%------------------------------------------------------
+% \subsection{Intro}
+% I have tried to create a logical structure for the source code such that
+% related commands are grouped into a signle section. However, this was not 
+% always possible.
+% 
+% \subsection{Package Info and Required Packages}
+% Before starting the actual implementation, we first load all required 
+% packages and set their options. 
 %
-% Include minimal required packages
-%
-% process key-value class options
+% Process key-value class options using |kvoptions|:
 %    \begin{macrocode}
 \RequirePackage{kvoptions}
 %    \end{macrocode}
-%------------------------------------------------------
 %
-% Process options of this class.
+% Define and process class options. |print| is an (unimplemened) option that 
+% should optimise the layout for printed CVs. 
 %
 %    \begin{macrocode}
 \DeclareBoolOption[false]{print}
+%    \end{macrocode}
+% 
+% Since the package already attempts to load the |fontspec| package, it is no
+% longer possible to define a custom font path. This is again passible using
+% this class option. Other options can also be set this way. However, if 
+% multiple arguments are desirale, use |\cvComma| to separate between them, 
+% since the class cannot differentiate between its own options and those it
+% need to pass to |fontspec|. 
+%
+%    \begin{macrocode}
 \newif\ifcv@fontPath
 \cv@fontPathfalse
 \DeclareStringOption{path}
 \AddToKeyvalOption*{path}{\cv@fontPathtrue}
+%    \end{macrocode}
+%
+% By default, Fira fonts are used. This can be modifed using |sansfont| and 
+% |monofont|.
+%
+%    \begin{macrocode}
 \DeclareStringOption[Fira Sans]{sansfont}
 \DeclareStringOption[Fira Mono]{monofont}
+%    \end{macrocode}
+%
+% Process the options.
+%
+%    \begin{macrocode}
 \ProcessKeyvalOptions*
 %    \end{macrocode}
-%------------------------------------------------------
 %
-%  Process general class options
+% The article document class is used as a base template for this 
+% class. Options are automatically passed to the article class via this way.
 %
-% pass document options to article class, which forms 
-% base of this document class
 %    \begin{macrocode}
 \DeclareOption*{%
   \PassOptionsToClass{\CurrentOption}{article}%
@@ -822,54 +857,55 @@ Dear Miss.\ Smith
 \ProcessOptions\relax
 \LoadClass{article}
 %    \end{macrocode}
-%------------------------------------------------------
 %
-%  Include required packages
+% Include required packages. A short description is provided about the function 
+% of each package.
 %
-% check if XeTeX is used
+% Check if XeTeX is used.
 %    \begin{macrocode}
 \RequirePackage{ifxetex}
 %    \end{macrocode}
-% check if LuaTeX is used
+% Check if LuaTeX is used.
 %    \begin{macrocode}
 \RequirePackage{ifluatex}
 %    \end{macrocode}
-% Advanced command definitions
+% Advanced command definitions.
 %    \begin{macrocode}
 \RequirePackage{xparse}
 %    \end{macrocode}
-% complex length calculations
+% Complex length calculations.
 %    \begin{macrocode}
 \RequirePackage{calc}
 %    \end{macrocode}
-% colour options
+% Colour options.
 %    \begin{macrocode}
 \RequirePackage{xcolor}
 %    \end{macrocode}
-% advanced table options
+% Advanced table options.
 %    \begin{macrocode}
 \RequirePackage{tabularx}
 %    \end{macrocode}
-% links
+% Links.
 %    \begin{macrocode}
 \RequirePackage{hyperref}
 \RequirePackage{url}
 %    \end{macrocode}
-% remove paragraph indent
+% Remove paragraph indents.
 %    \begin{macrocode}
 \RequirePackage{parskip}
 %    \end{macrocode}
-% string operations
+% String operations.
 %    \begin{macrocode}
 \RequirePackage{xstring}
 %    \end{macrocode}
-% key-value parsing within document
+% Key-value parsing within document.
 %    \begin{macrocode}
 \RequirePackage{xkeyval}
 %    \end{macrocode}
-%------------------------------------------------------
+% 
+% \subsection{Colour Definitions}
 %
-%   Define colours
+% Define the custom colours used in this document.
 %
 %    \begin{macrocode}
 \definecolor{cvGreen}{HTML}{357F2D}
@@ -878,7 +914,8 @@ Dear Miss.\ Smith
 \definecolor{cvDark}{HTML}{2F3142}
 \definecolor{cvAccent}{HTML}{474A65}
 %    \end{macrocode}
-%------------------------------------------------------
+%
+% \subsection{New Column Types}
 %
 %   Define new table column types with fixed width.
 %
@@ -890,18 +927,23 @@ Dear Miss.\ Smith
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\%
 \arraybackslash\hspace{0pt}}m{#1}}
 %    \end{macrocode}
-%------------------------------------------------------
 %
-%   Misc and helper commands
+% \subsection{Helper commands}
 %
-% Add comma in a cvReference entry.
+% |\cvComma| escapes the parsing once and ca be useful to add a comma to the key 
+% of a key-value structure.
+% 
+% \begin{macro}{\cvComma}
 %    \begin{macrocode}
 \NewDocumentCommand{\cvComma}{}{,}
 %    \end{macrocode}
-% Define check if argument is empty
-% argument order: |{argument}{if empty}{if not empty}|
+% \end{macro}
+%
+% \begin{macro}{\@IfNoValueOrEmptyTF}
+% |\@IfNoValueOrEmptyTF{argument}{if empty}{if not empty}| 
+% checks if an argument is empty.
 % 
-% Based on: http://tex.stackexchange.com/questions/63223
+% Based on: \url{http://tex.stackexchange.com/questions/63223}.
 %
 %    \begin{macrocode}
 \ExplSyntaxOn
@@ -912,10 +954,14 @@ Dear Miss.\ Smith
 }
 \ExplSyntaxOff
 %    \end{macrocode}
+% \end{macro}
 %
 % \begin{macro}{\ifnodedefined}
-% Check if node is defined.
-% Based on: https://tex.stackexchange.com/questions/37709
+% 
+% Checks if node is defined.
+%
+% Based on: \url{https://tex.stackexchange.com/questions/37709}
+%
 %    \begin{macrocode}
 \long\def\ifnodedefined#1#2#3{%
   \@ifundefined{pgf@sh@ns@#1}{#3}{#2}%
@@ -923,19 +969,26 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 % \end{macro}
 %
-%------------------------------------------------------
+% \subsection{Global Font Colour}
 %
-%   Update global font colour
+% \begin{macro}{\globalcolor}
+%   Update global font colour.
 %
 %    \begin{macrocode}
 \NewDocumentCommand{\globalcolor}{m}{%
   \color{#1}\global\let\default@color\current@color
 }
+%    \end{macrocode}
+% \end{macro}
+% 
+% Automatically set font colour.
+%
+%    \begin{macrocode}
 \AtBeginDocument{\globalcolor{cvDark}}
 %    \end{macrocode}
-%------------------------------------------------------
 %
-%   TikZ
+%
+% \subsection{TikZ Style Definitions}
 %
 %    \begin{macrocode}
 \RequirePackage{tikz}
@@ -948,6 +1001,8 @@ Dear Miss.\ Smith
   backgrounds,
   matrix}
 \tikzset{
+%    \end{macrocode}
+%    \begin{macrocode}
   interesticon/.style = {},
   interesttext/.style = {},
   eventdottext/.style = {},
@@ -966,25 +1021,35 @@ Dear Miss.\ Smith
   eventdottext,
   anchor=north west
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@interesticon/.style = {%
     minimum width=\cvHeaderIconWidth,
     interesticon
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@interesttext/.style = {%
     interesttext,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@eventdottext/.style = {%
     text width=\cvMainWidth-\cvTimeDotSep,
     black,
     anchor=north west,
     eventdottext,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@invisibletimedot/.style = {%
     circle,
     minimum width=\cvTimeDotDiameter,
     anchor=center,
     invisibletimedot,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@timedot/.style = {%
     cv@invisibletimedot,
     draw,
@@ -992,23 +1057,37 @@ Dear Miss.\ Smith
     black,
     timedot,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@contactIcon/.style={%
     minimum height=\baselineskip,
     contactIcon,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@contactText/.style={%
     minimum height=\baselineskip,
     text depth=0pt,
     contactText,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@headerIcon/.style={%
     minimum width=\cvHeaderIconWidth,
     anchor=center,
     headerIcon,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@skillLevel/.style={skillLevel,},
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@languageText/.style={languageText,},
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@skillText/.style={skillText,},
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@progressArea/.style={%
     minimum width=\cvProgressAreaWidth,
     minimum height=\cvProgressAreaHeight,
@@ -1017,6 +1096,8 @@ Dear Miss.\ Smith
     cvGreen,
     progressArea
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@progressBar/.style={%
     minimum height=\cvProgressAreaHeight,
     rectangle,
@@ -1026,11 +1107,15 @@ Dear Miss.\ Smith
     anchor=west,
     progressBar
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@sectionTitle/.style={%
     anchor=north west,
     align=left,
     sectionTitle,
   },
+%    \end{macrocode}
+%    \begin{macrocode}
   cv@sectionEduText/.style={%
     cv@eventdottext,
     anchor=north west,
@@ -1038,9 +1123,8 @@ Dear Miss.\ Smith
   },
 }
 %    \end{macrocode}
-%------------------------------------------------------
 %
-%   XeLaTeX/LuaLaTeX specific
+%   \subsection{XeLaTeX/LuaLaTeX Specific Code}
 %
 %    \begin{macrocode}
 \NewDocumentCommand{\cv@loadFonts}{}{
@@ -1263,7 +1347,8 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentCommand{\cv@Title}{mm}{%
   \ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
-    \setlength\cvHeaderIconWidth{\maxof{\cvHeaderIconWidth}{\widthof{\Large #2}}}%
+    \setlength\cvHeaderIconWidth{%
+      \maxof{\cvHeaderIconWidth}{\widthof{\Large #2}}}%
     \protected@write\@auxout{}{\global\cvHeaderIconWidth=\the\cvHeaderIconWidth}
     \node[%
       below=\cvSectionSep of cv@last item %
@@ -1426,7 +1511,8 @@ Dear Miss.\ Smith
 }
 %    \end{macrocode}
 %
-% Set the actual language to English. This can be overwritten by the user in the preamble
+% Set the actual language to English. This can be overwritten by the user in the 
+% preamble
 %
 % Define the command to change the language
 %    \begin{macrocode}
@@ -1764,14 +1850,14 @@ Dear Miss.\ Smith
             -0.5\cvTableSepWidth}@{\hskip \cvTableSepWidth}%
           L{0.5\cvMainWidth-0.5\cvTimeDotSep%
             -0.5\cvTableSepWidth}@{}}%
-        \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
-        \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
-        \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
-        \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
-        \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
-        \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
-        \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
-        \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
+      \ifcv@refName            \cv@refAName         & \cv@refBName         \fi %
+      \ifcv@refCompany      \\ \cv@refACompany      & \cv@refBCompany      \fi %
+      \ifcv@refPosition     \\ \cv@refAPosition     & \cv@refBPosition     \fi %
+      \ifcv@refAddressLineA \\ \cv@refAAddressLineA & \cv@refBAddressLineA \fi %
+      \ifcv@refAddressLineB \\ \cv@refAAddressLineB & \cv@refBAddressLineB \fi %
+      \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
+      \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
+      \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
       \end{tabular}%
       \pgfkeys{/@cv/references/value stored = false}%
     \else%
@@ -1946,18 +2032,22 @@ Dear Miss.\ Smith
   \NewDocumentCommand{\cvInterest}{mm}{%
     \ifcv@interestContent %
       \node[
-        below=\cvItemSep of cv@interest text \the\value{cv@cvInterestCounterPrev},
+        below=\cvItemSep of cv@interest text %
+          \the\value{cv@cvInterestCounterPrev},
         cv@interesticon] 
         (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
       \node[
-        below=\cvInterestDetailsSep of cv@interest icon \the\value{cv@cvInterestCounter},
+        below=\cvInterestDetailsSep of cv@interest icon %
+          \the\value{cv@cvInterestCounter},
         cv@interesttext] 
       (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \else
       \cv@interestOpen
-      \node[cv@interesticon] (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
+      \node[cv@interesticon] 
+        (cv@interest icon \the\value{cv@cvInterestCounter}) {##1};
       \node[
-        below=\cvInterestDetailsSep of cv@interest icon \the\value{cv@cvInterestCounter},
+        below=\cvInterestDetailsSep of cv@interest icon %
+          \the\value{cv@cvInterestCounter},
         cv@interesttext] 
         (cv@interest text \the\value{cv@cvInterestCounter}) {##2};
     \fi
@@ -2117,7 +2207,8 @@ Dear Miss.\ Smith
       \node[%
         text width=\cvSideWidth,
         align=center,
-        below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} image] 
+        below=\cvProjectDetailsSep of project \the\value{cv@projectCurrent} %
+          image] 
         (project \the\value{cv@projectCurrent} title) {%
       \ifcv@projectLink \href{\cv@projectLink}{##2} \else ##2 \fi };
     \else
