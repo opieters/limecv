@@ -237,47 +237,55 @@
 %   All the contact information goes here. Inside this environment, the  
 %   following commands are available: 
 %   \begin{itemize}
-%     \item \DescribeMacro{\cvContactAddress} |\cvContactAddress{|\meta{address}|}| 
-%       typesets an address. How this address should be typeset exactly, is left to the 
-%       user. The use of line breaks (|\\|) is allowed;
+%     \item \DescribeMacro{\cvContactAddress} |\cvContactAddress{|
+%       \meta{address}|}| typesets an address. How this address should be 
+%       typeset exactly, is left to the user. The use of line breaks (|\\|) is 
+%       allowed;
 %     \item \DescribeMacro{\cvContactEmail} 
-%      |\cvContactEmail{|\meta{link}|}{|\meta{email address}|}| typesets an email 
-%      address. The link variable should be a something like |mailto:john@doe.tld|. 
-%      Clicking on the email address will then automatically open the default email 
-%      client with this address as recipient. If the link argument is left empty, no 
+%      |\cvContactEmail{|\meta{link}|}{|\meta{email address}|}| typesets an 
+%      email address. The link variable should be a something like 
+%      |mailto:john@doe.tld|. Clicking on the email address will then 
+%      automatically open the default email client with this address as 
+%      recipient. If the link argument is left empty, no 
 %      link will be created. 
 %     \item \DescribeMacro{\cvContactPhone} 
-%       |\cvContactPhone{|\meta{mobile phone number}|}| typesets a mobile phone number.
+%       |\cvContactPhone{|\meta{mobile phone number}|}| typesets a mobile phone 
+%       number.
 %     \item \DescribeMacro{\cvContactWebsite} 
-%      |\cvContactWebsite{|\meta{link}|}{|\meta{website URL}|}| typesets a website. The 
-%      link variable should be a something like |https://johndoe.tld|. Clicking on the 
-%      website will then automatically open the default web browser. If the link argument 
-%      is left empty, no action will be performed upon clicking on the website.
+%      |\cvContactWebsite{|\meta{link}|}{|\meta{website URL}|}| typesets a 
+%      website. The link variable should be a something like 
+%      |https://johndoe.tld|. Clicking on the website will then automatically 
+%      open the default web browser. If the link argument is left empty, no 
+%      action will be performed upon clicking on the website.
 %     \item \DescribeMacro{\cvContactGithub} 
-%       |\cvContactGithub{|\meta{link}|}{|\meta{username}|}| typesets a GitHub profile. 
-%       The link variable should be a valid link to the GitHub profile (for example 
-%       |https://github.com/johndoe|). Clicking on the username will then automatically 
-%       open the default web browser. If the link argument is left empty, no action will 
-%       be performed upon clicking on the website.
+%       |\cvContactGithub{|\meta{link}|}{|\meta{username}|}| typesets a GitHub 
+%       profile. The link variable should be a valid link to the GitHub profile 
+%       (for example |https://github.com/johndoe|). Clicking on the username 
+%       will then automatically open the default web browser. If the link 
+%       argument is left empty, no action will be performed upon clicking on the
+%       website.
 %     \item \DescribeMacro{\cvContactLinkedin} 
-%       |\cvContactLinkedin{|\meta{link}|}{|\meta{username}|}| typesets a LinkedIn profile. 
-%       The link variable should be a link to your LinkedIn profile homepage (for example 
-%       |https://www.linkedin.com/in/johndoe/|). Clicking on the username will then 
-%       automatically open the default web browser. If the link argument is left empty, 
-%       no action will be performed upon clicking on the website. 
+%       |\cvContactLinkedin{|\meta{link}|}{|\meta{username}|}| typesets a 
+%       LinkedIn profile. The link variable should be a link to your LinkedIn 
+%       profile homepage (for example |https://www.linkedin.com/in/johndoe/|). 
+%       Clicking on the username will then automatically open the default web 
+%       browser. If the link argument is left empty, no action will be performed 
+%       upon clicking on the website. 
 %     \item \DescribeMacro{\cvContactTwitter} 
-%       |\cvContactTwitter{|\meta{link}|}{|\meta{username}|}| typesets a Twitter profile. 
-%       The link variable should direct to your Twitter profile. An example link looks as 
-%       follows: |https://twitter.com/johndoe|. Clicking on the username will then 
-%       automatically open the default web browser. If the link argument is left empty, 
-%       no action will be performed upon clicking on the website.this address as recipient. 
-%       If the link argument is left empty, no link will be created. 
+%       |\cvContactTwitter{|\meta{link}|}{|\meta{username}|}| typesets a Twitter
+%       profile. The link variable should direct to your Twitter profile. An 
+%       example link looks as follows: |https://twitter.com/johndoe|. Clicking 
+%       on the username will then automatically open the default web browser. If
+%       the link argument is left empty, no action will be performed upon 
+%       clicking on the website. If the link argument is left empty, no link 
+%       will be created. 
 %     \item \DescribeMacro{\cvContactKeybase} 
-%       |\cvContactKeybase{|\meta{link}|}{|\meta{fingerprint}|}| typesets a Keybase 
-%       fingerprint (and account). The link variable should be a link to the KeyBase 
-%       profile (e.g.\ |https://keybase.io/johndoe|). Clicking on the fingerprint will then 
-%       automatically open the default web browser. If the link argument is left empty, no 
-%       action will be performed upon clicking on the website.
+%       |\cvContactKeybase{|\meta{link}|}{|\meta{fingerprint}|}| typesets a 
+%       Keybase fingerprint (and account). The link variable should be a link to
+%       the KeyBase profile (e.g.\ |https://keybase.io/johndoe|). Clicking on 
+%       the fingerprint will then automatically open the default web browser. If
+%       the link argument is left empty, no action will be performed upon 
+%       clicking on the website.
 %   \end{itemize}
 %   
 %   A full example:
@@ -300,16 +308,17 @@
 %</example>
 % \fi
 % 
-%   If you wish to add contact information that is not available by default, you can extend 
-%   the command using two internal commands: |\cv@ContactTemplateLink| and 
-%   |\cv@ContactTemplate|. See the source code for usage instructions.
+%   If you wish to add contact information that is not available by default, you
+%   can extend the command using two internal commands: 
+%   |\cv@ContactTemplateLink| and |\cv@ContactTemplate|. See the source code for
+%   usage instructions.
 % 
 %   \DescribeMacro{cvLanguages} 
 %   This environment is used to showcase language skills. The 
-%   \DescribeMacro{\cvLanguage} |\cvLanguage{|\meta{language}|}{|\meta{skill level}|}| 
-%   should be used inside this environment. The skill level is a real value with a maximum 
-%   value of 5. If higher values are used, the result will not be typeset properly. An 
-%   example is included below.
+%   \DescribeMacro{\cvLanguage} |\cvLanguage{|\meta{language}|}{|
+%   \meta{skill level}|}| should be used inside this environment. The skill 
+%   level is a real value with a maximum value of 5. If higher values are used,
+%   the result will not be typeset properly. An example is included below.
 % 
 % \iffalse
 %<*example>
@@ -326,16 +335,17 @@
 % \fi
 % 
 %   \DescribeMacro{cvInterests} 
-%   Typeset interests (can be both professional and personal) using |cvInterests|.
-%   By default it just typesets a list of items in the long format 
-%   (|long|). The short format can be activated by passing the |short| option to the 
-%   environment. Inside this environment, three commands can be used: |\cvInterestsPersonal|, 
-%   |\cvInterestsProfessional| and |\cvInterest|. \DescribeMacro{\cvInterestsPersonal} 
-%   |\cvInterestsPersonal| and \DescribeMacro{\cvInterestsProfessional} 
-%   |\cvInterestsProfessional| add optional sections inside this environment to differentiate 
-%   between personal and professional interests respectively. Both macros have no options nor 
-%   arguments. The \DescribeMacro{\cvInterest} |\cvInterest{|\meta{icon}|}{|\meta{interest}|}| 
-%   command takes an icon and interest as arguments.
+%   Typeset interests (can be both professional and personal) using 
+%   |cvInterests|. By default it just typesets a list of items in the long 
+%   format  (|long|). The short format can be activated by passing the |short| 
+%   option to the  environment. Inside this environment, three commands can be 
+%   used: |\cvInterestsPersonal|, |\cvInterestsProfessional| and |\cvInterest|. 
+%   \DescribeMacro{\cvInterestsPersonal} |\cvInterestsPersonal| and 
+%   \DescribeMacro{\cvInterestsProfessional} |\cvInterestsProfessional| add 
+%   optional sections inside this environment to differentiate between personal 
+%   and professional interests respectively. Both macros have no options nor 
+%   arguments. The \DescribeMacro{\cvInterest} |\cvInterest{|\meta{icon}|}{|
+%   \meta{interest}|}| command takes an icon and interest as arguments.
 %   
 %   Examples that illustrate the different options are depicted below:
 % 
@@ -375,13 +385,14 @@
 %</example>
 % \fi
 %   
-%   \DescribeMacro{cvProjects} If you have interesting (side) projects that are relevant for 
-%   your CV, you can list them using the |cvProjects| environment. Inside this environment 
-%   you can use the \DescribeMacro{\cvProject} 
-%   |\cvProject[|\meta{options}|]{|\meta{name}|}{|\meta{description}|}| macro to list all 
-%   your projects. The only options currently allowed in \meta{options} are an image
-%   (using |image|) and a URL (using |link|). This image must be an external file and the user
-%   must handle its size through |width| or |height|. Example usage:
+%   \DescribeMacro{cvProjects} If you have interesting (side) projects that are 
+%   relevant for your CV, you can list them using the |cvProjects| environment. 
+%   Inside this environment you can use the \DescribeMacro{\cvProject} 
+%   |\cvProject[|\meta{options}|]{|\meta{name}|}{|\meta{description}|}| 
+%   macro to list all your projects. The only options currently allowed in 
+%   \meta{options} are an image (using |image|) and a URL (using |link|). This 
+%   image must be an external file and the user must handle its size through 
+%   |width| or |height|. Example usage:
 %   
 % \iffalse
 %<*example>
@@ -396,40 +407,44 @@
 %</example>
 % \fi
 % 
-%   It is currently not possible to extend the sidebar with additional environments. To add
-%   your own, look at the source code and create your own \LaTeX-style hack.  
+%   It is currently not possible to extend the sidebar with additional 
+%   environments. To add your own, look at the source code and create your own 
+%   \LaTeX-style hack.  
 % 
 % \section{Main Content}
 % 
-%   The main content section includes details on your education, experience, skills, references
-%   and more. Several environments have been designed to suit specific needs. These will be
-%   discussed next.
+%   The main content section includes details on your education, experience, 
+%   skills, references and more. Several environments have been designed to suit
+%   specific needs. These will be discussed next.
 %   
 %   \DescribeMacro{cvMainContent} 
-%   Everything in the main content section should be encapsulated in the |cvMainContent| 
-%   environment. This environment defines four new environments: |cvEducation|, 
-%   |cvExperience|, |cvSkills| and |cvReferences|. These four environments are self 
-%   explanatory in terms of functionality. We will detail each of these 
-%   environments.
+%   Everything in the main content section should be encapsulated in the 
+%   |cvMainContent| environment. This environment defines four new environments:
+%   |cvEducation|, |cvExperience|, |cvSkills| and |cvReferences|. These four 
+%   environments are self explanatory in terms of functionality. We will detail 
+%   each of these environments.
 %   
 %   Note that |cvMainContent| also has a starred variant (|cvMainContent*|). The 
-%   function is similar to |cvSidebar*|, in the sense that it places everything to the 
-%   left instead of the default right location.
+%   function is similar to |cvSidebar*|, in the sense that it places everything 
+%   to the left instead of the default right location.
 %   
 %   \DescribeMacro{cvEducation} 
-%   The education environment creates a timeline styled list of your education. Individual 
-%   education items should be listed by means of the |\cvItem{|\meta{details}|}| macro which 
-%   is available within this environment. Instead of forcing a specific layout structure, it 
-%   was preferred to leave the actual mark-up to the end user. \emph{All} information 
-%   concerning a single education should be passed to this single argument. However, the user
-%   is always welcome to create his own styling macro that takes multiple arguments. This is
-%   illustrated by the examples below.
+%   The education environment creates a timeline styled list of your education. 
+%   Individual education items should be listed by means of the |\cvItem{|
+%   \meta{details}|}| macro which is available within this environment. Instead 
+%   of forcing a specific layout structure, it was preferred to leave the actual 
+%   mark-up to the end user. \emph{All} information concerning a single 
+%   education should be passed to this single argument. However, the user is
+%   always welcome to create his own styling macro that takes multiple 
+%   arguments. This is illustrated by the examples below.
 %   
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{without} special user mark-up 
-    command.}]
+  \begin{lstlisting}[%
+    caption={\lstinline!cvEducation! \emph{without} special user mark-up 
+      command.}
+    ]
 \begin{cvEducation}
   \cvItem{Evening class: Chinese\\
   Some School, City. September 2015 -- June 2016\\
@@ -439,9 +454,9 @@
   General training in the basic sciences and the molecular life science.}
   \cvItem{Master of Science in Biochemistry and Biotechnology\\
   University, City. September 2012 -- June 2015\\
-  Acquisition of insight into and knowledge of possibilities for application in the area 
-  of biochemistry and biotechnology, specific with applications in biomedical application 
-  and due problem-solving reasoning skills.}
+  Acquisition of insight into and knowledge of possibilities for application in 
+  the area of biochemistry and biotechnology, specific with applications in 
+  biomedical application and due problem-solving reasoning skills.}
 \end{cvEducation}
   \end{lstlisting}
 % \iffalse
@@ -451,8 +466,10 @@
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvEducation! \emph{with} special user mark-up 
-    command.}]
+  \begin{lstlisting}[%
+    caption={\lstinline!cvEducation! \emph{with} special user mark-up 
+      command.}
+      ]
 % in preamble:
 \newfontfamily\firaMedium{Fira Sans Medium}
 \NewDocumentCommand{\cvEducation}{mmm}{{\firaMedium #1}\\ #2\\ \emph{#3}}
@@ -463,12 +480,14 @@
             {Achieved A2 language skill in Chinese (Mandarin).}}
   \cvItem{\cvEducation{Bachelor of Science in Biochemistry and Biotechnology}%
             {University, City. September 2009 -- June 2012}%
-            {General training in the basic sciences and the molecular life science.}}
+            {General training in the basic sciences and the molecular life 
+             science.}}
   \cvItem{\cvEducation{Master of Science in Biochemistry and Biotechnology}%
             {University, City. September 2012 -- June 2015}%
-            {Acquisition of insight into and knowledge of possibilities for application 
-             in the area of biochemistry and biotechnology, specific with applications 
-             in biomedical application and due problem-solving reasoning skills.}}
+            {Acquisition of insight into and knowledge of possibilities for 
+             application in the area of biochemistry and biotechnology, specific
+             with applications in biomedical application and due problem-solving
+             reasoning skills.}}
 \end{cvEducation}
   \end{lstlisting}
 % \iffalse
@@ -476,33 +495,38 @@
 % \fi
 %   
 %   \DescribeMacro{cvExperience} 
-%   |cvExperience| works very similar to |cvEducation|. If follows the exact same structure 
-%   and has the same design philosophy where you should use |\cvItem| inside this environment 
-%   to typeset the individual items in a timeline style. \Cref{cvExperience} illustrates this with an example.
+%   |cvExperience| works very similar to |cvEducation|. If follows the exact 
+%   same structure and has the same design philosophy where you should use 
+%   |\cvItem| inside this environment to typeset the individual items in a 
+%   timeline style. \Cref{cvExperience} illustrates this with an example.
 % 
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvExperience! code example.},label=cvExperience]
+  \begin{lstlisting}[%
+    caption={\lstinline!cvExperience! code example.},
+    label=cvExperience
+    ]
 \begin{cvExperience}
   \cvItem{Student Job\\
     \textsc{\selectfont Company X}, Location X. Summer 2010\\
-    Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed ut ante velit. 
-    Nulla pharetra maximus lacus at elementum. Suspendisse sodales consectetur metus, sit amet 
-    ultricies ipsum ultrices ut.};
+    Integer tincidunt dapibus consectetur. Nullam tristique aliquam luctus. Sed 
+    ut ante velit. Nulla pharetra maximus lacus at elementum. Suspendisse 
+    sodales consectetur metus, sit amet ultricies ipsum ultrices ut.};
   \cvItem{Internship\\
     \textsc{Company Y}, Location Y. June 2012 -- August 2012\\
-     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
-     eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
-     lacinia lectus in, blandit metus. Fusce lacinia dolor et metus gravida pulvinar sit amet 
-     et ex.};
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus
+    sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. 
+    Phasellus ut dolor feugiat, lacinia lectus in, blandit metus. Fusce lacinia 
+    dolor et metus gravida pulvinar sit amet et ex.};
   \cvItem{Internship\\
     \textsc{Company Z}, Location Z. August 2014 -- September 2014\\
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus sapien, id 
-    eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. Phasellus ut dolor feugiat, 
-    lacinia lectus in, blandit metus.  Fusce lacinia dolor et metus gravida pulvinar sit amet 
-    et ex. Suspendisse vestibulum, leo malesuada molestie maximus, sem risus ornare elit, vitae 
-    sodales felis elit in ipsum.};
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dictum cursus
+    sapien, id eleifend mi pellentesque id. Etiam lobortis eu odio a sodales. 
+    Phasellus ut dolor feugiat, lacinia lectus in, blandit metus.  Fusce lacinia
+    dolor et metus gravida pulvinar sit amet et ex. Suspendisse vestibulum, leo
+    malesuada molestie maximus, sem risus ornare elit, vitae sodales felis 
+    elit in ipsum.};
 \end{cvExperience}
   \end{lstlisting}
 % \iffalse
@@ -510,18 +534,23 @@
 % \fi
 %   
 %   \DescribeMacro{cvSkills} 
-%   The skills section is contained within the |cvSkills| environment. This environment typesets 
-%   your skills on a 5-level (discrete) scale. These are divided into two columns. To that end, 
-%   two macros are available: |cvSkillOne| and |cvSkillTwo|. \DescribeMacro{cvSkillTwo} 
-%   |cvSkillTwo{|\meta{skill level}|}{|\meta{skill}|}{|\meta{skill level}|}{|\meta{skill}|}| 
-%   typesets a row of two skills. If you have an odd number of items, \DescribeMacro{cvSkillOne} 
-%   |cvSkillOne{|\meta{skill level}|}{|\meta{skill}|}| should be used. An example of a skill-list 
-%   can be found in \cref{cvSkills}.
+%   The skills section is contained within the |cvSkills| environment. This 
+%   environment typesets your skills on a 5-level (discrete) scale. These are 
+%   divided into two columns. To that end, two macros are available: 
+%   |cvSkillOne| and |cvSkillTwo|. \DescribeMacro{cvSkillTwo} |cvSkillTwo{|
+%   \meta{skill level}|}{|\meta{skill}|}{|\meta{skill level}|}{|\meta{skill}|}| 
+%   typesets a row of two skills. If you have an odd number of items, 
+%   \DescribeMacro{cvSkillOne} |cvSkillOne{|\meta{skill level}|}{|
+%   \meta{skill}|}| should be used. An example of a skill-list can be found in 
+%   \cref{cvSkills}.
 %   
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={Illustration of the \lstinline!cvSkills! environment.},label=cvSkills]
+  \begin{lstlisting}[%
+    caption={Illustration of the \lstinline!cvSkills! environment.},
+    label=cvSkills
+    ]
 \begin{cvSkills}
   \cvSkillTwo{5}{MATLAB}{5}{\LaTeX}
   \cvSkillTwo{4}{Python}{4}{VHDL}
@@ -534,24 +563,28 @@
 % \fi
 %   
 %   \DescribeMacro{cvReferences}
-%   The final section is intended to list all your references. These go inside the |cvReferences| 
-%   environment. The enumeration of the different items should be done using the 
-%   \DescribeMacro{\cvAddReference} |\cvAddReference{|\meta{information}|}| macro. The following
-%   keys are available: |name|, |company|, |job|, |address line 1|, |address line 2|, 
-%   |address line 3|, |mobile phone|, |work phone| and |email|. These are all optional arguments
-%   and will be typeset consistently between the two references per row. When adding two references, 
-%   the left one should be specified first using |\cvAddReference*|. This will store the values and 
-%   typeset them when adding the second reference through |\cvAddReference|. Note that 
-%   |\cvAddReference| should be used if only one reference needs to be typese. \Cref{cvReferences} 
+%   The final section is intended to list all your references. These go inside 
+%   the |cvReferences| environment. The enumeration of the different items 
+%   should be done using the \DescribeMacro{\cvAddReference} |\cvAddReference{|
+%   \meta{information}|}| macro. The following keys are available: |name|, 
+%   |company|, |job|, |address line 1|, |address line 2|, |address line 3|, 
+%   |mobile phone|, |work phone| and |email|. These are all optional arguments 
+%   and will be typeset consistently between the two references per row. When 
+%   adding two references, the left one should be specified first using 
+%   |\cvAddReference*|. This will store the values and typeset them when adding 
+%   the second reference through |\cvAddReference|. Note that |\cvAddReference| 
+%   should be used if only one reference needs to be typese. \Cref{cvReferences} 
 %   illustrates the usage of this environment.
 %   
-%   \emph{Important remark}: the comment after the usage of |\cvAddReference| is required! 
-%   Otherwise, spacing will not be as intended.
+%   \emph{Important remark}: the comment after the usage of |\cvAddReference| is
+%   required! Otherwise, spacing will not be as intended.
 %   
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvReferences! code example.},label=cvReferences]
+  \begin{lstlisting}[%
+    caption={\lstinline!cvReferences! code example.},
+    label=cvReferences]
 \begin{cvReferences}
   \cvAddReference{%
     name=Jane Smith,
@@ -568,19 +601,21 @@
 % 
 % \section{Cover Letter}
 % 
-%   A final (optional) part of a CV is the cover letter. This is a fairly simple part to create
-%   design wise, but probably the hardest to write in an actual CV. 
+%   A final (optional) part of a CV is the cover letter. This is a fairly simple
+%   part to create design wise, but probably the hardest to write in an actual 
+%   CV. 
 % 
 %   \DescribeMacro{cvCoverLetter}
-%   The cover letter environment is |cvCoverLetter| and contains all the cover letter details.
-%   It will automatically add a header with your name and position based on the information
-%   filled in in |\cvID|. 
+%   The cover letter environment is |cvCoverLetter| and contains all the cover 
+%   letter details. It will automatically add a header with your name and 
+%   position based on the information filled in in |\cvID|. 
 %   
 %   \DescribeMacro{\cvBeneficiary}
-%   The |\cvBeneficiary{|\meta{options}|}| macro offers a convenience wrapper to typeset the
-%   beneficiary. Possible options are |name|, |position|, |company|, |address line 1|,
-%   |address line 2| and |address line 3|. The remainder of the cover letter design is up 
-%   to the user. An example design can be found in \cref{cvCoverLetter}.
+%   The |\cvBeneficiary{|\meta{options}|}| macro offers a convenience wrapper to
+%   typeset the beneficiary. Possible options are |name|, |position|, |company|,
+%   |address line 1|, |address line 2| and |address line 3|. The remainder of 
+%   the cover letter design is up to the user. An example design can be found in
+%   \cref{cvCoverLetter}.
 %   
 %   \DescribeMacro{\cvFullName}
 %   |\cvFullName| typeset the authors name based on the data provided in |cvID|. 
@@ -588,7 +623,9 @@
 % \iffalse
 %<*example>
 % \fi
-  \begin{lstlisting}[caption={\lstinline!cvCoverLetter! code example.},label=cvCoverLetter]
+  \begin{lstlisting}[%
+    caption={\lstinline!cvCoverLetter! code example.},
+    label=cvCoverLetter]
 \section{Cover Letter}
 
 \begin{cvCoverLetter}
@@ -616,18 +653,19 @@ Dear Miss.\ Smith
 % 
 % \section{Change Style and Layout}
 % 
-%   To change the style, one can redefine the colours, lengths and TikZ styles used throughout 
-%   the document class.
+%   To change the style, one can redefine the colours, lengths and TikZ styles 
+%   used throughout the document class.
 % 
 %   By default the following colours are defined:
 %   \begin{itemize}
-%     \item |cvGreen| default dark green colour (hex value: {\color{cvGreen} |357F2D|})
-%     \item |cvGreenLight| light green colour, for larger shapes and backgrounds (hex value: 
-%       {\color{cvGreenLight} |B8E4B3|})
+%     \item |cvGreen| default dark green colour (hex value: {\color{cvGreen} 
+%       |357F2D|})
+%     \item |cvGreenLight| light green colour, for larger shapes and backgrounds 
+%       (hex value: {\color{cvGreenLight} |B8E4B3|})
 %     \item |cvDark| default text colour (hex value: {\color{cvDark} |2F3142|})
 %     \item |cvRed| currently not used (hex value: {\color{cvRed} |7F2D35|})
-%     \item |cvAccent| lighter grey shade for accented text (hex value: {\color{cvAccent} 
-%       |474A65|})
+%     \item |cvAccent| lighter grey shade for accented text (hex value: 
+%       {\color{cvAccent} |474A65|})
 %   \end{itemize}
 %   
 %   To change these, use the code from \cref{cvColour} in the preamble:
@@ -642,8 +680,8 @@ Dear Miss.\ Smith
 %</example>
 % \fi
 %   
-%   By overwriting the following styles, one can change the appearance of multiple TikZ nodes. 
-%   The following styles are available.
+%   By overwriting the following styles, one can change the appearance of 
+%   multiple TikZ nodes. The following styles are available.
 %   \begin{itemize}
 %     \item |interesticon|
 %     \item |interesttext|
@@ -677,8 +715,8 @@ Dear Miss.\ Smith
 %</example>
 % \fi
 
-% Spacing used inside the document can also be modified by the user. The following
-% lengths have been defined:
+% Spacing used inside the document can also be modified by the user. The 
+% following lengths have been defined:
 % \begin{itemize}
 %   \item |\cvColSep| Distance between columns of |cvSkills|. 
 %     Default value: |1cm|.
@@ -698,72 +736,82 @@ Dear Miss.\ Smith
 %     Default value: |0.3cm|.
 %   \item |\cvItemSep| Distance between |cvItem| entries. 
 %     Default value: |0.4cm|.
-%   \item |\cvTableSepWidth| Distance between two columns of |cvReferences| environment. 
-%     Default value: |0.3cm|.
-%   \item |\cvCoverLetterHeight| Height of the coloured bar at the top of the cover letter. 
-%     Default value: |\cvSideWidth|.
-%   \item |\cvCoverLetterWidth| Width of the cover letter text. This can be used to improve 
-%     to layout. Default value: |\cvMainWidth+3\cvMargin|.
+%   \item |\cvTableSepWidth| Distance between two columns of |cvReferences| 
+%     environment. Default value: |0.3cm|.
+%   \item |\cvCoverLetterHeight| Height of the coloured bar at the top of the 
+%     cover letter. Default value: |\cvSideWidth|.
+%   \item |\cvCoverLetterWidth| Width of the cover letter text. This can be used
+%     to improve the layout. Default value: |\cvMainWidth+3\cvMargin|.
 %   \item |\cvPictureWidth| Diameter of the profile picture. 
 %     Default value: |4cm|.
-%   \item |\cvProgressAreaWidth| Length of a progress bar for the languages section. 
-%     Default value: |5em|.
-%   \item |\cvProgressAreaHeight| Height of a progress bar for the languages section. 
-%     Default value: |0.75em|.
+%   \item |\cvProgressAreaWidth| Length of a progress bar for the languages 
+%     section. Default value: |5em|.
+%   \item |\cvProgressAreaHeight| Height of a progress bar for the languages 
+%     section.  Default value: |0.75em|.
 %   \item |\cvSectionSep| Distance between sections of the main content section. 
 %     Default value: |0.6cm|.
 %   \item |\cvSectionSBSep| Distance between sections of the sidebar section. 
 %     Default value: |4pt|.
 %   \item |\cvTitleLineWidth| Line width of horizontal line below section title.
 %      Default value: |2pt|.
-%   \item |\cvTitleLineSpacing| Distance from bottom of the titles of the main content section to 
-%     the horizontal centre of line. Default value: |0.1cm|.
+%   \item |\cvTitleLineSpacing| Distance from bottom of the titles of the main 
+%     content section to the horizontal centre of line. Default value: |0.1cm|.
 %   \item |\cv@projectSep| Internal length. 
 %     Automatically set to |\cvItemSep|.
-%   \item |\cvProjectDetailsSep| Internal spacing between details of a single project. 
-%     Default value: |0.2cm|.
-%   \item |\cvInterestDetailsSep| Distance between items in case the |long| options is used for the 
-%     |cvInterests| environment. Default value: |4pt|.
-%   \item |\cvContactItemSep| Distance between items in the |cvContact| environment. 
-%     Default value: |5pt|.
+%   \item |\cvProjectDetailsSep| Internal spacing between details of a single 
+%     project. Default value: |0.2cm|.
+%   \item |\cvInterestDetailsSep| Distance between items in case the |long| 
+%     options is used for the |cvInterests| environment. Default value: |4pt|.
+%   \item |\cvContactItemSep| Distance between items in the |cvContact| 
+%     environment. Default value: |5pt|.
 %   \item |\cvCoverLetterLineWidth| Line width of line below cover letter name. 
 %     Default value: |3pt|.
-%   \item |\cvCoverLetterPositionSpacing| Distance between name and position in the cover letter. 
-%     Default value: |10pt|.
-%   \item |\cvSBSectionLineWidth| Line width of left and right lines next to the titles of in the 
-%     sidebar. Default value: |1pt|.
-%   \item |\cvCoverLetterLineSpacing| Distance between name and line below it in the cover letter. 
-%     Default value: |0pt|.
+%   \item |\cvCoverLetterPositionSpacing| Distance between name and position in 
+%     the cover letter. Default value: |10pt|.
+%   \item |\cvSBSectionLineWidth| Line width of left and right lines next to the
+%     titles of in the sidebar. Default value: |1pt|.
+%   \item |\cvCoverLetterLineSpacing| Distance between name and line below it in
+%     the cover letter. Default value: |0pt|.
 %   \item |\cvIDNameSep| Distance between first and last name. 
 %     Default value: |0.1cm|.
 %   \item |\cvPositionSep| Distance before and after the position. 
 %     Default value: |0.5cm|.
 %   \item |\cvSkillSep| Distance between skills. 
 %     Default value: |1ex|.
-%   \item |\cvHeaderIconWidth| Automatically set, currently has no visible effect on document. 
-%     Default value: |0pt|.
+%   \item |\cvHeaderIconWidth| Automatically set, currently has no visible 
+%     effect on document.  Default value: |0pt|.
 % \end{itemize}
 %   
-% The fonts can also be changed, either by using the |sansfont| and |monofont| class options, or
-% by using the default ways provided by \LaTeX, XeLaTeX and LuaLaTeX. Note that the |fontspec| 
-% package is already loaded by the class, so you can directly use |\setmainfont| in the preamble
-% if you are using the XeLaTeX or LuaLaTeX engine.
+% The fonts can also be changed, either by using the |sansfont| and |monofont| 
+% class options, or by using the default ways provided by \LaTeX, XeLaTeX and 
+% LuaLaTeX. Note that the |fontspec| package is already loaded by the class, so
+% you can directly use |\setmainfont| in the preamble if you are using the 
+% XeLaTeX or LuaLaTeX engine.
 %   
 % \section{Example}
 % 
-%   The source code of a typical CV document can be found in the examples folder. 
-%   \Cref{example-cv,example-cover-letter} depict the resulting PDF documents.
+%   The source code of a typical CV document can be found in the examples 
+%   folder. \Cref{example-cv,example-cover-letter} depict the resulting PDF 
+%   documents.
 % 
 %   \begin{figure}[!ht]
-%     \IfFileExists{./mwe-xelatex.pdf}{\includegraphics[width=\textwidth,page=1]%
-%       {mwe-xelatex.pdf}}{No built examples found. Figure not included.}
+%     \IfFileExists{./mwe-xelatex.pdf}{%
+%       \includegraphics[
+%         width=\textwidth,
+%         page=1]%
+%         {mwe-xelatex.pdf}}%
+%       {No built examples found. Figure not included.}
 %     \caption{Example CV (scaled).}
 %     \label{example-cv}
 %   \end{figure}
 % 
 %   \begin{figure}[!ht]
-%     \IfFileExists{./mwe-xelatex.pdf}{\includegraphics[width=\textwidth,page=2]%
-%       {mwe-xelatex.pdf}}{No built examples found.}
+%     \IfFileExists{./mwe-xelatex.pdf}{%
+%       \includegraphics[
+%         width=\textwidth,
+%         page=2]%
+%         {mwe-xelatex.pdf}}%
+%         {No built examples found.}
 %     \caption{Example cover letter (scaled). Figure not included.}
 %     \label{example-cover-letter}
 %   \end{figure}
