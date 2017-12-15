@@ -15,7 +15,7 @@
 % The Current Maintainer of this work is Olivier Pieters.
 %
 % This work consists of the files limecv.dtx and limecv.ins
-% and the derived filebase limecv.sty.
+% and the derived filebase limecv.cls.
 %
 % \fi
 %
@@ -1037,10 +1037,22 @@ Dear Miss.\ Smith
 %
 %
 % \subsection{TikZ Style Definitions}
+%   TikZ is a very imporant package and forms the main reason this CV can have
+%   the look that it does now.
 %
 %    \begin{macrocode}
 \RequirePackage{tikz}
+%    \end{macrocode}
+% 
+% Needed to load the cover letter image in the sidebar. 
+
+%    \begin{macrocode}
 \RequirePackage{graphicx}
+%    \end{macrocode}
+%
+% A lot of additional TikZ libraries are also needed:
+%
+%    \begin{macrocode}
 \usetikzlibrary{%
   calc,
   positioning,
@@ -1048,9 +1060,15 @@ Dear Miss.\ Smith
   arrows.meta,
   backgrounds,
   matrix}
-\tikzset{
 %    \end{macrocode}
+%
+% Define all TikZ styles that are used throughout this document. All styles come
+% in pairs: one that the user can overwrite and one that is internally defined
+% and results into the default behaviour. Userdefined behaviour is always
+% included last, such that it can overwrite the default behaviour.
+%
 %    \begin{macrocode}
+\tikzset{
   interesticon/.style = {},
   interesttext/.style = {},
   eventdottext/.style = {},
@@ -1066,38 +1084,26 @@ Dear Miss.\ Smith
   progressBar/.style={},
   sectionTitle/.style={},
   sectionEduText/.style={%
-  eventdottext,
-  anchor=north west
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@interesticon/.style = {%
     minimum width=\cvHeaderIconWidth,
     interesticon
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@interesttext/.style = {%
     interesttext,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@eventdottext/.style = {%
     text width=\cvMainWidth-\cvTimeDotSep,
     black,
     anchor=north west,
     eventdottext,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@invisibletimedot/.style = {%
     circle,
     minimum width=\cvTimeDotDiameter,
     anchor=center,
     invisibletimedot,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@timedot/.style = {%
     cv@invisibletimedot,
     draw,
@@ -1105,37 +1111,23 @@ Dear Miss.\ Smith
     black,
     timedot,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@contactIcon/.style={%
     minimum height=\baselineskip,
     contactIcon,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@contactText/.style={%
     minimum height=\baselineskip,
     text depth=0pt,
     contactText,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@headerIcon/.style={%
     minimum width=\cvHeaderIconWidth,
     anchor=center,
     headerIcon,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@skillLevel/.style={skillLevel,},
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@languageText/.style={languageText,},
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@skillText/.style={skillText,},
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@progressArea/.style={%
     minimum width=\cvProgressAreaWidth,
     minimum height=\cvProgressAreaHeight,
@@ -1144,8 +1136,6 @@ Dear Miss.\ Smith
     cvGreen,
     progressArea
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@progressBar/.style={%
     minimum height=\cvProgressAreaHeight,
     rectangle,
@@ -1155,15 +1145,11 @@ Dear Miss.\ Smith
     anchor=west,
     progressBar
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@sectionTitle/.style={%
     anchor=north west,
     align=left,
     sectionTitle,
   },
-%    \end{macrocode}
-%    \begin{macrocode}
   cv@sectionEduText/.style={%
     cv@eventdottext,
     anchor=north west,
@@ -1173,17 +1159,31 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 %
 %   \subsection{XeLaTeX/LuaLaTeX Specific Code}
+%   The initial design features the Fira font and thus requires the |fontspec|
+%   package. However, if the |pdflatex| compiler is used, it should still 
+%   compile. This is done in this part of the code. If needed, the relevant
+%   packages are loaded and the options are set.
 %
+%    \begin{macro}{\cv@loadFonts}
 %    \begin{macrocode}
 \NewDocumentCommand{\cv@loadFonts}{}{
   \RequirePackage{fontspec}  
   \RequirePackage{fontawesome}
 %    \end{macrocode}
-% set fonts
+%
+% Load the fonts. By default Fira will be loaded, but this can be overwritten
+% by the user.
+%
 %    \begin{macrocode}
   \setmainfont[Numbers={Monospaced}]{\limecv@sansfont}
   \setsansfont{\limecv@sansfont}
   \setmonofont{\limecv@monofont}
+%    \end{macrocode}
+%
+% Sometimes fonts are not located in their default location, if this option is 
+% passed, additional paths will be traversed.
+%
+%    \begin{macrocode}
   \ifcv@fontPath
     \newfontfamily{\cv@FA}[Path=\limecv@path]%
       {FontAwesome}
@@ -1191,20 +1191,42 @@ Dear Miss.\ Smith
     \newfontfamily{\cv@FA}{FontAwesome}
   \fi
 %    \end{macrocode}
-% define some missing icons
+%
+% The |fontawesome| package does not feature all of the latest icons available,
+% so we define some of the manually since they are relevant for this CV.
+%
+% \begin{macro}{\faAddressCard}
 %    \begin{macrocode}
   \ProvideDocumentCommand{\faAddressCard}{}{{\cv@FA%
     \symbol{"F2B9}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\faVcard}
+%    \begin{macrocode}
   \ProvideDocumentCommand{\faVcard}{}{{\cv@FA%
     \symbol{"F2BB}}}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\faMicrochip}
+%    \begin{macrocode}
   \ProvideDocumentCommand{\faMicrochip}{}{{\cv@FA%
     \symbol{"F2DB}}}
 %    \end{macrocode}
-% future possibility: 
-% https://raw.githubusercontent.com/xdanaux/moderncv/
-% master/moderncviconsmarvosym.sty
+% \end{macro}
+%
+% In the future, the |fontawesome| dependency can be dropped if a manually coded
+% icon is included, such as those defined in monderncv. Example:
+% \url{https://raw.githubusercontent.com/xdanaux/moderncv/%
+% master/moderncviconsmarvosym.sty}
 %    \begin{macrocode}
 }
+%    \end{macrocode}
+% \end{macro}
+%
+% Execute the above defined command if relevant. In the case of |pdflatex|, the 
+% default font is set to a sans serif font.
+%
+%    \begin{macrocode}
 \ifxetex
   \cv@loadFonts
 \else
@@ -1216,38 +1238,60 @@ Dear Miss.\ Smith
   \fi
 \fi
 %    \end{macrocode}
-%------------------------------------------------------
+%  
+% If the XeLaTeX compiler is used and the font is compatible, it is possible to 
+% remove the side bearing of certain characters. This is advantageous for
+% alignment of certain characters. However, in the case a non-compatible 
+% compiler is used, these commands do not poerform anything. 
 %
-%   XeLaTeX/LuaLaTeX specific
-%
-% Removes left/right side bearing of character
-%
-% Based on:
-% https://tex.stackexchange.com/questions/274479
-% https://tex.stackexchange.com/questions/34563
+% The code below is based on:
+% \url{https://tex.stackexchange.com/questions/274479} and 
+% \url{https://tex.stackexchange.com/questions/34563}
 % 
 %    \begin{macrocode}
 \ifxetex
+%    \end{macrocode}
+% \begin{macro}{\kright}
+%    \begin{macrocode}
   \NewDocumentCommand{\kright}{m}{\leavevmode #1%
     \kern-\XeTeXglyphbounds3 \the\XeTeXcharglyph`#1 }
+% \end{macro}
+% \begin{macro}{\kleft}
+%    \begin{macrocode}
   \NewDocumentCommand{\kleft}{m}{\leavevmode %
     \kern-\XeTeXglyphbounds1 \the\XeTeXcharglyph`#1 #1}
+%    \end{macrocode}
+% \end{macro}
 \else
+% \begin{macro}{\kright}
+%    \begin{macrocode}
   \NewDocumentCommand{\kright}{m}{#1}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\kleft}
+%    \begin{macrocode}
   \NewDocumentCommand{\kleft}{m}{#1}
+%    \end{macrocode}
+% \end{macro}
+%    \begin{macrocode}
 \fi
 %    \end{macrocode}
+%
 % Extracts n-th charcter from a string
 % Argument order: string - character number
 %    \begin{macrocode}
 \ExplSyntaxOn
 \cs_generate_variant:Nn\tl_item:nn {f}
+%    \end{macrocode}
+% \begin{macro}{\extract}
+%    \begin{macrocode}
 \DeclareExpandableDocumentCommand{\extract}{mm}{%
   \tl_item:fn{#1}{#2}%
 }
+%    \end{macrocode}
+% \end{macro}
 \ExplSyntaxOff
 %    \end{macrocode}
-%------------------------------------------------------
 %
 %   Page layout
 %
