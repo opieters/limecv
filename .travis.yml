@@ -1,7 +1,7 @@
 dist: trusty
 sudo: required
+install:
   - source ./support/install_texlive.sh
-  - sudo pip3 install -r src/requirements.txt
 cache:
   directories:
     - /tmp/texlive
