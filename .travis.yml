@@ -1,0 +1,20 @@
+dist: trusty
+sudo: required
+  - source ./support/install_texlive.sh
+  - sudo pip3 install -r src/requirements.txt
+cache:
+  directories:
+    - /tmp/texlive
+    - $HOME/.texlive
+script:
+  # Prefix command with travis_wait x so it times out after 3 mins
+  - mkdir build
+  - cd src
+  - travis_wait 5 pdflatex -output-directory ../build ./limecv.dtx
+  - travis_wait 5 pdflatex -output-directory ../build ./limecv.ins
+  - cd ..
+  - cp src/limecv.cls examples/
+  - cd examples
+  - travis_wait 5 pdflatex mwe-latex.tex
+  - travis_wait 5 xelatex mwe-xelatex.tex
+  - travis_wait 5 lualatex mwe-lualatex.tex
