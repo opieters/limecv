@@ -12,9 +12,9 @@ script:
   - cd src
   - travis_wait 5 pdflatex -output-directory ../build ./limecv.dtx
   - travis_wait 5 pdflatex -output-directory ../build ./limecv.ins
-  - cd ..
-  - cp src/limecv.cls examples/
-  - cd examples
-  - travis_wait 5 pdflatex mwe-latex.tex
-  - travis_wait 5 xelatex mwe-xelatex.tex
-  - travis_wait 5 lualatex mwe-lualatex.tex
+  #- cd ..
+  #- cp src/limecv.cls examples/
+  #- cd examples
+  #- travis_wait 5 pdflatex mwe-latex.tex
+  #- travis_wait 5 xelatex mwe-xelatex.tex
+  #- travis_wait 5 lualatex mwe-lualatex.tex
