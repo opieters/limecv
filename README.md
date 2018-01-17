@@ -1,5 +1,7 @@
 # limecv <img src="src/images/limecv-icon.png" alt="limecv project icon" width="40px"/>
 
+[![Build Status](https://travis-ci.org/opieters/limecv.svg?branch=master)](https://travis-ci.org/opieters/limecv)
+
 `limecv` is a document class to typeset curriculum vitæ in (Xe/Lua)LaTeX.
 
 The design of this document class is detailed in [a series of blog posts][blog].  
