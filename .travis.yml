@@ -18,4 +18,4 @@ script:
   - cd examples
   - travis_wait 5 pdflatex mwe-latex.tex
   - travis_wait 5 xelatex mwe-xelatex.tex
-  - travis_wait 5 lualatex mwe-lualatex.tex
+  #- travis_wait 5 lualatex mwe-lualatex.tex
