@@ -1586,6 +1586,7 @@ Dear Miss.\ Smith
     \pgfkeys{/@cv/names/experience = Experience}%
     \pgfkeys{/@cv/names/references = References}%
     \pgfkeys{/@cv/names/skills = Skills}%
+    \pgfkeys{/@cv/names/publications = Publications}%
 }
 %    \end{macrocode}
 %
@@ -1603,6 +1604,7 @@ Dear Miss.\ Smith
     \pgfkeys{/@cv/names/experience = Werkervaring}%
     \pgfkeys{/@cv/names/references = Referenties}%
     \pgfkeys{/@cv/names/skills = Vaardigheden}%
+    \pgfkeys{/@cv/names/publications = Publicaties}%
 }
 %    \end{macrocode}
 %
@@ -1758,6 +1760,26 @@ Dear Miss.\ Smith
   \stepcounter{cv@lastItem}
   \draw (skills.south west) node %
     (cv@last item \the\value{cv@lastItem}) {};
+}
+%    \end{macrocode}
+%------------------------------------------------------
+%
+%   cvPublications environment
+%
+%    \begin{macrocode}
+\NewDocumentEnvironment{cvPublications}{}{%
+\cv@Title{\pgfkeysvalueof{/@cv/names/publications}}{\faNewspaperO}
+%    \end{macrocode}
+% insures uniqueness
+%    \begin{macrocode}
+  \stepcounter{cv@itemPrev}
+  \stepcounter{cv@itemNext}
+  \cv@definecvItem
+}{%
+  \cv@EndSectionDraw
+  \stepcounter{cv@lastItem}
+  \draw (item \the\value{cv@itemPrev}.south west)
+    node (cv@last item \the\value{cv@lastItem}) {};
 }
 %    \end{macrocode}
 %------------------------------------------------------
