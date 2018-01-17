@@ -14,7 +14,7 @@ script:
   - travis_wait 5 pdflatex -output-directory ../build ./limecv.dtx
   - travis_wait 5 pdflatex -output-directory ../build ./limecv.ins
   - cd ..
-  - cp src/limecv.cls examples/
+  - cp build/limecv.cls examples/
   - cd examples
   - travis_wait 5 pdflatex mwe-latex.tex
   - travis_wait 5 xelatex mwe-xelatex.tex
