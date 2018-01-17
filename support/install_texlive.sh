@@ -41,7 +41,8 @@ tlmgr install   \
   parskip \
   xstring \
   fontspec \
-  fontawesome
+  fontawesome \
+  lipsum
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
