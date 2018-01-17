@@ -32,7 +32,16 @@ tlmgr install   \
   hyperref \
   xcolor \
   cleveref \
-  etoolbox
+  etoolbox \
+  oberdiek \
+  ifxetex \
+  ifluatex \
+  tools \
+  url \
+  parskip \
+  xstring \
+  fontspec \
+  fontawesome
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
