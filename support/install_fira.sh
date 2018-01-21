@@ -5,6 +5,8 @@
 pushd /tmp
 
 sudo apt-get install unzip -y
+sudo mkdir fonts
+pushd fonts
 wget "http://www.carrois.com/downloads/fira_4_1/FiraFonts4106.zip" -O FiraMainFonts.zip
 wget "http://www.carrois.com/downloads/fira_mono_3_2/FiraMonoFonts3206.zip"  -O FiraMonoFonts.zip
 unzip FiraMainFonts.zip -d FiraMain
@@ -15,4 +17,5 @@ sudo cp FiraMain/Fira*/WEB/TTF/*.ttf /usr/share/fonts/truetype/FiraSans/
 sudo cp FiraMono/Fira*/OTF/Fira* /usr/share/fonts/opentype/FiraSans/
 sudo fc-cache -fv
 
+popd
 popd
