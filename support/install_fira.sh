@@ -11,9 +11,15 @@ sudo mkdir -p limecvFonts
 pushd limecvFonts
 
 # download fonts
-wget "http://www.carrois.com/downloads/fira_4_1/FiraFonts4106.zip" -O FiraMainFonts.zip
-wget "http://www.carrois.com/downloads/fira_mono_3_2/FiraMonoFonts3206.zip"  -O FiraMonoFonts.zip
-wget "https://github.com/FortAwesome/Font-Awesome/archive/v4.7.0.zip" -O FontAwesome.zip
+if [ ! -f FiraMainFonts.zip ]; then
+    wget "http://www.carrois.com/downloads/fira_4_1/FiraFonts4106.zip" -O FiraMainFonts.zip
+fi
+if [ ! -f FiraMonoFonts.zip ]; then
+    wget "http://www.carrois.com/downloads/fira_mono_3_2/FiraMonoFonts3206.zip"  -O FiraMonoFonts.zip
+fi
+if [ ! -f FontAwesome.zip ]; then
+    wget "https://github.com/FortAwesome/Font-Awesome/archive/v4.7.0.zip" -O FontAwesome.zip
+fi
 
 # extract fonts
 unzip FiraMainFonts.zip -o -d FiraMain
