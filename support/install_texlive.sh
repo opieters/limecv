@@ -42,7 +42,7 @@ tlmgr install   \
   xstring \
   fontspec \
   fontawesome \
-  lipsum \ 
+  lipsum \
   zapfding
 
 # Keep no backups (not required, simply makes cache bigger)
