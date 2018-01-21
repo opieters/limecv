@@ -16,9 +16,9 @@ wget "http://www.carrois.com/downloads/fira_mono_3_2/FiraMonoFonts3206.zip"  -O 
 wget "https://github.com/FortAwesome/Font-Awesome/archive/v4.7.0.zip" -O FontAwesome.zip
 
 # extract fonts
-unzip FiraMainFonts.zip -d FiraMain
-unzip FiraMonoFonts.zip -d FiraMono
-unzip FontAwesome.zip -d FontAwesome
+unzip FiraMainFonts.zip -o -d FiraMain
+unzip FiraMonoFonts.zip -o -d FiraMono
+unzip FontAwesome.zip -o -d FontAwesome
 
 # create target directories for fonts
 sudo mkdir -p /usr/share/fonts/truetype/FiraSans
