@@ -58,7 +58,7 @@ LPPL v1.3c See LICENSE file.
 
 Default profile picture courtesy of Twitter. 
 
-© 2017 Olivier Pieters
+© 2017 - 2018 Olivier Pieters
 
 [blog]: https://olivierpieters.be/blog/archive/tag/limecv
 [FA]: http://fontawesome.io
