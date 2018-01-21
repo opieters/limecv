@@ -7,7 +7,7 @@ cache:
   directories:
     - /tmp/texlive
     - $HOME/.texlive
-    - /tmp/fonts
+    - /tmp/limecvFonts
 script:
   # Prefix command with travis_wait x so it times out after 3 mins
   - mkdir build
