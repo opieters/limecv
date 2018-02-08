@@ -25,22 +25,30 @@ After installing this package, make sure you have the following fonts installed:
 * [Fira][fira] (only needed when using XeLaTeX/LuaLaTeX)
 
 The following packages need to be installed on your system. They are all available on CTAN: 
-`kvoptions`,
-`ifxetex`,
-`ifluatex`,
-`xparse`,
-`calc`,
-`xcolor`,
-`tabularx`,
-`hyperref`,
-`url`,
-`parskip`,
-`xstring`,
-`xkeyval`,
-`tikz`,
-`graphicx`,
-`fontspec` (XeLaTeX and LuaLaTeX only) and
-`fontawesome`.
+  `l3kernel`, 
+  `l3packages`, 
+  `listings`, 
+  `pgf`, 
+  `tools`,
+  `graphics`, 
+  `xkeyval`, 
+  `hyperref`,
+  `xcolor`, 
+  `cleveref`, 
+  `etoolbox`, 
+  `oberdiek`,
+  `ifxetex`, 
+  `ifluatex`, 
+  `tools`, 
+  `url`, 
+  `parskip`, 
+  `xstring`, 
+  `fontspec` (XeLaTeX and LuaLaTeX only),
+  `fontawesome`,
+  `lipsum`,
+  `zapfding` and
+  `luaotfload` (LuaLaTeX only)
+
 
 ## Documentation
 
