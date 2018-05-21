@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 install:
   - source ./support/install_texlive.sh
-  - source ./support/install_fira.sh
+  - source ./support/install_fonts.sh
 cache:
   directories:
     - /tmp/texlive
