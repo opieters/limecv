@@ -15,7 +15,7 @@ echo "Building project..."
 pushd limecv/
 
 # create class file
-pdflatex limecv.ins
+xelatex limecv.ins
 
 cp limecv.cls examples/
 
@@ -41,9 +41,9 @@ cp mwe-xelatex.pdf ../
 popd
 
 # build documentation
-pdflatex limecv.dtx
-pdflatex limecv.dtx
-pdflatex limecv.dtx
+xelatex limecv.dtx
+xelatex limecv.dtx
+xelatex limecv.dtx
 
 echo "Cleaning project..."
 
