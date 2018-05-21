@@ -44,7 +44,8 @@ tlmgr install   \
   fontawesome \
   lipsum \
   zapfding \
-  luaotfload
+  luaotfload \
+  xeCJK
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
