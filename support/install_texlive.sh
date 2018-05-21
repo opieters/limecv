@@ -46,6 +46,7 @@ tlmgr install   \
   zapfding \
   luaotfload \
   cjk \
+  xecjk \
   dvipdfmx
 
 # Keep no backups (not required, simply makes cache bigger)
