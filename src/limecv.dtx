@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2017 by Olivier Pieters - me (at) olivierpieters (dot) be
+% Copyright (C) 2017 - 2018 by Olivier Pieters
 % --------------------------------------------------------------------------
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -36,6 +36,7 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{xparse}
+\usepackage[BoldFont,SlantFont]{xeCJK}
 
 \NewDocumentCommand{\cvRequirement}{m}{\textbf{#1}}
 
@@ -68,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1545}
+% \CheckSum{1561}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -179,7 +180,7 @@
 % \fi
   \begin{lstlisting}
 \pgfkeys{/@cv/names/education = Formations}
-\pgfkeys{/@cv/names/skills = Compétences}
+\pgfkeys{/@cv/names/skills = Comp\'etences}
   \end{lstlisting}
 % \iffalse
 %</example>
@@ -1608,6 +1609,26 @@ Dear Miss.\ Smith
 }
 %    \end{macrocode}
 %
+%
+% Set all title names to Chinese (Mandarin):
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setChinese}{}{
+    \pgfkeys{/@cv/names/profile = 关于我}%
+    \pgfkeys{/@cv/names/contact = 联系我}%
+    \pgfkeys{/@cv/names/languages = 语言能力}%
+    \pgfkeys{/@cv/names/interests = 兴趣爱好}%
+    \pgfkeys{/@cv/names/professional = Professional}%
+    \pgfkeys{/@cv/names/personal = Personal}%
+    \pgfkeys{/@cv/names/projects = 我的项目}%
+    \pgfkeys{/@cv/names/education = 教育背景}%
+    \pgfkeys{/@cv/names/experience = 工作经验}%
+    \pgfkeys{/@cv/names/references = References}%
+    \pgfkeys{/@cv/names/skills = IT技能}%
+    \pgfkeys{/@cv/names/publications = 出版作品}%
+}
+%    \end{macrocode}
+%
+%
 % Set the actual language to English. This can be overwritten by the user in the 
 % preamble
 %
@@ -1619,6 +1640,10 @@ Dear Miss.\ Smith
     {
       {dutch} {\cv@setDutch}
       {english} {\cv@setEnglish}
+      {chinese} {%
+          \usepackage[BoldFont,SlantFont]{xeCJK}%
+          \cv@setChinese%
+        }
     }
     {\ClassError{limecv}{Unknown option `#1' for cvLanguage %
      macro.}{Only `english' and `dutch' are valid options %
