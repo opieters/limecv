@@ -48,7 +48,7 @@ The following packages need to be installed on your system. They are all availab
   `lipsum`,
   `zapfding`,
   `luaotfload`, (LuaLaTeX only)
-  `xeCJK` and (for Asian fonts, not needed for LaTeX)
+  `cjk` and (for Asian fonts, not needed for LaTeX)
   `xdvipdfmx`
 
 
