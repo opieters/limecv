@@ -47,6 +47,7 @@ tlmgr install   \
   luaotfload \
   cjk \
   xecjk \
+  fandol \
   dvipdfmx
 
 # Keep no backups (not required, simply makes cache bigger)

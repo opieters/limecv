@@ -49,7 +49,8 @@ The following packages need to be installed on your system. They are all availab
   `zapfding`,
   `luaotfload`, (LuaLaTeX only)
   `cjk`,
-  `xecjk` and (for Asian fonts, not needed for LaTeX)
+  `xecjk`,
+  `fandol` and (final 3 for Asian fonts, not needed for LaTeX)
   `xdvipdfmx`
 
 
