@@ -12,8 +12,8 @@ script:
   # Prefix command with travis_wait x so it times out after 3 mins
   - mkdir build
   - cd src
-  - travis_wait 5 pdflatex -output-directory ../build ./limecv.dtx
-  - travis_wait 5 pdflatex -output-directory ../build ./limecv.ins
+  - travis_wait 5 xelatex -output-directory ../build ./limecv.dtx
+  - travis_wait 5 xelatex -output-directory ../build ./limecv.ins
   - cd ..
   - cp build/limecv.cls examples/
   - cd examples
