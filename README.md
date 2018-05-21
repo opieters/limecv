@@ -46,8 +46,10 @@ The following packages need to be installed on your system. They are all availab
   `fontspec` (XeLaTeX and LuaLaTeX only),
   `fontawesome`,
   `lipsum`,
-  `zapfding` and
-  `luaotfload` (LuaLaTeX only)
+  `zapfding`,
+  `luaotfload`, (LuaLaTeX only)
+  `xeCJK` and (for Asian fonts, not needed for LaTeX)
+  `xdvipdfmx`
 
 
 ## Documentation

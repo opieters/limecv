@@ -45,7 +45,8 @@ tlmgr install   \
   lipsum \
   zapfding \
   luaotfload \
-  xeCJK
+  xeCJK \
+  dvipdfmx
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
