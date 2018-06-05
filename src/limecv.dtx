@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1561}
+% \CheckSum{1575}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -2086,6 +2086,17 @@ Dear Miss.\ Smith
         \pgfmatrixnextcell \node[cv@contactText]{%
           \@IfNoValueOrEmptyTF{##1}{##2}{\href{##1}{##2}}};
   }
+}
+\NewDocumentCommand{\cvContactTemplate}{O{} mm}{
+  \ifcv@contactfirst%
+    \\%
+  \else %
+    \global\cv@contactfirsttrue %
+  \fi %
+  \node[cv@contactIcon]{#2}; 
+  \pgfmatrixnextcell \node[cv@contactText]{%
+    \@IfNoValueOrEmptyTF{#1}{#3}{\href{#1}{#3}}%
+  };
 }
 \newif\ifcv@contactfirst
 \NewDocumentEnvironment{cvContact}{}{%

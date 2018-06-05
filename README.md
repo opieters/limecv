@@ -58,11 +58,11 @@ The following packages need to be installed on your system. They are all availab
 
 The class documentation can be found on [CTAN](http://mirrors.ctan.org/macros/latex/contrib/limecv/limecv.pdf).
 
-Alternatively, the documentation can also be created by running `pdflatex limecv.dtx`.
+Alternatively, the documentation can also be created by running `xelatex limecv.dtx`.
 
 ## Examples
 
-To compile the examples in `/examples/`, install the package from CTAN or compile from source by running: `pdflatex limecv.ins` and copy the resulting `limecv.cls` file to the `/examples/` folder.
+To compile the examples in `/examples/`, install the package from CTAN or compile from source by running: `xelatex limecv.ins` and copy the resulting `limecv.cls` file to the `/examples/` folder.
 
 ## Licence
 
