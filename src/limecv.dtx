@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1577}
+% \CheckSum{1598}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -168,13 +168,13 @@
 %
 %    \subsection{Internationalisation}
 %      \DescribeMacro{\cvSetLanguage} Currently, there is only 
-%        internationalisation support for English, Dutch and Chinese. The  
-%        default language is English and can be modified using the 
-%        |\cvSetLanguage| macro. Possible arguments are: |english|, |dutch| and 
-%        |chinese|. If you want to use a different language, you need to modify 
-%        the keys that hold the different section titles. These can be in the 
-%        source code. The following snippet illustrates how this can be done for 
-%        French:
+%        internationalisation support for English, Dutch, French and Chinese.   
+%        The default language is English and can be modified using the 
+%        |\cvSetLanguage| macro. Possible arguments are: |english|, |dutch|,  
+%        |french| and |chinese|. If you want to use a different language, you 
+%        need to modify  the keys that hold the different section titles. These 
+%        can be in the  source code. The following snippet illustrates how this 
+%        can be done for French:
 %
 % \iffalse
 %<*example>
@@ -1630,6 +1630,23 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 %
 %
+% Set all title names to French:
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setFrench}{}{
+    \pgfkeys{/@cv/names/profile = Profil}%
+    \pgfkeys{/@cv/names/contact = Contact}%
+    \pgfkeys{/@cv/names/languages = Langues}%
+    \pgfkeys{/@cv/names/interests = Centres d'int\'{e}r\^{e}t}%
+    \pgfkeys{/@cv/names/professional = Professionel}%
+    \pgfkeys{/@cv/names/personal = Personnel}%
+    \pgfkeys{/@cv/names/projects = Projets}%
+    \pgfkeys{/@cv/names/education = \'{E}ducation}%
+    \pgfkeys{/@cv/names/experience = Exp\'{e}riences}%
+    \pgfkeys{/@cv/names/references = R\'{e}f\'{e}rences}%
+    \pgfkeys{/@cv/names/skills = Comp\'{e}tences}%
+}
+%    \end{macrocode}
+%
 % Set the actual language to English. This can be overwritten by the user in the 
 % preamble
 %
@@ -1641,13 +1658,14 @@ Dear Miss.\ Smith
     {
       {dutch} {\cv@setDutch}
       {english} {\cv@setEnglish}
+      {french} {\cv@setFrench}
       {chinese} {%
           \usepackage[BoldFont,SlantFont]{xeCJK}%
           \cv@setChinese%
         }
     }
     {\ClassError{limecv}{Unknown option `#1' for cvLanguage %
-     macro.}{Only `english' and `dutch' are valid options %
+     macro.}{Only `english', `chinese`, `french` and `dutch' are valid options %
      for this macro.}}
 }
 \ExplSyntaxOff
