@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1575}
+% \CheckSum{1577}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -2250,11 +2250,13 @@ Dear Miss.\ Smith
 % define new commands
 %    \begin{macrocode}
   \NewDocumentCommand{\cvInterestsPersonal}{}{%
-    \cv@interestSection{\faUser\ \emph{Personal}}}
+    \cv@interestSection{\faUser\ \emph{\pgfkeysvalueof{/@cv/names/personal}}}}
 %    \end{macrocode}
 %    \begin{macrocode}
   \NewDocumentCommand{\cvInterestsProfessional}{}{%
-    \cv@interestSection{\faBriefcase\ \emph{Professional}}}
+    \cv@interestSection{\faBriefcase\ \emph{%
+      \pgfkeysvalueof{/@cv/names/professional}}%
+    }}
 %    \end{macrocode}
 %    \begin{macrocode}
   \ifcv@interestLong
