@@ -19,8 +19,8 @@ if [ ! -f FontAwesome.zip ]; then
 fi
 
 # extract fonts
-unzip FiraMainFonts.zip -o -d FiraMain
-unzip FontAwesome.zip -o -d FontAwesome
+unzip -o -d FiraMain FiraMainFonts.zip 
+unzip -o -d FontAwesome FontAwesome.zip 
 
 # create target directories for fonts
 sudo mkdir -p /usr/share/fonts/truetype/FiraSans
