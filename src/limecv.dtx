@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1597}
+% \CheckSum{1612}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -171,10 +171,10 @@
 %        internationalisation support for English, Dutch, French and Chinese.   
 %        The default language is English and can be modified using the 
 %        |\cvSetLanguage| macro. Possible arguments are: |english|, |dutch|,  
-%        |french| and |chinese|. If you want to use a different language, you 
-%        need to modify  the keys that hold the different section titles. These 
-%        can be in the  source code. The following snippet illustrates how this 
-%        can be done for French:
+%        |french|, |german|, and |chinese|. If you want to use a different
+%        language, you need to modify the keys that hold the different section
+%        titles. These can be in the source code. The following snippet
+%        illustrates how this can be done for French:
 %
 % \iffalse
 %<*example>
@@ -1647,6 +1647,25 @@ Dear Miss.\ Smith
 }
 %    \end{macrocode}
 %
+%
+% Set all title names to German:
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setGerman}{}{
+    \pgfkeys{/@cv/names/profile = Profil}%
+    \pgfkeys{/@cv/names/contact = Kontakt}%
+    \pgfkeys{/@cv/names/languages = Sprachen}%
+    \pgfkeys{/@cv/names/interests = Interessen}%
+    \pgfkeys{/@cv/names/professional = Beruflich}%
+    \pgfkeys{/@cv/names/personal = Persönlich}%
+    \pgfkeys{/@cv/names/projects = Projekte}%
+    \pgfkeys{/@cv/names/education = Ausbildung}%
+    \pgfkeys{/@cv/names/experience = Berufliche Erfahrung}%
+    \pgfkeys{/@cv/names/references = Referenzen}%
+    \pgfkeys{/@cv/names/skills = Kenntnisse}%
+    \pgfkeys{/@cv/names/publications = Veröffentlichungen}%
+}
+%    \end{macrocode}
+%
 % Set the actual language to English. This can be overwritten by the user in the 
 % preamble
 %
@@ -1659,6 +1678,7 @@ Dear Miss.\ Smith
       {dutch} {\cv@setDutch}
       {english} {\cv@setEnglish}
       {french} {\cv@setFrench}
+      {german} {\cv@setGerman}
       {chinese} {%
           \usepackage[BoldFont,SlantFont]{xeCJK}%
           \cv@setChinese%
