@@ -24,35 +24,7 @@ After installing this package, make sure you have the following fonts installed:
 * [FontAwesome][FA]
 * [Fira][fira] (only needed when using XeLaTeX/LuaLaTeX)
 
-The following packages need to be installed on your system. They are all available on CTAN: 
-  `l3kernel`, 
-  `l3packages`, 
-  `listings`, 
-  `pgf`, 
-  `tools`,
-  `graphics`, 
-  `xkeyval`, 
-  `hyperref`,
-  `xcolor`, 
-  `cleveref`, 
-  `etoolbox`, 
-  `oberdiek`,
-  `ifxetex`, 
-  `ifluatex`, 
-  `tools`, 
-  `url`, 
-  `parskip`, 
-  `xstring`, 
-  `fontspec` (XeLaTeX and LuaLaTeX only),
-  `fontawesome`,
-  `lipsum`,
-  `zapfding`,
-  `luaotfload`, (LuaLaTeX only)
-  `cjk`,
-  `xecjk`,
-  `fandol` and (final 3 for Asian fonts, not needed for LaTeX)
-  `xdvipdfmx`
-
+The required packages are all available on CTAN. `support/install_texlive.sh` list all of them.
 
 ## Documentation
 
@@ -70,7 +42,7 @@ LPPL v1.3c See LICENSE file.
 
 Default profile picture courtesy of Twitter. 
 
-© 2017 - 2018 Olivier Pieters
+© 2017 - 2020 Olivier Pieters
 
 [blog]: https://olivierpieters.be/blog/archive/tag/limecv
 [FA]: http://fontawesome.io
