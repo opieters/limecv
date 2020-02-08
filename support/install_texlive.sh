@@ -49,7 +49,8 @@ tlmgr install   \
   xecjk \
   fandol \
   dvipdfmx \
-  pdfescape
+  pdfescape \
+  letltxmacro
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
