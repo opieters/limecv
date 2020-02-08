@@ -47,4 +47,3 @@ Default profile picture courtesy of Twitter.
 [blog]: https://olivierpieters.be/blog/archive/tag/limecv
 [FA]: http://fontawesome.io
 [fira]: https://github.com/mozilla/Fira
-[docs]: http://ctan.org/tex-archive/macros/generic/limecv/limecv.pdf
