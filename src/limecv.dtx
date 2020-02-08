@@ -264,6 +264,9 @@
 %       will then automatically open the default web browser. If the link 
 %       argument is left empty, no action will be performed upon clicking on the
 %       website.
+%     \item \DescribeMacro{\cvContactGitlab}
+%       |\cvContactGitlab{|\meta{link}|}{|\meta{username}|}| typesets a GitLab
+%       profile. Same considerations apply as in the \cvContactGithub command.
 %     \item \DescribeMacro{\cvContactLinkedin} 
 %       |\cvContactLinkedin{|\meta{link}|}{|\meta{username}|}| typesets a 
 %       LinkedIn profile. The link variable should be a link to your LinkedIn 
@@ -2168,6 +2171,7 @@ Dear Miss.\ Smith
   \cv@ContactTemplateLink{\cvContactEmail}{\faEnvelope}
   \cv@ContactTemplateLink{\cvContactWebsite}{\faGlobe}
   \cv@ContactTemplateLink{\cvContactGithub}{\faGithub}
+  \cv@ContactTemplateLink{\cvContactGitlab}{\faGitlab}
   \cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedinSquare}
   \cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
   \cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
