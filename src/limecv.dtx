@@ -166,14 +166,12 @@
 % 
 % \section{General Macros and Document Class Options}
 %
-%    \subsection{Internationalisation}
-%      \DescribeMacro{\cvSetLanguage} Currently, there is only 
-%        internationalisation support for English, Dutch, French and Chinese.   
-%        The default language is English and can be modified using the 
-%        |\cvSetLanguage| macro. Possible arguments are: |english|, |dutch|,  
-%        |french|, |german|, and |chinese|. If you want to use a different
-%        language, you need to modify the keys that hold the different section
-%        titles. These can be in the source code. The following snippet
+%    \DescribeMacro{\cvSetLanguage} The default language is English and can
+%        be modified using the |\cvSetLanguage| macro. Possible arguments are:
+%        |chinese|, |dutch|, |english|, |french|, |german|, |italian|.
+%        If your language is not supported or you want to override a word in any
+%        supported language, you can modify the keys that hold the different
+%        section titles. These can be in the source code. The following snippet
 %        illustrates how this can be done for French:
 %
 % \iffalse
@@ -1666,6 +1664,26 @@ Dear Miss.\ Smith
 }
 %    \end{macrocode}
 %
+%
+% Set all title names to Italian:
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setItalian}{}{
+    \pgfkeys{/@cv/names/profile = Profilo}%
+    \pgfkeys{/@cv/names/contact = Contatti}%
+    \pgfkeys{/@cv/names/languages = Lingue}%
+    \pgfkeys{/@cv/names/interests = Interessi}%
+    \pgfkeys{/@cv/names/professional = Professionali}%
+    \pgfkeys{/@cv/names/personal = Personali}%
+    \pgfkeys{/@cv/names/projects = Progetti}%
+    \pgfkeys{/@cv/names/education = Formazione}%
+    \pgfkeys{/@cv/names/experience = Esperienze lavorative}%
+    \pgfkeys{/@cv/names/references = Referenze}%
+    \pgfkeys{/@cv/names/skills = Competenze}%
+    \pgfkeys{/@cv/names/publications = Pubblicazioni}%
+}
+%    \end{macrocode}
+%
+%
 % Set the actual language to English. This can be overwritten by the user in the 
 % preamble
 %
@@ -1679,14 +1697,15 @@ Dear Miss.\ Smith
       {english} {\cv@setEnglish}
       {french} {\cv@setFrench}
       {german} {\cv@setGerman}
+      {italian} {\cv@setItalian}
       {chinese} {%
           \usepackage[BoldFont,SlantFont]{xeCJK}%
           \cv@setChinese%
         }
     }
     {\ClassError{limecv}{Unknown option `#1' for cvLanguage %
-     macro.}{Only `english', `chinese`, `french` and `dutch' are valid options %
-     for this macro.}}
+     macro.}{Only `english', `chinese`, `dutch`, `french`, `german` %
+     and `italian` are valid options for this macro.}}
 }
 \ExplSyntaxOff
 \cvSetLanguage{english}
