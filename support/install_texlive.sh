@@ -50,7 +50,8 @@ tlmgr install   \
   fandol \
   dvipdfmx \
   pdfescape \
-  letltxmacro
+  letltxmacro \
+  bitset
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
