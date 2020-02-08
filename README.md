@@ -28,7 +28,7 @@ The required packages are all available on CTAN. `support/install_texlive.sh` li
 
 ## Documentation
 
-The class documentation can be found on [CTAN](http://mirrors.ctan.org/macros/latex/contrib/limecv/limecv.pdf).
+The class documentation can be found on [CTAN](http://ctan.org/tex-archive/macros/latex/contrib/limecv/limecv.pdf).
 
 Alternatively, the documentation can also be created by running `xelatex limecv.dtx`.
 
