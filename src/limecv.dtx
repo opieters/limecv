@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1630}
+% \CheckSum{1631}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -97,6 +97,7 @@
 % \changes{v0.1.5}{2018/06/05}{Custom contact fields.}
 % \changes{v0.1.6}{2018/06/17}{Added support for French.}
 % \changes{v0.1.7}{2020/02/08}{Added support for Italian.}
+% \changes{v0.1.8}{2020/03/15}{Upgrade to Font Awesome 5.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
@@ -163,10 +164,10 @@
 %   and |\cvMainFont| command. The mono spaced font can be changed by means of 
 %   the |monofont| class option.
 % 
-%   \cvRequirement{FontAwesome}\footnote{\url{http://fontawesome.io}} is the 
+%   \cvRequirement{FontAwesome5}\footnote{\url{http://fontawesome.io}} is the 
 %   icon font used. This font should also be available and cannot be replaced by
 %   another icon font. Most modern TeX distributions ship with this font since 
-%   they provide the |fontawesome| package. 
+%   they provide the |fontawesome5| package. 
 % 
 % \section{General Macros and Document Class Options}
 %
@@ -1175,7 +1176,7 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentCommand{\cv@loadFonts}{}{
   \RequirePackage{fontspec}  
-  \RequirePackage{fontawesome}
+  \RequirePackage{fontawesome5}
 %    \end{macrocode}
 %
 % Load the fonts. By default Fira will be loaded, but this can be overwritten
@@ -1193,13 +1194,13 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
   \ifcv@fontPath
     \newfontfamily{\cv@FA}[Path=\limecv@path]%
-      {FontAwesome}
+      {Font Awesome 5 Free}
   \else
-    \newfontfamily{\cv@FA}{FontAwesome}
+    \newfontfamily{\cv@FA}{Font Awesome 5 Free}
   \fi
 %    \end{macrocode}
 %
-% The |fontawesome| package does not feature all of the latest icons available,
+% The |fontawesome5| package does not feature all of the latest icons available,
 % so we define some of the manually since they are relevant for this CV.
 %
 % \begin{macro}{\faAddressCard}
@@ -1221,7 +1222,7 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 % \end{macro}
 %
-% In the future, the |fontawesome| dependency can be dropped if a manually coded
+% In the future, the |fontawesome5| dependency can be dropped if a manually coded
 % icon is included, such as those defined in monderncv. Example:
 % \url{https://raw.githubusercontent.com/xdanaux/moderncv/%
 % master/moderncviconsmarvosym.sty}
@@ -1240,7 +1241,7 @@ Dear Miss.\ Smith
   \ifluatex
     \cv@loadFonts
   \else
-    \RequirePackage{fontawesome}
+    \RequirePackage{fontawesome5}
     \RenewDocumentCommand{\familydefault}{}{\sfdefault}
   \fi
 \fi
@@ -1397,7 +1398,7 @@ Dear Miss.\ Smith
 \newlength\cvSkillSep
 \setlength\cvSkillSep{1ex}
 \newlength\cvHeaderIconWidth
-\setlength\cvHeaderIconWidth{0pt}
+\setlength\cvHeaderIconWidth{10pt}
 %    \end{macrocode}
 %
 %
@@ -1416,10 +1417,10 @@ Dear Miss.\ Smith
 \NewDocumentCommand{\cvSkill}{m}{%
   \begingroup
   \my@repeat@count=\z@
-  \@whilenum\my@repeat@count<#1\do{\faCircle\advance%
+  \@whilenum\my@repeat@count<#1\do{\faCircle[solid]\advance%
     \my@repeat@count\@ne}%
   \my@repeat@count=\numexpr5-\z@\relax
-  \@whilenum\my@repeat@count>#1\do{\faCircleO\advance%
+  \@whilenum\my@repeat@count>#1\do{\faCircle[regular]\advance%
     \my@repeat@count\m@ne}%
   \endgroup
 }
@@ -1449,8 +1450,15 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentCommand{\cv@Title}{mm}{%
   \ifnodedefined{cv@last item \the\value{cv@lastItem}}{%
-    \setlength\cvHeaderIconWidth{%
-      \maxof{\cvHeaderIconWidth}{\widthof{\Large #2}}}%
+    \setlength\cvHeaderIconWidth\cvHeaderIconWidth%{%
+      %\maxof{\cvHeaderIconWidth}{\widthof{\Large #2}}}%
+%    \end{macrocode}
+%
+% \changes{v0.1.8}{2020/03/15}{For now, the |widthof| macro is not used 
+%  anymore since there is an issue with the latest version of Font Awesome 5 
+%  (5.7.0).}
+% 
+%    \begin{macrocode}
     \protected@write\@auxout{}{\global\cvHeaderIconWidth=\the\cvHeaderIconWidth}
     \node[%
       below=\cvSectionSep of cv@last item %
@@ -1858,7 +1866,7 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvPublications}{}{%
-\cv@Title{\pgfkeysvalueof{/@cv/names/publications}}{\faNewspaperO}
+\cv@Title{\pgfkeysvalueof{/@cv/names/publications}}{\faNewspaper}
 %    \end{macrocode}
 % insures uniqueness
 %    \begin{macrocode}
@@ -2176,7 +2184,7 @@ Dear Miss.\ Smith
   \cv@ContactTemplateLink{\cvContactWebsite}{\faGlobe}
   \cv@ContactTemplateLink{\cvContactGithub}{\faGithub}
   \cv@ContactTemplateLink{\cvContactGitlab}{\faGitlab}
-  \cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedinSquare}
+  \cv@ContactTemplateLink{\cvContactLinkedin}{\faLinkedin}
   \cv@ContactTemplateLink{\cvContactTwitter}{\faTwitter}
   \cv@ContactTemplateLink{\cvContactKeybase}{\faKey}
   \begin{tikzpicture}[%
