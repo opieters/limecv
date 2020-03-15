@@ -25,13 +25,12 @@ unzip -o -q -d FontAwesome FontAwesome.zip
 # create target directories for fonts
 sudo mkdir -p /usr/share/fonts/truetype/FiraSans
 sudo mkdir -p /usr/share/fonts/opentype/FiraSans
-sudo mkdir -p /usr/share/fonts/truetype/FontAwesome
 sudo mkdir -p /usr/share/fonts/opentype/FontAwesome
 
 # copy fonts
 sudo cp FiraMain/Fira*/ttf/*.ttf /usr/share/fonts/truetype/FiraSans/
 sudo cp FiraMain/Fira*/otf/*.otf /usr/share/fonts/opentype/FiraSans/
-sudo cp FontAwesome/otfs/*.otf /usr/share/fonts/opentype/FontAwesome/
+sudo cp FontAwesome/fontawesome-free-5.12.1-desktop/otfs/*.otf /usr/share/fonts/opentype/FontAwesome/
 
 # build cache
 sudo fc-cache -fv
