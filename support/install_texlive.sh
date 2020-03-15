@@ -41,7 +41,7 @@ tlmgr install   \
   parskip \
   xstring \
   fontspec \
-  fontawesome \
+  fontawesome5 \
   lipsum \
   zapfding \
   luaotfload \
