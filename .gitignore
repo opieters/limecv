@@ -12,3 +12,8 @@ limecv.pdf
 mwe-latex.pdf
 mwe-lualatex.pdf
 .vscode
+.DS_Store
+limecv.tar.gz
+*.aux
+*.out
+*.synctex.gz
