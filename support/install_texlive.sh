@@ -51,6 +51,7 @@ tlmgr install   \
   dvipdfmx \
   pdfescape \
   letltxmacro \
+  luatexbase \
   bitset
 
 # Keep no backups (not required, simply makes cache bigger)
