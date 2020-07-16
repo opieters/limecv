@@ -2654,7 +2654,7 @@ Dear Miss.\ Smith
     \draw (current page.north east) %
       ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,
          -\cvCoverLetterHeight/2) node (cv@h7) {};
-    \node[anchor=east] at (cv@h7) (cv cover letter name){%
+    \node[anchor=east, cvAccent] at (cv@h7) (cv cover letter name){%
       \fontsize{50}{60}\selectfont
 %    \end{macrocode}
 % trick to expand argument such that `kleft` sees an 
@@ -2733,9 +2733,9 @@ Dear Miss.\ Smith
   }
   {\LARGE
   \vspace{\cvIDNameSep}
-  #1
+  \color{cvAccent} #1
   \vspace{\cvIDNameSep}
-  #2}
+  \color{cvAccent} #2}
   
   \vspace{\cvPositionSep}
   
