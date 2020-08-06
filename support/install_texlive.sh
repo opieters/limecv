@@ -52,6 +52,7 @@ tlmgr install   \
   pdfescape \
   letltxmacro \
   luatexbase \
+  ctex \
   bitset
 
 # Keep no backups (not required, simply makes cache bigger)
