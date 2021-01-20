@@ -1,6 +1,6 @@
 % \iffalse meta-comment
 %
-% Copyright (C) 2017 - 2020 by Olivier Pieters
+% Copyright (C) 2017 - 2021 by Olivier Pieters
 % --------------------------------------------------------------------------
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2020/03/15 v0.1.8 limecv Document class for CVs.]
+    [2021/01/21 v0.1.9 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1632}
+% \CheckSum{1647}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -98,13 +98,14 @@
 % \changes{v0.1.6}{2018/06/17}{Added support for French.}
 % \changes{v0.1.7}{2020/02/08}{Added support for Italian.}
 % \changes{v0.1.8}{2020/03/15}{Upgrade to Font Awesome 5.}
+% \changes{v0.1.9}{2021/01/21}{Added support for Spanish.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1.8}
-% \def\filedate{2020/03/15}
+% \def\fileversion{v0.1.9}
+% \def\filedate{2021/01/21}
 %
 % \GetFileInfo{limecv.dtx}
 % \title{The \textsf{limecv} document class\thanks{This document corresponds %
@@ -173,7 +174,8 @@
 %
 %    \DescribeMacro{\cvSetLanguage} The default language is English and can
 %        be modified using the |\cvSetLanguage| macro. Possible arguments are:
-%        |chinese|, |dutch|, |english|, |french|, |german|, |italian|.
+%        |chinese|, |dutch|, |english|, |french|, |german|, |italian|, and 
+%        |spanish|.
 %        If your language is not supported or you want to override a word in any
 %        supported language, you can modify the keys that hold the different
 %        section titles. These can be in the source code. The following snippet
@@ -836,7 +838,7 @@ Dear Miss.\ Smith
 %
 % limecv.cls
 % 
-% Copyright 2017 - 2020 by Olivier Pieters
+% Copyright 2017 - 2021 by Olivier Pieters
 %
 % A (Xe/Lua)LaTeX document class
 %
@@ -1700,6 +1702,25 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 %
 %
+% Set the title names to Spanish:
+%    \begin{macrocode}
+\NewDocumentCommand{\cv@setSpanish}{}{
+    \pgfkeys{/@cv/names/profile = Perfil}%
+    \pgfkeys{/@cv/names/contact = Contacto}%
+    \pgfkeys{/@cv/names/languages = Idiomas}%
+    \pgfkeys{/@cv/names/interests = Intereses}%
+    \pgfkeys{/@cv/names/professional = Profesionales}%
+    \pgfkeys{/@cv/names/personal = Personales}%
+    \pgfkeys{/@cv/names/projects = Proyectos}%
+    \pgfkeys{/@cv/names/education = Formación}%
+    \pgfkeys{/@cv/names/experience = Experiencia}%
+    \pgfkeys{/@cv/names/skills = Habilidades}%
+    \pgfkeys{/@cv/names/references = Referencias}%
+    \pgfkeys{/@cv/names/publications = Publicaciones}%
+}
+%    \end{macrocode}
+%
+%
 % Set the actual language to English. This can be overwritten by the user in the 
 % preamble
 %
@@ -1714,14 +1735,15 @@ Dear Miss.\ Smith
       {french} {\cv@setFrench}
       {german} {\cv@setGerman}
       {italian} {\cv@setItalian}
+      {spanish} {\cv@setSpanish}
       {chinese} {%
           \usepackage[BoldFont,SlantFont]{xeCJK}%
           \cv@setChinese%
         }
     }
     {\ClassError{limecv}{Unknown option `#1' for cvLanguage %
-     macro.}{Only `english', `chinese`, `dutch`, `french`, `german` %
-     and `italian` are valid options for this macro.}}
+     macro.}{Only `english', `chinese`, `dutch`, `french`, `german`, %
+     `italian` and `spanish` are valid options for this macro.}}
 }
 \ExplSyntaxOff
 \cvSetLanguage{english}
