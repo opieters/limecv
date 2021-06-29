@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1649}
+% \CheckSum{1654}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -1672,13 +1672,13 @@ Dear Miss.\ Smith
     \pgfkeys{/@cv/names/languages = Sprachen}%
     \pgfkeys{/@cv/names/interests = Interessen}%
     \pgfkeys{/@cv/names/professional = Beruflich}%
-    \pgfkeys{/@cv/names/personal = Persönlich}%
+    \pgfkeys{/@cv/names/personal = Pers\"{o}nlich}%
     \pgfkeys{/@cv/names/projects = Projekte}%
     \pgfkeys{/@cv/names/education = Ausbildung}%
     \pgfkeys{/@cv/names/experience = Berufliche Erfahrung}%
     \pgfkeys{/@cv/names/references = Referenzen}%
     \pgfkeys{/@cv/names/skills = Kenntnisse}%
-    \pgfkeys{/@cv/names/publications = Veröffentlichungen}%
+    \pgfkeys{/@cv/names/publications = Ver\"{o}ffentlichungen}%
 }
 %    \end{macrocode}
 %
@@ -1824,6 +1824,30 @@ Dear Miss.\ Smith
 %    \end{macrocode}
 %------------------------------------------------------
 %
+%   cvList environment: a general environment for 
+%     grouped lists. This environment is used to 
+%     generate e.g.\ |cvEducation|, |cvExperience| etc.
+%
+%    \begin{macrocode}
+\NewDocumentCommand{\cvList}{mmm} {%
+  \NewDocumentEnvironment{#1}{}{%
+  \cv@Title{\pgfkeysvalueof{/@cv/names/#2}}{#3}
+%    \end{macrocode}
+% insures uniqueness
+%    \begin{macrocode}
+    \stepcounter{cv@itemPrev}
+    \stepcounter{cv@itemNext}
+    \cv@definecvItem
+  }{%
+  \cv@EndSectionDraw
+  \stepcounter{cv@lastItem}
+  \draw (item \the\value{cv@itemPrev}.south west) 
+    node (cv@last item \the\value{cv@lastItem}) {};
+  }
+}
+%    \end{macrocode}
+%------------------------------------------------------
+%
 %   cvEductation environment
 %
 %    \begin{macrocode}
@@ -1888,20 +1912,7 @@ Dear Miss.\ Smith
 %   cvPublications environment
 %
 %    \begin{macrocode}
-\NewDocumentEnvironment{cvPublications}{}{%
-\cv@Title{\pgfkeysvalueof{/@cv/names/publications}}{\faNewspaper}
-%    \end{macrocode}
-% insures uniqueness
-%    \begin{macrocode}
-  \stepcounter{cv@itemPrev}
-  \stepcounter{cv@itemNext}
-  \cv@definecvItem
-}{%
-  \cv@EndSectionDraw
-  \stepcounter{cv@lastItem}
-  \draw (item \the\value{cv@itemPrev}.south west)
-    node (cv@last item \the\value{cv@lastItem}) {};
-}
+\cvList{cvPublications}{publications}{\faNewspaper}
 %    \end{macrocode}
 %------------------------------------------------------
 %
