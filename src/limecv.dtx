@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2021/12/01 v0.1.12 limecv Document class for CVs.]
+    [2021/12/01 v0.1.13 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1676}
+% \CheckSum{1697}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -105,12 +105,13 @@
 %   references.}
 % \changes{v0.1.12}{2021/12/01}{Fix alignment issue for cvMainContent* and %
 %   cvSidebar*.}
+% \changes{v0.1.13}{2021/12/01}{Make language rating optional.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1.12}
+% \def\fileversion{v0.1.13}
 % \def\filedate{2021/12/01}
 %
 % \GetFileInfo{limecv.dtx}
@@ -2556,27 +2557,48 @@ Dear Miss.\ Smith
 \pgfkeys{/@cv/languages/.is family,
 /@cv/languages/.unknown/.style = {%
   \pgfkeyscurrentpath/\pgfkeyscurrentname/.initial = #1}}
-\NewDocumentEnvironment{cvLanguages}{}{%
-  \NewDocumentCommand{\cvLanguage}{mm}{%
-    {\globaldefs=1\relax\pgfkeys{%
-      /@cv/languages/lang\the\value{cv@languages} = ##2}}
-    \node[cv@languageText]{##1}; \pgfmatrixnextcell %
-      \node[cv@progressArea] (cv@language \the\value{cv@languages}) {}; \\
-    \stepcounter{cv@languages}
-  }%
+
+\newif\ifcv@languagerating
+\cv@languageratingtrue
+\NewDocumentEnvironment{cvLanguages}{ o }{%
+  \IfNoValueTF{#1}{
+    \NewDocumentCommand{\cvLanguage}{mm}{%
+      {\globaldefs=1\relax\pgfkeys{%
+        /@cv/languages/lang\the\value{cv@languages} = ##2}}
+      \node[cv@languageText]{##1}; \pgfmatrixnextcell %
+        \node[cv@progressArea] (cv@language \the\value{cv@languages}) {}; \\
+      \stepcounter{cv@languages}
+    }%  
+    \cv@languageratingtrue
+  }{
+    \NewDocumentCommand{\cvLanguage}{m}{%
+      \node[cv@languageText]{##1}; \\
+      \stepcounter{cv@languages}
+    }%  
+    \cv@languageratingfalse
+  }
   \vspace{\cvSectionSBSep}
   \ruleline{\pgfkeysvalueof{/@cv/names/languages}}%
   \vspace{\cvSectionSBSep}
   \begin{tikzpicture}[%
     every node/.style={text depth=0pt,inner sep=0pt,outer sep=0pt}]
-  \matrix [
+  \ifcv@languagerating
+  \matrix [%
     column 1/.style={anchor=east},
     column sep=1.5\cvSectionSBSep,
     row sep=1.5\cvSectionSBSep,
     column 2/.style={anchor=west,align=left}
   ] (contact) \bgroup
+  \else
+  \matrix [%
+    column sep=1.5\cvSectionSBSep,
+    row sep=1.5\cvSectionSBSep,
+    column 2/.style={anchor=west,align=left}
+  ] (contact) \bgroup
+  \fi
 }{%
   \\\egroup;
+  \ifcv@languagerating
   \newcounter{cv@languagelevel}
   \setcounter{cv@languagelevel}{1}
   \loop\ifnum\value{cv@languagelevel}<\value{cv@languages}
@@ -2588,6 +2610,7 @@ Dear Miss.\ Smith
         {};
     \stepcounter{cv@languagelevel}
   \repeat
+  \fi
   \end{tikzpicture}
 }
 %    \end{macrocode}
