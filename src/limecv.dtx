@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2021/12/01 v0.1.11 limecv Document class for CVs.]
+    [2021/12/01 v0.1.12 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1661}
+% \CheckSum{1676}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -103,12 +103,14 @@
 %   Fixes issue when counter environments were used multiple times.}
 % \changes{v0.1.11}{2021/12/01}{Implement option to add email key to %
 %   references.}
+% \changes{v0.1.12}{2021/12/01}{Fix alignment issue for cvMainContent* and %
+%   cvSidebar*.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1.11}
+% \def\fileversion{v0.1.12}
 % \def\filedate{2021/12/01}
 %
 % \GetFileInfo{limecv.dtx}
@@ -608,6 +610,24 @@
     address line 2=B-1150 Brussels,
     mobile phone=+1 781 555 1212}% <<-- Important!!!
 \end{cvReferences}
+  \end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%
+%   \DescribeMacro{cvList}
+%   If the above sections do not fit your needs, you can define a new section
+%   using 
+%   |cvList{|\meta{environment name}|}{|\meta{storage key}|}{|\meta{icon}|}|.
+%   It is also used internally for |cvExperience| and |cvEducation|, e.g.:
+%
+% \iffalse
+%<*example>
+% \fi
+\begin{lstlisting}[%
+  caption={\lstinline!cvList! code example.},
+  label=cvList]
+  \cvList{cvEducation}{education}{\faGraduationCap}
   \end{lstlisting}
 % \iffalse
 %</example>
@@ -1800,6 +1820,11 @@ Dear Miss.\ Smith
 %
 %    \begin{macrocode}
 \NewDocumentEnvironment{cvMainContent}{}{%
+  \stepcounter{cv@titlePrev}
+  \stepcounter{cv@titleNext}
+  \stepcounter{cv@itemPrev}
+  \stepcounter{cv@itemNext}
+  \stepcounter{cv@lastItem}
   \begin{tikzpicture}[%
     every node/.style={%
       inner sep=0pt,
@@ -1812,8 +1837,11 @@ Dear Miss.\ Smith
   \end{tikzpicture}
 }
 \NewDocumentEnvironment{cvMainContent*}{}{%
-  \stepcounter{titlePrev}
-  \stepcounter{titleNext}
+  \stepcounter{cv@titlePrev}
+  \stepcounter{cv@titleNext}
+  \stepcounter{cv@itemPrev}
+  \stepcounter{cv@itemNext}
+  \stepcounter{cv@lastItem}
     \begin{tikzpicture}[%
       every node/.style={
         inner sep=0pt,
@@ -1837,12 +1865,6 @@ Dear Miss.\ Smith
   \NewDocumentEnvironment{#1}{}{%
     \cv@Title{\pgfkeysvalueof{/@cv/names/#2}}{#3}
 %    \end{macrocode}
-% reset counters if environment is used a second time
-%    \begin{macrocode}
-    \setcounter{cv@itemPrev}{0}
-    \setcounter{cv@itemNext}{1}
-    \setcounter{cv@lastItem}{1}
-%    \end{macrocode}
 % insures uniqueness
 %    \begin{macrocode}
     \stepcounter{cv@itemPrev}
@@ -1861,14 +1883,14 @@ Dear Miss.\ Smith
 %   cvEductation environment
 %
 %    \begin{macrocode}
-\cvList{cvEducation}{publications}{\faGraduationCap}
+\cvList{cvEducation}{education}{\faGraduationCap}
 %    \end{macrocode}
 %------------------------------------------------------
 %
 %   cvExperience environment
 %
 %    \begin{macrocode}
-\cvList{cvExperience}{publications}{\faBriefcase}
+\cvList{cvExperience}{experience}{\faBriefcase}
 %    \end{macrocode}
 %------------------------------------------------------
 %
@@ -1878,6 +1900,7 @@ Dear Miss.\ Smith
 \NewDocumentEnvironment{cvSkills}{}{%
   \cv@Title{\pgfkeysvalueof{/@cv/names/skills}}{\faStar}
   \global\cv@firstskilltrue
+  \RenewDocumentCommand{\cv@skillsTable}{}{}
 }{%
   \node[
     below=\cvSectionSep of cv@title \the\value{cv@titlePrev}%
@@ -2152,13 +2175,14 @@ Dear Miss.\ Smith
   \end{minipage}
   \vspace*{\fill}
 }
-\NewDocumentEnvironment{cvSidear*}{}{%
+\NewDocumentEnvironment{cvSidebar*}{}{%
   \vspace*{\fill}
   \vspace*{-0.5\cvMargin}
   \begin{tikzpicture}[remember picture,overlay]
     \fill[cvGreenLight] (current page.north east) rectangle %
       ++(-\cvSideWidth-2\cvMargin,-\paperheight);
   \end{tikzpicture}%
+  \hspace*{\paperwidth-\cvSideWidth-2\cvMargin}%
   \begin{minipage}{\cvSideWidth}
     \begin{center}
 }{%
@@ -2358,6 +2382,9 @@ Dear Miss.\ Smith
       for this environment.}}
   }
   
+  \stepcounter{cv@cvInterestCounter}
+  \stepcounter{cv@cvInterestCounterPrev}
+
   \cv@definecv@interestSection
 %    \end{macrocode}
 % define new commands
@@ -2383,6 +2410,7 @@ Dear Miss.\ Smith
   \vspace{\cvSectionSBSep}
 }{%
   \cv@interestClose
+  \global\cv@interestContentfalse
 }
 \ExplSyntaxOff
 %    \end{macrocode}
