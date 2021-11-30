@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2021/12/01 v0.1.10 limecv Document class for CVs.]
+    [2021/12/01 v0.1.11 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1634}
+% \CheckSum{1661}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -101,12 +101,14 @@
 % \changes{v0.1.9}{2021/01/21}{Added support for Spanish.}
 % \changes{v0.1.10}{2021/12/01}{Bug fix in cover letter design for long names. %
 %   Fixes issue when counter environments were used multiple times.}
+% \changes{v0.1.11}{2021/12/01}{Implement option to add email key to %
+%   references.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1.10}
+% \def\fileversion{v0.1.11}
 % \def\filedate{2021/12/01}
 %
 % \GetFileInfo{limecv.dtx}
@@ -1950,6 +1952,10 @@ Dear Miss.\ Smith
 \pgfkeys{/@cv/references/mobile phone/.is if=%
   cv@refMobilePhone}
 \pgfkeys{/@cv/references/mobile phone=false}
+\newif\ifcv@refEmail
+\pgfkeys{/@cv/references/email/.is if=%
+  cv@refEmail}
+\pgfkeys{/@cv/references/email=false}
 \newif\ifcv@refStored
 \pgfkeys{/@cv/references/value stored/.is if=%
   cv@refStored}
@@ -2012,6 +2018,11 @@ Dear Miss.\ Smith
   \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+\define@key{cvAddReferenceA}{email}{%
+  \global\def\cv@refAEmail{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/email = true}}}
+%    \end{macrocode}
 %
 %    \begin{macrocode}
 \define@key{cvAddReferenceB}{name}{%
@@ -2066,6 +2077,17 @@ Dear Miss.\ Smith
 \define@key{cvAddReferenceB}{mobile phone}{%
   \global\def\cv@refBMobilePhone{#1}%
   \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/mobile phone = true}}}
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
+\define@key{cvAddReferenceB}{email}{%
+  \global\def\cv@refBEmail{#1}%
+  \@IfNoValueOrEmptyTF{#1}{}{\pgfkeys{/@cv/references/email = true}}}
+%    \end{macrocode}
+%
+%
+%    \begin{macrocode}
 \NewDocumentCommand{\cvAddReference}{sm}{%
   \IfBooleanTF{#1}{%
     \setkeys{cvAddReferenceA}{name=,company=,
@@ -2089,6 +2111,7 @@ Dear Miss.\ Smith
       \ifcv@refAddressLineC \\ \cv@refAAddressLineC & \cv@refBAddressLineC \fi %
       \ifcv@refWorkPhone    \\ \cv@refAPhoneWork    & \cv@refBPhoneWork    \fi %
       \ifcv@refMobilePhone  \\ \cv@refAMobilePhone  & \cv@refBMobilePhone  \fi %
+      \ifcv@refEmail        \\ \cv@refAEmail        & \cv@refBEmail        \fi %
       \end{tabular}%
       \pgfkeys{/@cv/references/value stored = false}%
     \else%
@@ -2102,6 +2125,7 @@ Dear Miss.\ Smith
         \ifcv@refAddressLineC \\ \cv@refBAddressLineC \fi %
         \ifcv@refWorkPhone    \\ \cv@refBPhoneWork    \fi %
         \ifcv@refMobilePhone  \\ \cv@refBMobilePhone  \fi %
+        \ifcv@refEmail        \\ \cv@refBEmail        \fi %
       \end{tabular}%
     \fi%
   }%
