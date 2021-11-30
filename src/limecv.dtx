@@ -26,7 +26,7 @@
 %<class>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %<class>\ProvidesClass{limecv}
 %<*class>
-    [2021/01/21 v0.1.9 limecv Document class for CVs.]
+    [2021/12/01 v0.1.10 limecv Document class for CVs.]
 %</class>
 %
 %<*driver>
@@ -69,7 +69,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{1654}
+% \CheckSum{1634}
 %
 % \CharacterTable
 %  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
@@ -99,13 +99,15 @@
 % \changes{v0.1.7}{2020/02/08}{Added support for Italian.}
 % \changes{v0.1.8}{2020/03/15}{Upgrade to Font Awesome 5.}
 % \changes{v0.1.9}{2021/01/21}{Added support for Spanish.}
+% \changes{v0.1.10}{2021/12/01}{Bug fix in cover letter design for long names. %
+%   Fixes issue when counter environments were used multiple times.}
 %
 % \DoNotIndex{\NewDocumentCommand,\NewDocumentEnvironment}
 %
 % \providecommand*{\url}{\texttt}
 % 
-% \def\fileversion{v0.1.9}
-% \def\filedate{2021/01/21}
+% \def\fileversion{v0.1.10}
+% \def\filedate{2021/12/01}
 %
 % \GetFileInfo{limecv.dtx}
 % \title{The \textsf{limecv} document class\thanks{This document corresponds %
@@ -1831,28 +1833,13 @@ Dear Miss.\ Smith
 %    \begin{macrocode}
 \NewDocumentCommand{\cvList}{mmm} {%
   \NewDocumentEnvironment{#1}{}{%
-  \cv@Title{\pgfkeysvalueof{/@cv/names/#2}}{#3}
+    \cv@Title{\pgfkeysvalueof{/@cv/names/#2}}{#3}
 %    \end{macrocode}
-% insures uniqueness
+% reset counters if environment is used a second time
 %    \begin{macrocode}
-    \stepcounter{cv@itemPrev}
-    \stepcounter{cv@itemNext}
-    \cv@definecvItem
-  }{%
-  \cv@EndSectionDraw
-  \stepcounter{cv@lastItem}
-  \draw (item \the\value{cv@itemPrev}.south west) 
-    node (cv@last item \the\value{cv@lastItem}) {};
-  }
-}
-%    \end{macrocode}
-%------------------------------------------------------
-%
-%   cvEductation environment
-%
-%    \begin{macrocode}
-\NewDocumentEnvironment{cvEducation}{}{%
-    \cv@Title{\pgfkeysvalueof{/@cv/names/education}}{\faGraduationCap}
+    \setcounter{cv@itemPrev}{0}
+    \setcounter{cv@itemNext}{1}
+    \setcounter{cv@lastItem}{1}
 %    \end{macrocode}
 % insures uniqueness
 %    \begin{macrocode}
@@ -1864,27 +1851,22 @@ Dear Miss.\ Smith
     \stepcounter{cv@lastItem}
     \draw (item \the\value{cv@itemPrev}.south west) 
       node (cv@last item \the\value{cv@lastItem}) {};
+  }
 }
+%    \end{macrocode}
+%------------------------------------------------------
+%
+%   cvEductation environment
+%
+%    \begin{macrocode}
+\cvList{cvEducation}{publications}{\faGraduationCap}
 %    \end{macrocode}
 %------------------------------------------------------
 %
 %   cvExperience environment
 %
 %    \begin{macrocode}
-\NewDocumentEnvironment{cvExperience}{}{%
-  \cv@Title{\pgfkeysvalueof{/@cv/names/experience}}{\faBriefcase}
-%    \end{macrocode}
-% insures uniqueness
-%    \begin{macrocode}
-  \stepcounter{cv@itemPrev}
-  \stepcounter{cv@itemNext}
-  \cv@definecvItem
-}{%
-  \cv@EndSectionDraw
-  \stepcounter{cv@lastItem}
-  \draw (item \the\value{cv@itemPrev}.south west) 
-    node (cv@last item \the\value{cv@lastItem}) {};
-}
+\cvList{cvExperience}{publications}{\faBriefcase}
 %    \end{macrocode}
 %------------------------------------------------------
 %
@@ -2687,25 +2669,28 @@ Dear Miss.\ Smith
     \draw (current page.north east) %
       ++(-0.5\paperwidth+0.5\cvCoverLetterWidth,
          -\cvCoverLetterHeight/2) node (cv@h7) {};
-    \node[anchor=east, cvAccent] at (cv@h7) (cv cover letter name){%
-      \fontsize{50}{60}\selectfont
+    \node[%
+      anchor=east, 
+      align=flush right, 
+      text width=\textwidth] at (cv@h7) (cv cover letter name){%
+        \fontsize{50}{60}\selectfont
 %    \end{macrocode}
 % trick to expand argument such that `kleft` sees an 
 % alphabetic constant (i.e. a single letter)
 %    \begin{macrocode}
-      \begingroup\edef\y{\endgroup%
-        \noexpand\kleft{\cv@FirstNameLetter}}%
-      \y
-      \StrGobbleLeft{\pgfkeysvalueof{/@cv/info/first name}}{1}\space
-      \StrGobbleRight{\pgfkeysvalueof{/@cv/info/last name}}{1}
+        \begingroup\edef\y{\endgroup%
+          \noexpand\kleft{\cv@FirstNameLetter}}%
+        \y
+        \StrGobbleLeft{\pgfkeysvalueof{/@cv/info/first name}}{1}\space
+        \StrGobbleRight{\pgfkeysvalueof{/@cv/info/last name}}{1}
 %    \end{macrocode}
 % same trick
 % trick to expand argument such that `kleft` sees an 
 % alphabetic constant (i.e. a single letter)
 %    \begin{macrocode}
-      \begingroup\edef\y{\endgroup%
-        \noexpand\kright{\cv@LastNameLetter}}%
-      \y
+        \begingroup\edef\y{\endgroup%
+          \noexpand\kright{\cv@LastNameLetter}}%
+        \y
       };
     \node[%
       align=right,
